@@ -1,0 +1,66 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: mortgageshield
+      POSTGRES_USER: mortgageshield
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-mortgageshield_dev}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mortgageshield"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    ports:
+      - "3004:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+asyncpg://mortgageshield:${POSTGRES_PASSWORD:-mortgageshield_dev}@postgres:5432/mortgageshield
+      REDIS_URL: redis://redis:6379/0
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      SHIELDAPI_KEY: ${SHIELDAPI_KEY:-dev-key-change-in-prod}
+      ABN_API_GUID: ${ABN_API_GUID:-}
+    volumes:
+      - uploads:/uploads
+    restart: unless-stopped
+
+  worker:
+    build: ./backend
+    command: celery -A app.worker celery_app worker --loglevel=info --concurrency=4
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+asyncpg://mortgageshield:${POSTGRES_PASSWORD:-mortgageshield_dev}@postgres:5432/mortgageshield
+      REDIS_URL: redis://redis:6379/0
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      SHIELDAPI_KEY: ${SHIELDAPI_KEY:-dev-key-change-in-prod}
+      ABN_API_GUID: ${ABN_API_GUID:-}
+    volumes:
+      - uploads:/uploads
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  uploads:
