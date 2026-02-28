@@ -74,7 +74,7 @@ export default function Landing() {
       {/* Nav */}
       <nav className="flex items-center justify-between px-8 py-5 border-b border-white/5">
         <div className="text-xl font-bold">
-          Mortgage<span className="text-blue-400">Shield</span>
+          Tru<span className="text-blue-400">tina</span>
         </div>
         <div className="flex items-center gap-6">
           <a href="#features" className="text-white/50 hover:text-white/80 text-sm transition">Features</a>
@@ -100,7 +100,7 @@ export default function Landing() {
         </h1>
 
         <p className="text-white/50 text-xl max-w-2xl mx-auto mb-10">
-          MortgageShield analyses loan application documents for AI-fabricated payslips, forged bank statements,
+          Trutina analyses loan application documents for AI-fabricated payslips, forged bank statements,
           and invalid ABNs — returning an explainable risk score in under 60 seconds.
         </p>
 
@@ -198,7 +198,7 @@ export default function Landing() {
                   </li>
                 ))}
               </ul>
-              <a href="mailto:hello@mortgageshield.com.au"
+              <a href="mailto:hello@trutina.com.au"
                 className={`block text-center font-semibold py-3 rounded-xl transition text-sm ${
                   plan.highlight
                     ? 'bg-blue-600 hover:bg-blue-500 text-white'
@@ -213,7 +213,7 @@ export default function Landing() {
 
       {/* Footer */}
       <footer className="border-t border-white/5 px-8 py-6 text-center text-white/20 text-xs">
-        MortgageShield by Solaisoft Pty Ltd · hello@mortgageshield.com.au · Built for Australian lenders
+        Trutina by Solaisoft Pty Ltd · hello@trutina.com.au · Built for Australian lenders
       </footer>
     </div>
   )

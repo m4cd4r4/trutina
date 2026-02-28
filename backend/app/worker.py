@@ -1,5 +1,5 @@
 """
-Celery Worker — MortgageShield Analysis Pipeline
+Celery Worker — Trutina Analysis Pipeline
 """
 from __future__ import annotations
 
@@ -20,7 +20,7 @@ from app.core.database import AsyncSessionLocal
 from app.models.case import AuditEvent, Case, CaseDocument, FraudFlag
 
 celery_app = Celery(
-    "mortgageshield",
+    "trutina",
     broker=settings.redis_url,
     backend=settings.redis_url,
 )

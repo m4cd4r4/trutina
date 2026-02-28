@@ -4,10 +4,10 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
-    database_url: str = "postgresql+asyncpg://mortgageshield:mortgageshield@postgres:5432/mortgageshield"
+    database_url: str = "postgresql+asyncpg://trutina:trutina@postgres:5432/trutina"
     redis_url: str = "redis://redis:6379/0"
     anthropic_api_key: str = ""
-    loanapi_key: str = "dev-key-change-in-prod"
+    trutina_api_key: str = "dev-key-change-in-prod"
     abn_api_guid: str = ""
 
     upload_dir: str = "/uploads"

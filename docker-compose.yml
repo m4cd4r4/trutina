@@ -4,14 +4,14 @@ services:
   postgres:
     image: postgres:16-alpine
     environment:
-      POSTGRES_DB: mortgageshield
-      POSTGRES_USER: mortgageshield
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-mortgageshield_dev}
+      POSTGRES_DB: trutina
+      POSTGRES_USER: trutina
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-trutina_dev}
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./backend/db/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U mortgageshield"]
+      test: ["CMD-SHELL", "pg_isready -U trutina"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -34,10 +34,10 @@ services:
       redis:
         condition: service_healthy
     environment:
-      DATABASE_URL: postgresql+asyncpg://mortgageshield:${POSTGRES_PASSWORD:-mortgageshield_dev}@postgres:5432/mortgageshield
+      DATABASE_URL: postgresql+asyncpg://trutina:${POSTGRES_PASSWORD:-trutina_dev}@postgres:5432/trutina
       REDIS_URL: redis://redis:6379/0
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
-      SHIELDAPI_KEY: ${SHIELDAPI_KEY:-dev-key-change-in-prod}
+      TRUTINA_API_KEY: ${TRUTINA_API_KEY:-dev-key-change-in-prod}
       ABN_API_GUID: ${ABN_API_GUID:-}
     volumes:
       - uploads:/uploads
@@ -52,10 +52,10 @@ services:
       redis:
         condition: service_healthy
     environment:
-      DATABASE_URL: postgresql+asyncpg://mortgageshield:${POSTGRES_PASSWORD:-mortgageshield_dev}@postgres:5432/mortgageshield
+      DATABASE_URL: postgresql+asyncpg://trutina:${POSTGRES_PASSWORD:-trutina_dev}@postgres:5432/trutina
       REDIS_URL: redis://redis:6379/0
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
-      SHIELDAPI_KEY: ${SHIELDAPI_KEY:-dev-key-change-in-prod}
+      TRUTINA_API_KEY: ${TRUTINA_API_KEY:-dev-key-change-in-prod}
       ABN_API_GUID: ${ABN_API_GUID:-}
     volumes:
       - uploads:/uploads

@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MortgageShield — AI Mortgage Fraud Detection",
+  title: "Trutina — AI Mortgage Fraud Detection",
   description: "Detect AI-generated payslips, forged bank statements, and invalid ABNs in mortgage applications. Built for Australian lenders.",
 };
 

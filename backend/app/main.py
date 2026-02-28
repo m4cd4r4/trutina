@@ -17,7 +17,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="MortgageShield API",
+    title="Trutina API",
     description="AI-powered mortgage document fraud detection for Australian lenders",
     version="1.0.0",
     lifespan=lifespan,

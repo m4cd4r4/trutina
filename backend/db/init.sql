@@ -1,4 +1,4 @@
--- MortgageShield PostgreSQL Schema
+-- Trutina PostgreSQL Schema
 
 -- Enums
 CREATE TYPE risk_level AS ENUM ('low', 'medium', 'high', 'critical');
