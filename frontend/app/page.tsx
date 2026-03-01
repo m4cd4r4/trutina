@@ -194,8 +194,7 @@ export default function Landing() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {FEATURES.map(f => (
             <div key={f.title}
-              className="rounded-xl border border-white/10 p-5 sm:p-6"
-              style={{ background: 'rgba(255,255,255,0.04)', backdropFilter: 'blur(10px)' }}>
+              className="rounded-xl border border-white/10 p-5 sm:p-6 bg-white/[0.04]">
               <div className="mb-3">{f.icon}</div>
               <h3 className="font-semibold text-white mb-2">{f.title}</h3>
               <p className="text-white/40 text-sm leading-relaxed">{f.desc}</p>
