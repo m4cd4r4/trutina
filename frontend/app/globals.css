@@ -24,3 +24,46 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* driver.js tour popover — dark theme override */
+.trutina-tour-popover {
+  background: #1a1a2e !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #fff !important;
+  border-radius: 12px !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5) !important;
+}
+.trutina-tour-popover .driver-popover-title {
+  color: #fff !important;
+  font-size: 15px !important;
+}
+.trutina-tour-popover .driver-popover-description {
+  color: rgba(255, 255, 255, 0.6) !important;
+  font-size: 13px !important;
+  line-height: 1.6 !important;
+}
+.trutina-tour-popover .driver-popover-progress-text {
+  color: rgba(255, 255, 255, 0.3) !important;
+}
+.trutina-tour-popover .driver-popover-next-btn {
+  background: #2563eb !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 8px !important;
+  text-shadow: none !important;
+}
+.trutina-tour-popover .driver-popover-prev-btn {
+  color: rgba(255, 255, 255, 0.5) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 8px !important;
+  text-shadow: none !important;
+}
+.trutina-tour-popover .driver-popover-close-btn {
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+.trutina-tour-popover .driver-popover-arrow-side-left .driver-popover-arrow,
+.trutina-tour-popover .driver-popover-arrow-side-right .driver-popover-arrow,
+.trutina-tour-popover .driver-popover-arrow-side-top .driver-popover-arrow,
+.trutina-tour-popover .driver-popover-arrow-side-bottom .driver-popover-arrow {
+  border-color: #1a1a2e !important;
+}

@@ -69,7 +69,7 @@ export const DEMO_CASES: DemoCase[] = [
     document_count: 1,
     flag_counts: { critical: 3, high: 2, medium: 1, low: 0 },
     documents: [
-      { id: 'd3', doc_type: 'payslip', filename: 'chen_payslip_feb2026.pdf', status: 'analysed', page_count: 1 },
+      { id: 'd3', doc_type: 'payslip', filename: 'chen_payslip_jan2026.pdf', status: 'analysed', page_count: 1 },
     ],
     summary: 'High-confidence AI-generated document. PDF was created in Google Chrome (not a payroll platform), contains 5 different font families (hallmark of copy-paste fabrication), and gross minus tax does not equal net pay. The stated employer ABN is registered to a completely different business name. Multiple critical flags warrant immediate rejection.',
     flags: [
@@ -151,7 +151,7 @@ export const DEMO_CASES: DemoCase[] = [
     flag_counts: { critical: 1, high: 2, medium: 2, low: 0 },
     documents: [
       { id: 'd6', doc_type: 'payslip', filename: 'kowalski_payslip_jan2026.pdf', status: 'analysed', page_count: 1 },
-      { id: 'd7', doc_type: 'bank_statement', filename: 'kowalski_westpac_jan2026.pdf', status: 'analysed', page_count: 3 },
+      { id: 'd7', doc_type: 'bank_statement', filename: 'kowalski_cba_dec2025.pdf', status: 'analysed', page_count: 3 },
     ],
     summary: 'Bank statement closing balance does not reconcile with transactions. Opening balance plus credits minus debits results in $42,318.50, but the statement shows a closing balance of $58,318.50 — a $16,000 discrepancy suggesting the closing balance was manually inflated. The salary credit amount also doesn\'t match the payslip net income. Additionally, both documents were submitted by Premier Lending Solutions, a broker already flagged for elevated fraud rates.',
     flags: [
@@ -191,7 +191,7 @@ export const DEMO_CASES: DemoCase[] = [
     document_count: 1,
     flag_counts: { critical: 0, high: 2, medium: 2, low: 1 },
     documents: [
-      { id: 'd8', doc_type: 'payslip', filename: 'sharma_payslip_feb2026.pdf', status: 'analysed', page_count: 1 },
+      { id: 'd8', doc_type: 'payslip', filename: 'sharma_payslip_jan2026.pdf', status: 'analysed', page_count: 1 },
     ],
     summary: 'The individual payslip passes most checks — it was produced by KeyPay, the math is consistent, and the ABN is active. However, Trutina\'s broker network analysis reveals that Fast Track Finance has submitted 4 applications in the past 7 days, all claiming the same employer (ABN 89012345678, "Pacific Coast Staffing"). This pattern is consistent with a broker fabricating employment at a compliant shell company. Recommend verifying Priya Sharma\'s employment directly with Pacific Coast Staffing via an independent channel.',
     flags: [

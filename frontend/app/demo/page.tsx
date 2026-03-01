@@ -5,6 +5,7 @@ import { ChevronRight } from 'lucide-react'
 import { DEMO_CASES } from '@/lib/demo-data'
 import ScoreGauge from '@/components/ui/ScoreGauge'
 import RiskBadge from '@/components/ui/RiskBadge'
+import DemoTour from '@/components/ui/DemoTour'
 
 const ACTION_STYLE = {
   approve: 'text-emerald-300 bg-emerald-500/10 border-emerald-500/20',
@@ -40,7 +41,7 @@ export default function DemoPage() {
 
       <div className="max-w-5xl mx-auto px-6 md:px-8 py-12">
         {/* Header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-12" data-tour="demo-header">
           <h1 className="text-3xl md:text-4xl font-bold mb-4">See Trutina in action</h1>
           <p className="text-white/50 max-w-2xl mx-auto">
             Five pre-analysed mortgage applications demonstrating how Trutina catches AI-generated documents,
@@ -50,8 +51,9 @@ export default function DemoPage() {
 
         {/* Case grid */}
         <div className="space-y-4">
-          {DEMO_CASES.map(c => (
+          {DEMO_CASES.map((c, i) => (
             <Link key={c.id} href={`/demo/${c.id}`}
+              data-tour={`case-card-${i}`}
               className="block rounded-xl border border-white/10 p-6 hover:border-white/20 transition group"
               style={{ background: 'rgba(255,255,255,0.03)' }}>
               <div className="flex flex-col md:flex-row md:items-center gap-6">
@@ -144,6 +146,8 @@ export default function DemoPage() {
       <footer className="border-t border-white/5 px-8 py-6 text-center text-white/20 text-xs mt-12">
         Trutina by Solaisoft Pty Ltd · hello@trutina.com.au · All sample data is synthetic — no real applicant data is shown
       </footer>
+
+      <DemoTour page="case-list" />
     </div>
   )
 }

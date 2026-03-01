@@ -3,12 +3,14 @@
 import { use } from 'react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { FileText, ChevronLeft } from 'lucide-react'
+import { ChevronLeft } from 'lucide-react'
 import { getDemoCase } from '@/lib/demo-data'
 import { CategoryIcon, getCategoryLabel } from '@/components/ui/CategoryIcon'
 import type { FlagCategory, FraudFlag, RiskLevel } from '@/lib/types'
 import ScoreGauge from '@/components/ui/ScoreGauge'
 import RiskBadge from '@/components/ui/RiskBadge'
+import DocumentViewer from '@/components/ui/DocumentViewer'
+import DemoTour from '@/components/ui/DemoTour'
 
 const ACTION_CONFIG = {
   approve: { label: 'Approve', bg: 'bg-emerald-500/10', border: 'border-emerald-500/30', text: 'text-emerald-300', desc: 'All checks passed. This application can proceed through standard processing.' },
@@ -62,10 +64,10 @@ export default function DemoCaseDetail({ params }: { params: Promise<{ id: strin
       <div className="max-w-4xl mx-auto px-6 md:px-8 py-10">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-start gap-8 mb-10">
-          <div className="shrink-0 flex justify-center">
+          <div className="shrink-0 flex justify-center" data-tour="score-gauge">
             <ScoreGauge score={c.risk_score} size={140} />
           </div>
-          <div className="flex-1">
+          <div className="flex-1" data-tour="case-header">
             <div className="flex flex-wrap items-center gap-2 mb-2">
               <span className="text-white/30 text-xs font-mono">{c.reference}</span>
               <RiskBadge level={c.risk_level} size="md" />
@@ -96,7 +98,7 @@ export default function DemoCaseDetail({ params }: { params: Promise<{ id: strin
 
         {/* Recommended Action */}
         {action && (
-          <div className={`rounded-xl border ${action.border} ${action.bg} p-6 mb-8`}>
+          <div data-tour="recommended-action" className={`rounded-xl border ${action.border} ${action.bg} p-6 mb-8`}>
             <div className="flex items-center gap-3 mb-2">
               <span className={`text-lg font-bold ${action.text}`}>Recommended: {action.label}</span>
             </div>
@@ -105,33 +107,19 @@ export default function DemoCaseDetail({ params }: { params: Promise<{ id: strin
         )}
 
         {/* Summary */}
-        <div className="rounded-xl border border-white/10 p-6 mb-8"
+        <div data-tour="analysis-summary" className="rounded-xl border border-white/10 p-6 mb-8"
           style={{ background: 'rgba(255,255,255,0.03)' }}>
           <h2 className="text-white font-semibold mb-3">Analysis Summary</h2>
           <p className="text-white/60 text-sm leading-relaxed">{c.summary}</p>
         </div>
 
-        {/* Documents */}
-        <div className="rounded-xl border border-white/10 p-6 mb-8"
-          style={{ background: 'rgba(255,255,255,0.03)' }}>
-          <h2 className="text-white font-semibold mb-4">Documents Analysed</h2>
-          <div className="space-y-2">
-            {c.documents.map(d => (
-              <div key={d.id} className="flex items-center justify-between bg-white/5 rounded-lg px-4 py-3">
-                <div className="flex items-center gap-3">
-                  <FileText className="w-4 h-4 text-white/30" />
-                  <div>
-                    <div className="text-white text-sm font-medium">{d.filename}</div>
-                    <div className="text-white/30 text-xs capitalize">{d.doc_type.replace('_', ' ')}</div>
-                  </div>
-                </div>
-                <span className="text-emerald-400 text-xs">Analysed</span>
-              </div>
-            ))}
-          </div>
+        {/* Documents with inline PDF viewer */}
+        <div data-tour="document-viewer">
+          <DocumentViewer documents={c.documents} flags={c.flags} />
         </div>
 
         {/* Flags by category */}
+        <div data-tour="fraud-flags">
         <h2 className="text-white font-semibold text-lg mb-4">
           Fraud Flags ({c.flags.length})
         </h2>
@@ -178,6 +166,7 @@ export default function DemoCaseDetail({ params }: { params: Promise<{ id: strin
             </div>
           ))}
         </div>
+        </div>
 
         {/* Bottom nav */}
         <div className="flex items-center justify-between mt-12 pt-8 border-t border-white/5">
@@ -195,6 +184,8 @@ export default function DemoCaseDetail({ params }: { params: Promise<{ id: strin
       <footer className="border-t border-white/5 px-8 py-6 text-center text-white/20 text-xs mt-8">
         All sample data is synthetic — no real applicant data is shown
       </footer>
+
+      <DemoTour page="case-detail" />
     </div>
   )
 }
