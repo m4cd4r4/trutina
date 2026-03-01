@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { ChevronRight } from 'lucide-react'
 import { DEMO_CASES } from '@/lib/demo-data'
 import ScoreGauge from '@/components/ui/ScoreGauge'
 import RiskBadge from '@/components/ui/RiskBadge'
@@ -88,9 +89,7 @@ export default function DemoPage() {
 
                 {/* Arrow */}
                 <div className="hidden md:flex items-center text-white/20 group-hover:text-white/50 transition">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                    <path d="M9 18l6-6-6-6" />
-                  </svg>
+                  <ChevronRight className="w-5 h-5" />
                 </div>
               </div>
 

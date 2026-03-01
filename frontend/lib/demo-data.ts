@@ -218,20 +218,4 @@ export function getDemoCase(id: string): DemoCase | undefined {
   return DEMO_CASES.find(c => c.id === id)
 }
 
-export const CATEGORY_LABELS: Record<FlagCategory, string> = {
-  pdf_forensics: 'PDF Forensics',
-  ai_content: 'AI Content Detection',
-  cross_reference: 'Cross-Reference',
-  consistency: 'Consistency Check',
-  broker_risk: 'Broker Risk',
-  identity: 'Identity',
-}
-
-export const CATEGORY_ICONS: Record<FlagCategory, string> = {
-  pdf_forensics: '🔬',
-  ai_content: '🤖',
-  cross_reference: '🔗',
-  consistency: '🧮',
-  broker_risk: '👥',
-  identity: '🪪',
-}
+// Labels and icons are now in components/ui/CategoryIcon.tsx

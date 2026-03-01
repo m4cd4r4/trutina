@@ -1,37 +1,40 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import Link from 'next/link'
+import { Microscope, Bot, Link2, Calculator, Users, ClipboardList, Check } from 'lucide-react'
 import LoginModal from '../components/LoginModal'
 
-const FEATURES = [
+const ICON_CLASS = 'w-8 h-8 text-blue-400'
+
+const FEATURES: { icon: ReactNode; title: string; desc: string }[] = [
   {
-    icon: '🔬',
+    icon: <Microscope className={ICON_CLASS} />,
     title: 'PDF Forensics',
     desc: 'Analyses creator metadata, font fingerprints, modification timestamps, and embedded image manipulation — hallmarks of AI-fabricated documents.',
   },
   {
-    icon: '🤖',
+    icon: <Bot className={ICON_CLASS} />,
     title: 'AI Content Detection',
     desc: 'Claude Sonnet semantically reads each document for AI-generation patterns, terminology anomalies, and field inconsistencies specific to Australian payroll.',
   },
   {
-    icon: '🔗',
+    icon: <Link2 className={ICON_CLASS} />,
     title: 'Cross-Reference Verification',
     desc: 'Live ABN Lookup, ASIC company register, BSB directory, and ABS wage benchmark checks. Invalid ABNs and non-existent employers caught instantly.',
   },
   {
-    icon: '🧮',
+    icon: <Calculator className={ICON_CLASS} />,
     title: 'Math & Date Consistency',
     desc: 'Deterministic checks: gross − tax = net, super at 11.5% SGC rate, YTD consistent with pay periods elapsed since 1 July, impossible dates caught.',
   },
   {
-    icon: '👥',
+    icon: <Users className={ICON_CLASS} />,
     title: 'Broker Risk Profiling',
     desc: 'Tracks submission velocity, fraud rates, and shared-employer network clustering across all applications submitted by each broker.',
   },
   {
-    icon: '📋',
+    icon: <ClipboardList className={ICON_CLASS} />,
     title: 'Explainable for APRA',
     desc: 'Every risk score comes with a plain-English narrative and specific evidence — meeting ASIC and APRA explainability requirements for loan decisions.',
   },
@@ -189,7 +192,7 @@ export default function Landing() {
             <div key={f.title}
               className="rounded-xl border border-white/10 p-5 sm:p-6"
               style={{ background: 'rgba(255,255,255,0.04)', backdropFilter: 'blur(10px)' }}>
-              <div className="text-3xl mb-3">{f.icon}</div>
+              <div className="mb-3">{f.icon}</div>
               <h3 className="font-semibold text-white mb-2">{f.title}</h3>
               <p className="text-white/40 text-sm leading-relaxed">{f.desc}</p>
             </div>
@@ -221,7 +224,7 @@ export default function Landing() {
               <ul className="space-y-2 mb-6 flex-1">
                 {plan.features.map(f => (
                   <li key={f} className="flex items-start gap-2 text-sm text-white/60">
-                    <span className="text-emerald-400 shrink-0">✓</span> {f}
+                    <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" /> {f}
                   </li>
                 ))}
               </ul>

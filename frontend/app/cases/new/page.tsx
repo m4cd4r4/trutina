@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { ScanSearch, X } from 'lucide-react'
 import { api } from '@/lib/api'
 
 const DOC_TYPES = [
@@ -169,7 +170,7 @@ export default function NewCase() {
                       ))}
                     </select>
                     <button onClick={() => setUploads(prev => prev.filter((_, j) => j !== i))}
-                      className="text-white/30 hover:text-red-400 text-xs transition">✕</button>
+                      className="text-white/30 hover:text-red-400 transition"><X className="w-3.5 h-3.5" /></button>
                   </div>
                 ))}
               </div>
@@ -191,7 +192,7 @@ export default function NewCase() {
         {step === 'analysing' && (
           <div className="rounded-xl border border-white/10 p-12 text-center"
             style={{ background: 'rgba(255,255,255,0.04)' }}>
-            <div className="text-4xl mb-4 animate-pulse">🔍</div>
+            <ScanSearch className="w-10 h-10 text-blue-400 mx-auto mb-4 animate-pulse" />
             <h2 className="text-lg font-semibold text-white mb-2">Analysing Documents</h2>
             <p className="text-white/40 text-sm">Running PDF forensics, AI detection, and cross-reference checks…</p>
             <p className="text-white/20 text-xs mt-2">This takes 15–45 seconds. Redirecting when complete.</p>

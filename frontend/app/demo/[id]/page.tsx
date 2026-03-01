@@ -3,7 +3,9 @@
 import { use } from 'react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { getDemoCase, CATEGORY_LABELS, CATEGORY_ICONS } from '@/lib/demo-data'
+import { FileText, ChevronLeft } from 'lucide-react'
+import { getDemoCase } from '@/lib/demo-data'
+import { CategoryIcon, getCategoryLabel } from '@/components/ui/CategoryIcon'
 import type { FlagCategory, FraudFlag, RiskLevel } from '@/lib/types'
 import ScoreGauge from '@/components/ui/ScoreGauge'
 import RiskBadge from '@/components/ui/RiskBadge'
@@ -117,7 +119,7 @@ export default function DemoCaseDetail({ params }: { params: Promise<{ id: strin
             {c.documents.map(d => (
               <div key={d.id} className="flex items-center justify-between bg-white/5 rounded-lg px-4 py-3">
                 <div className="flex items-center gap-3">
-                  <span className="text-white/30">📄</span>
+                  <FileText className="w-4 h-4 text-white/30" />
                   <div>
                     <div className="text-white text-sm font-medium">{d.filename}</div>
                     <div className="text-white/30 text-xs capitalize">{d.doc_type.replace('_', ' ')}</div>
@@ -138,8 +140,8 @@ export default function DemoCaseDetail({ params }: { params: Promise<{ id: strin
           {(Object.entries(grouped) as [FlagCategory, FraudFlag[]][]).map(([category, flags]) => (
             <div key={category}>
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-lg">{CATEGORY_ICONS[category]}</span>
-                <span className="text-white/60 text-sm font-medium">{CATEGORY_LABELS[category]}</span>
+                <CategoryIcon category={category} className="w-5 h-5 text-blue-400" />
+                <span className="text-white/60 text-sm font-medium">{getCategoryLabel(category)}</span>
                 <span className="text-white/20 text-xs">({flags.length})</span>
               </div>
 
@@ -179,10 +181,8 @@ export default function DemoCaseDetail({ params }: { params: Promise<{ id: strin
 
         {/* Bottom nav */}
         <div className="flex items-center justify-between mt-12 pt-8 border-t border-white/5">
-          <Link href="/demo" className="text-white/50 hover:text-white/80 transition text-sm flex items-center gap-2">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-              <path d="M15 18l-6-6 6-6" />
-            </svg>
+          <Link href="/demo" className="text-white/50 hover:text-white/80 transition text-sm flex items-center gap-1">
+            <ChevronLeft className="w-4 h-4" />
             All demo cases
           </Link>
           <Link href="/#pricing"

@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { X } from 'lucide-react'
 
 interface LoginModalProps {
   open: boolean
@@ -57,9 +58,7 @@ export default function LoginModal({ open, onClose }: LoginModalProps) {
           onClick={onClose}
           className="absolute top-4 right-4 text-white/30 hover:text-white/60 transition"
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-            <path d="M18 6L6 18M6 6l12 12" />
-          </svg>
+          <X className="w-5 h-5" />
         </button>
 
         <div className="text-center mb-6">
