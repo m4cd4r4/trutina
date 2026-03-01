@@ -2,22 +2,27 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { X } from 'lucide-react'
+import { X, Check } from 'lucide-react'
 
 interface LoginModalProps {
   open: boolean
   onClose: () => void
+  mode?: 'signin' | 'trial'
 }
 
-export default function LoginModal({ open, onClose }: LoginModalProps) {
+export default function LoginModal({ open, onClose, mode = 'signin' }: LoginModalProps) {
   const [password, setPassword] = useState('')
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [company, setCompany] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
   const router = useRouter()
 
   if (!open) return null
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSignIn(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
     setError('')
@@ -32,6 +37,28 @@ export default function LoginModal({ open, onClose }: LoginModalProps) {
         return
       }
       router.push('/dashboard')
+    } catch {
+      setError('Connection error')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  async function handleTrial(e: React.FormEvent) {
+    e.preventDefault()
+    setLoading(true)
+    setError('')
+    try {
+      const res = await fetch('/api/trial', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, company }),
+      })
+      if (!res.ok) {
+        setError('Something went wrong. Please try again.')
+        return
+      }
+      setSubmitted(true)
     } catch {
       setError('Connection error')
     } finally {
@@ -65,34 +92,100 @@ export default function LoginModal({ open, onClose }: LoginModalProps) {
           <div className="text-2xl font-bold text-white tracking-tight">
             Tru<span className="text-blue-400">tina</span>
           </div>
-          <p className="text-white/40 mt-1 text-sm">Sign in to continue</p>
+          <p className="text-white/40 mt-1 text-sm">
+            {mode === 'trial' ? 'Start your free trial' : 'Sign in to continue'}
+          </p>
         </div>
 
-        <form onSubmit={handleSubmit}>
-          <div className="space-y-4">
-            <div>
-              <label className="text-white/60 text-xs uppercase tracking-wider mb-1 block">Password</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-blue-500/50 transition"
-                placeholder="Enter password"
-                autoFocus
-              />
+        {mode === 'trial' && submitted ? (
+          <div className="text-center py-4">
+            <div className="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-4">
+              <Check className="w-6 h-6 text-emerald-400" />
             </div>
-
-            {error && <p className="text-red-400 text-sm">{error}</p>}
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition"
-            >
-              {loading ? 'Signing in...' : 'Sign in'}
-            </button>
+            <p className="text-white font-semibold mb-2">You&apos;re on the list</p>
+            <p className="text-white/40 text-sm">
+              We&apos;ll send your login credentials to <span className="text-white/60">{email}</span> shortly.
+            </p>
           </div>
-        </form>
+        ) : mode === 'trial' ? (
+          <form onSubmit={handleTrial}>
+            <div className="space-y-3">
+              <div>
+                <label className="text-white/60 text-xs uppercase tracking-wider mb-1 block">Name</label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-blue-500/50 transition"
+                  placeholder="Your name"
+                  required
+                  autoFocus
+                />
+              </div>
+              <div>
+                <label className="text-white/60 text-xs uppercase tracking-wider mb-1 block">Work email</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-blue-500/50 transition"
+                  placeholder="you@company.com"
+                  required
+                />
+              </div>
+              <div>
+                <label className="text-white/60 text-xs uppercase tracking-wider mb-1 block">Company</label>
+                <input
+                  type="text"
+                  value={company}
+                  onChange={(e) => setCompany(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-blue-500/50 transition"
+                  placeholder="Your organisation"
+                />
+              </div>
+
+              {error && <p className="text-red-400 text-sm">{error}</p>}
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition"
+              >
+                {loading ? 'Submitting...' : 'Start free trial'}
+              </button>
+
+              <p className="text-white/20 text-xs text-center">
+                No credit card required. 5 documents included.
+              </p>
+            </div>
+          </form>
+        ) : (
+          <form onSubmit={handleSignIn}>
+            <div className="space-y-4">
+              <div>
+                <label className="text-white/60 text-xs uppercase tracking-wider mb-1 block">Password</label>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-blue-500/50 transition"
+                  placeholder="Enter password"
+                  autoFocus
+                />
+              </div>
+
+              {error && <p className="text-red-400 text-sm">{error}</p>}
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition"
+              >
+                {loading ? 'Signing in...' : 'Sign in'}
+              </button>
+            </div>
+          </form>
+        )}
       </div>
     </div>
   )

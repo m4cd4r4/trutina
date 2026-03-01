@@ -87,4 +87,12 @@ test.describe('Landing Page', () => {
     await page.goto('/')
     await expect(page.locator('text=Most Popular')).toBeVisible()
   })
+
+  test('free trial button opens trial sign-up modal (not sign-in)', async ({ page }) => {
+    await page.goto('/')
+    await page.locator('button:has-text("Start free trial")').click()
+    await expect(page.locator('text=Start your free trial')).toBeVisible()
+    await expect(page.locator('input[type="email"]')).toBeVisible()
+    await expect(page.locator('input[type="password"]')).not.toBeVisible()
+  })
 })

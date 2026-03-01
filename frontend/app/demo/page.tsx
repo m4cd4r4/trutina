@@ -131,7 +131,7 @@ export default function DemoPage() {
             See exactly how Trutina would assess your real mortgage applications.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/login"
+            <Link href="/#pricing"
               className="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-8 py-3 rounded-xl transition">
               Start free trial
             </Link>

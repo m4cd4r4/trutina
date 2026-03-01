@@ -88,13 +88,13 @@ const PRICING = [
 ]
 
 export default function Landing() {
-  const [showLogin, setShowLogin] = useState(false)
+  const [loginMode, setLoginMode] = useState<'signin' | 'trial' | null>(null)
 
   return (
     <div className="min-h-screen text-white"
       style={{ background: 'radial-gradient(ellipse at 20% 0%, rgba(30,27,75,0.9) 0%, #0a0a1a 50%)' }}>
 
-      <LoginModal open={showLogin} onClose={() => setShowLogin(false)} />
+      <LoginModal open={loginMode !== null} onClose={() => setLoginMode(null)} mode={loginMode ?? 'signin'} />
 
       {/* Nav */}
       <nav className="flex items-center justify-between px-4 sm:px-8 py-5 border-b border-white/5">
@@ -109,7 +109,7 @@ export default function Landing() {
             Live Demo
           </Link>
           <button
-            onClick={() => setShowLogin(true)}
+            onClick={() => setLoginMode('signin')}
             className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-2 rounded-lg transition">
             Sign in
           </button>
@@ -230,7 +230,7 @@ export default function Landing() {
               </ul>
               {plan.ctaAction === 'trial' ? (
                 <button
-                  onClick={() => setShowLogin(true)}
+                  onClick={() => setLoginMode('trial')}
                   className="block w-full text-center font-semibold py-3 rounded-xl transition text-sm border border-white/20 hover:border-white/40 text-white/70 hover:text-white">
                   {plan.cta}
                 </button>
