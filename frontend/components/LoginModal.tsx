@@ -3,11 +3,18 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-export default function LoginPage() {
+interface LoginModalProps {
+  open: boolean
+  onClose: () => void
+}
+
+export default function LoginModal({ open, onClose }: LoginModalProps) {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
+
+  if (!open) return null
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -32,29 +39,45 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0a0a1a]"
-      style={{ background: 'radial-gradient(ellipse at 20% 50%, rgba(30,27,75,0.8) 0%, #0a0a1a 60%)' }}>
-      <div className="w-full max-w-sm">
-        <div className="text-center mb-8">
-          <div className="text-3xl font-bold text-white tracking-tight">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center"
+      onClick={onClose}
+    >
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+
+      {/* Modal */}
+      <div
+        className="relative w-full max-w-sm mx-4 rounded-2xl border border-white/10 p-8 animate-in fade-in zoom-in-95 duration-200"
+        style={{ background: 'rgba(15,15,35,0.95)', backdropFilter: 'blur(30px)' }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-white/30 hover:text-white/60 transition"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg>
+        </button>
+
+        <div className="text-center mb-6">
+          <div className="text-2xl font-bold text-white tracking-tight">
             Tru<span className="text-blue-400">tina</span>
           </div>
-          <p className="text-white/40 mt-2 text-sm">AI Mortgage Fraud Detection</p>
+          <p className="text-white/40 mt-1 text-sm">Sign in to continue</p>
         </div>
 
-        <form onSubmit={handleSubmit}
-          className="rounded-2xl border border-white/10 p-8"
-          style={{ background: 'rgba(255,255,255,0.04)', backdropFilter: 'blur(20px)' }}>
-          <h2 className="text-white font-semibold mb-6">Sign in</h2>
-
+        <form onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div>
               <label className="text-white/60 text-xs uppercase tracking-wider mb-1 block">Password</label>
               <input
                 type="password"
                 value={password}
-                onChange={e => setPassword(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-blue-500/50 focus:bg-white/8 transition"
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-blue-500/50 transition"
                 placeholder="Enter password"
                 autoFocus
               />

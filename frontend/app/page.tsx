@@ -1,4 +1,7 @@
-import Link from 'next/link'
+'use client'
+
+import { useState } from 'react'
+import LoginModal from '../components/LoginModal'
 
 const FEATURES = [
   {
@@ -67,9 +70,13 @@ const PRICING = [
 ]
 
 export default function Landing() {
+  const [showLogin, setShowLogin] = useState(false)
+
   return (
     <div className="min-h-screen text-white"
       style={{ background: 'radial-gradient(ellipse at 20% 0%, rgba(30,27,75,0.9) 0%, #0a0a1a 50%)' }}>
+
+      <LoginModal open={showLogin} onClose={() => setShowLogin(false)} />
 
       {/* Nav */}
       <nav className="flex items-center justify-between px-8 py-5 border-b border-white/5">
@@ -79,10 +86,11 @@ export default function Landing() {
         <div className="flex items-center gap-6">
           <a href="#features" className="text-white/50 hover:text-white/80 text-sm transition">Features</a>
           <a href="#pricing" className="text-white/50 hover:text-white/80 text-sm transition">Pricing</a>
-          <Link href="/login"
+          <button
+            onClick={() => setShowLogin(true)}
             className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-2 rounded-lg transition">
-            Sign in →
-          </Link>
+            Sign in
+          </button>
         </div>
       </nav>
 
@@ -105,10 +113,11 @@ export default function Landing() {
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link href="/login"
+          <button
+            onClick={() => setShowLogin(true)}
             className="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-8 py-3.5 rounded-xl transition text-lg">
-            Try it now →
-          </Link>
+            Try it now
+          </button>
           <a href="#pricing" className="text-white/50 hover:text-white/70 font-medium px-6 py-3.5 transition">
             View pricing
           </a>
