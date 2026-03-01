@@ -46,7 +46,7 @@ test.describe('Responsive Design', () => {
       await page.goto('/demo')
       const firstCard = page.locator('[data-tour="case-card-0"]')
       await expect(firstCard).toBeVisible()
-      await expect(firstCard.locator('text=Sarah Mitchell')).toBeVisible()
+      await expect(firstCard.locator('text=Priya Sharma')).toBeVisible()
     })
   })
 

@@ -5,14 +5,14 @@ import { FileText, X, ExternalLink, AlertTriangle, ChevronDown, ChevronUp } from
 import type { DocumentSummary, FraudFlag } from '@/lib/types'
 
 const DEMO_PDFS = new Set([
-  'mitchell_payslip_jan2026.pdf',
-  'mitchell_nab_dec2025.pdf',
-  'chen_payslip_jan2026.pdf',
+  'sharma_payslip_jan2026.pdf',
+  'sharma_nab_dec2025.pdf',
+  'kowalski_payslip_jan2026.pdf',
   'thompson_payslip_jan2026.pdf',
   'thompson_employment_letter.pdf',
-  'kowalski_payslip_jan2026.pdf',
-  'kowalski_cba_dec2025.pdf',
-  'sharma_payslip_jan2026.pdf',
+  'chen_payslip_jan2026.pdf',
+  'chen_cba_dec2025.pdf',
+  'mitchell_payslip_jan2026.pdf',
 ])
 
 const DOC_TYPE_LABELS: Record<string, string> = {

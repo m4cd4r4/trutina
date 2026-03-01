@@ -26,12 +26,12 @@ test.describe('Smoke Tests — all routes load', () => {
 
   test('demo case detail page loads (clean case)', async ({ page }) => {
     await page.goto('/demo/demo-clean')
-    await expect(page.locator('text=Sarah Mitchell')).toBeVisible()
+    await expect(page.locator('text=Priya Sharma')).toBeVisible()
   })
 
   test('demo case detail page loads (AI fake case)', async ({ page }) => {
     await page.goto('/demo/demo-ai-fake')
-    await expect(page.locator('text=James Chen')).toBeVisible()
+    await expect(page.locator('text=David Kowalski')).toBeVisible()
   })
 
   test('demo case detail page loads (bad ABN case)', async ({ page }) => {
@@ -41,12 +41,12 @@ test.describe('Smoke Tests — all routes load', () => {
 
   test('demo case detail page loads (bank fraud case)', async ({ page }) => {
     await page.goto('/demo/demo-bank-fraud')
-    await expect(page.locator('text=David Kowalski')).toBeVisible()
+    await expect(page.locator('text=James Chen')).toBeVisible()
   })
 
   test('demo case detail page loads (broker cluster case)', async ({ page }) => {
     await page.goto('/demo/demo-broker-cluster')
-    await expect(page.getByRole('heading', { name: 'Priya Sharma' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Sarah Mitchell' })).toBeVisible()
   })
 
   test('login page loads', async ({ page }) => {

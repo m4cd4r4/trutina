@@ -44,7 +44,7 @@ test.describe('Accessibility', () => {
     // h1 should be applicant name
     const h1 = page.locator('h1')
     await expect(h1).toHaveCount(1)
-    await expect(h1).toContainText('James Chen')
+    await expect(h1).toContainText('David Kowalski')
 
     // h2 elements should exist for sections
     const h2s = page.locator('h2')
@@ -65,7 +65,7 @@ test.describe('Accessibility', () => {
 
   test('document viewer iframe has title attribute', async ({ page }) => {
     await page.goto('/demo/demo-clean')
-    const payslipBtn = page.locator('button:has-text("mitchell_payslip_jan2026.pdf")')
+    const payslipBtn = page.locator('button:has-text("sharma_payslip_jan2026.pdf")')
     await payslipBtn.click()
     const iframe = page.locator('iframe')
     const title = await iframe.getAttribute('title')

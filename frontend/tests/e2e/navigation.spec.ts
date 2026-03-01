@@ -35,7 +35,7 @@ test.describe('Navigation', () => {
   test('demo list → case detail → back to list', async ({ page }) => {
     await page.goto('/demo')
     await page.locator('a[href="/demo/demo-clean"]').click()
-    await expect(page.locator('text=Sarah Mitchell')).toBeVisible()
+    await expect(page.locator('text=Priya Sharma')).toBeVisible()
 
     await page.locator('text=All demo cases').click()
     await expect(page).toHaveURL(/\/demo$/)

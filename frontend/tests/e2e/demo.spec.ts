@@ -98,23 +98,23 @@ test.describe('Demo Features', () => {
 
     test('document tabs are clickable', async ({ page }) => {
       await page.goto('/demo/demo-clean')
-      const payslipBtn = page.locator('button:has-text("mitchell_payslip_jan2026.pdf")')
+      const payslipBtn = page.locator('button:has-text("sharma_payslip_jan2026.pdf")')
       await expect(payslipBtn).toBeVisible()
       await payslipBtn.click()
-      const iframe = page.locator('iframe[src*="mitchell_payslip"]')
+      const iframe = page.locator('iframe[src*="sharma_payslip"]')
       await expect(iframe).toBeVisible()
     })
 
     test('document viewer shows flag overlay for document', async ({ page }) => {
       await page.goto('/demo/demo-clean')
-      const payslipBtn = page.locator('button:has-text("mitchell_payslip_jan2026.pdf")')
+      const payslipBtn = page.locator('button:has-text("sharma_payslip_jan2026.pdf")')
       await payslipBtn.click()
       await expect(page.locator('text=Flags detected in this document')).toBeVisible()
     })
 
     test('clicking same document again hides viewer', async ({ page }) => {
       await page.goto('/demo/demo-clean')
-      const payslipBtn = page.locator('button:has-text("mitchell_payslip_jan2026.pdf")')
+      const payslipBtn = page.locator('button:has-text("sharma_payslip_jan2026.pdf")')
       await payslipBtn.click()
       await expect(page.locator('iframe')).toBeVisible()
       await payslipBtn.click()
@@ -123,26 +123,26 @@ test.describe('Demo Features', () => {
 
     test('"Open in new tab" link is present', async ({ page }) => {
       await page.goto('/demo/demo-clean')
-      const payslipBtn = page.locator('button:has-text("mitchell_payslip_jan2026.pdf")')
+      const payslipBtn = page.locator('button:has-text("sharma_payslip_jan2026.pdf")')
       await payslipBtn.click()
       await expect(page.locator('text=Open in new tab')).toBeVisible()
     })
 
     test('PDF files are accessible via direct URL', async ({ request }) => {
-      const resp = await request.get('/demo-docs/mitchell_payslip_jan2026.pdf')
+      const resp = await request.get('/demo-docs/sharma_payslip_jan2026.pdf')
       expect(resp.status()).toBe(200)
     })
 
     test('all 8 demo PDFs are accessible', async ({ request }) => {
       const pdfs = [
-        'mitchell_payslip_jan2026.pdf',
-        'mitchell_nab_dec2025.pdf',
-        'chen_payslip_jan2026.pdf',
+        'sharma_payslip_jan2026.pdf',
+        'sharma_nab_dec2025.pdf',
+        'kowalski_payslip_jan2026.pdf',
         'thompson_payslip_jan2026.pdf',
         'thompson_employment_letter.pdf',
-        'kowalski_payslip_jan2026.pdf',
-        'kowalski_cba_dec2025.pdf',
-        'sharma_payslip_jan2026.pdf',
+        'chen_payslip_jan2026.pdf',
+        'chen_cba_dec2025.pdf',
+        'mitchell_payslip_jan2026.pdf',
       ]
       for (const pdf of pdfs) {
         const resp = await request.get(`/demo-docs/${pdf}`)
@@ -152,8 +152,8 @@ test.describe('Demo Features', () => {
 
     test('bank fraud case shows both documents', async ({ page }) => {
       await page.goto('/demo/demo-bank-fraud')
-      await expect(page.locator('button:has-text("kowalski_payslip_jan2026.pdf")')).toBeVisible()
-      await expect(page.locator('button:has-text("kowalski_cba_dec2025.pdf")')).toBeVisible()
+      await expect(page.locator('button:has-text("chen_payslip_jan2026.pdf")')).toBeVisible()
+      await expect(page.locator('button:has-text("chen_cba_dec2025.pdf")')).toBeVisible()
     })
 
     test('bad ABN case shows employment letter document', async ({ page }) => {
