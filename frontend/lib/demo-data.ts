@@ -1,0 +1,237 @@
+import type { CaseDetail, RiskLevel, FlagCategory } from './types'
+
+interface DemoCase extends CaseDetail {
+  headline: string
+}
+
+function flag(
+  id: string,
+  category: FlagCategory,
+  code: string,
+  title: string,
+  description: string,
+  severity: RiskLevel,
+  weight: number,
+  evidence: Record<string, unknown> = {},
+  document_id: string | null = null,
+) {
+  return { id, category, code, title, description, severity, weight, evidence, document_id }
+}
+
+export const DEMO_CASES: DemoCase[] = [
+  // ── 1. Clean legitimate application ──────────────────────────
+  {
+    id: 'demo-clean',
+    reference: 'TT-2026-00001',
+    headline: 'Legitimate application — all checks pass',
+    applicant_name: 'Sarah Mitchell',
+    loan_amount: 620000,
+    status: 'complete',
+    risk_score: 12,
+    risk_level: 'low',
+    recommended_action: 'approve',
+    submitted_at: '2026-02-15T09:22:00Z',
+    analysed_at: '2026-02-15T09:23:02Z',
+    property_address: '14 Banksia Drive, Fremantle WA 6160',
+    broker: { id: 'b1', broker_name: 'Coastal Finance Group', broker_abn: '91234567890', risk_score: 8 },
+    document_count: 2,
+    flag_counts: { critical: 0, high: 0, medium: 1, low: 1 },
+    documents: [
+      { id: 'd1', doc_type: 'payslip', filename: 'mitchell_payslip_jan2026.pdf', status: 'analysed', page_count: 1 },
+      { id: 'd2', doc_type: 'bank_statement', filename: 'mitchell_nab_dec2025.pdf', status: 'analysed', page_count: 4 },
+    ],
+    summary: 'All documents appear genuine. Payslip produced by Xero with consistent metadata. ABN 91234567890 (Mitchell & Co Architects) is active and matches employer name. Gross, tax, and super calculations are internally consistent. Bank statement salary credits align with claimed income. No AI-generation indicators detected.',
+    flags: [
+      flag('f1', 'cross_reference', 'SALARY_ABOVE_75TH', 'Salary above 75th percentile',
+        'Stated gross salary of $135,000 is above the 75th percentile ($128,400) for Architects in WA per ABS data. Within normal range but noted.',
+        'medium', 3, { stated_salary: 135000, percentile_75: 128400, occupation: 'Architect', state: 'WA' }, 'd1'),
+      flag('f2', 'pdf_forensics', 'MULTIPLE_FONTS', 'Minor font variation detected',
+        'Two font families detected (Helvetica Neue, Arial). Consistent with Xero-generated payslips which use both fonts in their standard template.',
+        'low', 1, { fonts: ['Helvetica Neue', 'Arial'], expected_for_platform: 'Xero' }, 'd1'),
+    ],
+  },
+
+  // ── 2. AI-generated payslip — critical rejection ─────────────
+  {
+    id: 'demo-ai-fake',
+    reference: 'TT-2026-00017',
+    headline: 'AI-generated payslip caught by multiple modules',
+    applicant_name: 'James Chen',
+    loan_amount: 890000,
+    status: 'complete',
+    risk_score: 82,
+    risk_level: 'critical',
+    recommended_action: 'reject',
+    submitted_at: '2026-02-18T14:05:00Z',
+    analysed_at: '2026-02-18T14:06:15Z',
+    property_address: '7/42 Pacific Highway, Chatswood NSW 2067',
+    broker: { id: 'b2', broker_name: 'Premier Lending Solutions', broker_abn: '45678901234', risk_score: 67 },
+    document_count: 1,
+    flag_counts: { critical: 3, high: 2, medium: 1, low: 0 },
+    documents: [
+      { id: 'd3', doc_type: 'payslip', filename: 'chen_payslip_feb2026.pdf', status: 'analysed', page_count: 1 },
+    ],
+    summary: 'High-confidence AI-generated document. PDF was created in Google Chrome (not a payroll platform), contains 5 different font families (hallmark of copy-paste fabrication), and gross minus tax does not equal net pay. The stated employer ABN is registered to a completely different business name. Multiple critical flags warrant immediate rejection.',
+    flags: [
+      flag('f3', 'ai_content', 'AI_GENERATED_HIGH', 'High-confidence AI-generated content',
+        'Claude analysis indicates this payslip was likely generated using an AI tool. The document uses generic payslip formatting not matching any known Australian payroll platform. Terminology inconsistencies include "Basic Salary" (UK convention) instead of "Base Salary" or "Ordinary Earnings" (Australian convention). Super fund name "Australian Super Fund" is generic — likely fabricated.',
+        'critical', 9, { confidence: 0.94, indicators: ['generic_template', 'uk_terminology', 'generic_super_fund', 'no_payroll_platform_signature'] }, 'd3'),
+      flag('f4', 'pdf_forensics', 'SUSPICIOUS_PRODUCER', 'PDF not created by payroll software',
+        'PDF producer is "Google Chrome 121.0" — legitimate payslips are generated server-side by payroll platforms (Xero, MYOB, KeyPay). Browser-generated PDFs suggest manual creation or print-to-PDF from a fabricated web page.',
+        'critical', 8, { producer: 'Google Chrome 121.0', expected_producers: ['Xero', 'MYOB', 'KeyPay', 'Employment Hero'] }, 'd3'),
+      flag('f5', 'consistency', 'PAYSLIP_MATH_WRONG', 'Gross minus tax does not equal net pay',
+        'Gross: $12,916.67, Tax: $3,458.00, Listed Net: $9,158.67. Calculated net should be $9,458.67. Discrepancy of $300.00 — the fabricator likely typed the wrong figure.',
+        'critical', 10, { gross: 12916.67, tax: 3458.00, listed_net: 9158.67, calculated_net: 9458.67, discrepancy: 300.00 }, 'd3'),
+      flag('f6', 'cross_reference', 'ABN_NAME_MISMATCH', 'Employer ABN registered to different entity',
+        'Payslip states employer as "Nexus Digital Solutions Pty Ltd" with ABN 23456789012. ABN Lookup returns this ABN as registered to "Sunrise Bakery Holdings Pty Ltd" — a completely different business.',
+        'high', 7, { stated_employer: 'Nexus Digital Solutions Pty Ltd', abn: '23456789012', registered_name: 'Sunrise Bakery Holdings Pty Ltd' }, 'd3'),
+      flag('f7', 'pdf_forensics', 'EXCESSIVE_FONTS', 'Abnormal font variety in document',
+        'Five distinct font families detected: Roboto, Arial, Helvetica, Times New Roman, Courier New. Legitimate payslips typically use 1-2 fonts from the payroll platform\'s template. Five fonts strongly indicates copy-paste assembly.',
+        'high', 6, { font_count: 5, fonts: ['Roboto', 'Arial', 'Helvetica', 'Times New Roman', 'Courier New'] }, 'd3'),
+      flag('f8', 'consistency', 'SUPER_RATE_OFF', 'Superannuation rate does not match SGC',
+        'Listed super: $968.75 on gross $12,916.67 = 7.5% rate. Current SGC rate is 11.5%. Underpayment of super in a payslip is a red flag — fabricators often use outdated rates.',
+        'medium', 5, { listed_super: 968.75, gross: 12916.67, actual_rate: 7.5, expected_rate: 11.5 }, 'd3'),
+    ],
+  },
+
+  // ── 3. Invalid ABN — cross-reference catches it ──────────────
+  {
+    id: 'demo-bad-abn',
+    reference: 'TT-2026-00023',
+    headline: 'Cancelled ABN and employer mismatch',
+    applicant_name: 'Emma Thompson',
+    loan_amount: 545000,
+    status: 'complete',
+    risk_score: 56,
+    risk_level: 'high',
+    recommended_action: 'manual_review',
+    submitted_at: '2026-02-20T11:30:00Z',
+    analysed_at: '2026-02-20T11:31:18Z',
+    property_address: '28 Lygon Street, Carlton VIC 3053',
+    broker: { id: 'b3', broker_name: 'Melbourne Mortgage Brokers', broker_abn: '78901234567', risk_score: 22 },
+    document_count: 2,
+    flag_counts: { critical: 1, high: 2, medium: 1, low: 0 },
+    documents: [
+      { id: 'd4', doc_type: 'payslip', filename: 'thompson_payslip_jan2026.pdf', status: 'analysed', page_count: 1 },
+      { id: 'd5', doc_type: 'employment_letter', filename: 'thompson_employment_letter.pdf', status: 'analysed', page_count: 1 },
+    ],
+    summary: 'The payslip itself appears well-formatted and was produced by MYOB, but the employer ABN 67890123456 was cancelled in October 2024. The employment letter references a different ABN than the payslip. These cross-reference failures suggest the applicant may be using documents from a former employer or a fabricated entity. Recommend manual verification of current employment.',
+    flags: [
+      flag('f9', 'cross_reference', 'ABN_CANCELLED', 'Employer ABN is cancelled',
+        'ABN 67890123456 for "Greenfield Construction Pty Ltd" shows status "Cancelled" effective 15 October 2024 on the ABR. A cancelled ABN means the entity is no longer operating — payslips from January 2026 cannot be legitimate.',
+        'critical', 10, { abn: '67890123456', entity_name: 'Greenfield Construction Pty Ltd', status: 'Cancelled', cancelled_date: '2024-10-15' }, 'd4'),
+      flag('f10', 'cross_reference', 'ABN_MISMATCH_ACROSS_DOCS', 'Different ABNs across documents',
+        'Payslip references ABN 67890123456 but employment letter references ABN 34567890123. Multiple ABNs for the same employer across application documents is a strong indicator of document fabrication.',
+        'high', 7, { payslip_abn: '67890123456', letter_abn: '34567890123' }, null),
+      flag('f11', 'consistency', 'EMPLOYMENT_DATE_CONFLICT', 'Employment start date conflicts',
+        'Employment letter states commencement date of March 2025, but ABN was cancelled October 2024 — 5 months before the claimed employment start. The entity could not have employed anyone after cancellation.',
+        'high', 7, { letter_start_date: '2025-03-01', abn_cancelled_date: '2024-10-15', gap_months: 5 }, 'd5'),
+      flag('f12', 'pdf_forensics', 'MODIFICATION_AFTER_CREATION', 'Document modified after creation',
+        'PDF creation date: 2025-11-20, modification date: 2026-02-18 (2 days before submission). The payslip was modified 3 months after creation, which is unusual for payroll-generated documents.',
+        'medium', 4, { created: '2025-11-20', modified: '2026-02-18', days_before_submission: 2 }, 'd4'),
+    ],
+  },
+
+  // ── 4. Bank statement forgery — balance mismatch ─────────────
+  {
+    id: 'demo-bank-fraud',
+    reference: 'TT-2026-00031',
+    headline: 'Forged bank statement with balance manipulation',
+    applicant_name: 'David Kowalski',
+    loan_amount: 750000,
+    status: 'complete',
+    risk_score: 68,
+    risk_level: 'high',
+    recommended_action: 'manual_review',
+    submitted_at: '2026-02-22T16:45:00Z',
+    analysed_at: '2026-02-22T16:46:22Z',
+    property_address: '5/18 Adelaide Terrace, East Perth WA 6004',
+    broker: { id: 'b2', broker_name: 'Premier Lending Solutions', broker_abn: '45678901234', risk_score: 67 },
+    document_count: 2,
+    flag_counts: { critical: 1, high: 2, medium: 2, low: 0 },
+    documents: [
+      { id: 'd6', doc_type: 'payslip', filename: 'kowalski_payslip_jan2026.pdf', status: 'analysed', page_count: 1 },
+      { id: 'd7', doc_type: 'bank_statement', filename: 'kowalski_westpac_jan2026.pdf', status: 'analysed', page_count: 3 },
+    ],
+    summary: 'Bank statement closing balance does not reconcile with transactions. Opening balance plus credits minus debits results in $42,318.50, but the statement shows a closing balance of $58,318.50 — a $16,000 discrepancy suggesting the closing balance was manually inflated. The salary credit amount also doesn\'t match the payslip net income. Additionally, both documents were submitted by Premier Lending Solutions, a broker already flagged for elevated fraud rates.',
+    flags: [
+      flag('f13', 'consistency', 'BALANCE_MISMATCH', 'Closing balance does not reconcile',
+        'Opening: $34,567.20 + Credits: $18,451.30 − Debits: $10,700.00 = Expected closing: $42,318.50. Statement shows closing: $58,318.50. Discrepancy: +$16,000.00. The closing balance appears to have been manually increased.',
+        'critical', 10, { opening: 34567.20, credits: 18451.30, debits: 10700.00, expected_closing: 42318.50, shown_closing: 58318.50, discrepancy: 16000.00 }, 'd7'),
+      flag('f14', 'consistency', 'INCOME_MISMATCH', 'Salary credit doesn\'t match payslip net income',
+        'Payslip shows net pay of $7,842.33 but bank statement shows salary credit of $8,450.00 from the same employer on the expected pay date. Discrepancy of $607.67.',
+        'high', 7, { payslip_net: 7842.33, bank_credit: 8450.00, discrepancy: 607.67 }, null),
+      flag('f15', 'broker_risk', 'BROKER_HIGH_FRAUD_RATE', 'Broker has elevated fraud rate',
+        'Premier Lending Solutions has submitted 23 cases, of which 7 (30.4%) have generated fraud flags. This exceeds the 20% threshold for broker risk flagging. This is the same broker flagged in case TT-2026-00017.',
+        'high', 5, { broker_name: 'Premier Lending Solutions', total_cases: 23, flagged_cases: 7, fraud_rate: 30.4 }),
+      flag('f16', 'pdf_forensics', 'MIXED_DPI', 'Inconsistent image resolution across pages',
+        'Pages 1-2 are 150 DPI but page 3 (containing the closing balance summary) is 300 DPI. Different scan resolutions suggest page 3 was separately produced and combined.',
+        'medium', 4, { page_1_dpi: 150, page_2_dpi: 150, page_3_dpi: 300 }, 'd7'),
+      flag('f17', 'ai_content', 'TRANSACTION_PATTERN_SUSPICIOUS', 'Transaction descriptions appear templated',
+        'Multiple transaction descriptions follow identical formatting patterns ("DIRECT CREDIT [EMPLOYER] [AMOUNT]") which differs from genuine Westpac statement formatting. Genuine Westpac statements use "SALARY [BSB-ACCT] [EMPLOYER]".',
+        'medium', 4, { pattern_found: 'DIRECT CREDIT [NAME] [AMT]', expected_pattern: 'SALARY [BSB-ACCT] [NAME]' }, 'd7'),
+    ],
+  },
+
+  // ── 5. Broker network cluster ────────────────────────────────
+  {
+    id: 'demo-broker-cluster',
+    reference: 'TT-2026-00038',
+    headline: 'Broker network pattern — shared employer across applications',
+    applicant_name: 'Priya Sharma',
+    loan_amount: 480000,
+    status: 'complete',
+    risk_score: 45,
+    risk_level: 'high',
+    recommended_action: 'manual_review',
+    submitted_at: '2026-02-25T10:15:00Z',
+    analysed_at: '2026-02-25T10:16:08Z',
+    property_address: '3/7 King Street, Melbourne VIC 3000',
+    broker: { id: 'b4', broker_name: 'Fast Track Finance', broker_abn: '56789012345', risk_score: 58 },
+    document_count: 1,
+    flag_counts: { critical: 0, high: 2, medium: 2, low: 1 },
+    documents: [
+      { id: 'd8', doc_type: 'payslip', filename: 'sharma_payslip_feb2026.pdf', status: 'analysed', page_count: 1 },
+    ],
+    summary: 'The individual payslip passes most checks — it was produced by KeyPay, the math is consistent, and the ABN is active. However, Trutina\'s broker network analysis reveals that Fast Track Finance has submitted 4 applications in the past 7 days, all claiming the same employer (ABN 89012345678, "Pacific Coast Staffing"). This pattern is consistent with a broker fabricating employment at a compliant shell company. Recommend verifying Priya Sharma\'s employment directly with Pacific Coast Staffing via an independent channel.',
+    flags: [
+      flag('f18', 'broker_risk', 'BROKER_VELOCITY_SPIKE', 'Broker submission velocity above threshold',
+        'Fast Track Finance submitted 4 cases in the past 7 days, approaching the velocity threshold of 5. Combined with network clustering, this pattern warrants attention.',
+        'high', 5, { broker: 'Fast Track Finance', cases_7_days: 4, threshold: 5 }),
+      flag('f19', 'broker_risk', 'SHARED_EMPLOYER_CLUSTER', 'Multiple applications share the same employer',
+        'This is the 4th application from Fast Track Finance in 7 days where the applicant claims employment at "Pacific Coast Staffing" (ABN 89012345678). Applicants: Li Wei (TT-2026-00035), Ahmed Hassan (TT-2026-00036), Rachel Kim (TT-2026-00037), Priya Sharma (TT-2026-00038). Four unrelated individuals all employed by the same small staffing company and all applying for loans through the same broker is statistically anomalous.',
+        'high', 7, { employer: 'Pacific Coast Staffing', abn: '89012345678', linked_cases: ['TT-2026-00035', 'TT-2026-00036', 'TT-2026-00037', 'TT-2026-00038'], applicants: ['Li Wei', 'Ahmed Hassan', 'Rachel Kim', 'Priya Sharma'] }),
+      flag('f20', 'cross_reference', 'EMPLOYER_RECENTLY_REGISTERED', 'Employer ABN registered recently',
+        'ABN 89012345678 (Pacific Coast Staffing Pty Ltd) was registered on 15 November 2025 — only 3 months ago. A newly registered company with 4+ employees already applying for mortgages is unusual.',
+        'medium', 4, { abn: '89012345678', registration_date: '2025-11-15', age_months: 3 }, 'd8'),
+      flag('f21', 'cross_reference', 'SALARY_ABOVE_90TH', 'Salary significantly above industry benchmark',
+        'Stated salary $125,000 for a "Recruitment Consultant" in VIC. ABS benchmark 90th percentile for this role is $98,000. Exceeds by 27.6%.',
+        'medium', 4, { stated_salary: 125000, benchmark_90th: 98000, occupation: 'Recruitment Consultant', state: 'VIC', excess_pct: 27.6 }, 'd8'),
+      flag('f22', 'pdf_forensics', 'PRODUCER_VERIFIED', 'PDF producer matches payroll platform',
+        'PDF created by KeyPay Payroll Engine v4.2 — a legitimate, widely-used Australian payroll platform. Metadata is consistent with server-side generation.',
+        'low', 0, { producer: 'KeyPay Payroll Engine v4.2' }, 'd8'),
+    ],
+  },
+]
+
+export function getDemoCase(id: string): DemoCase | undefined {
+  return DEMO_CASES.find(c => c.id === id)
+}
+
+export const CATEGORY_LABELS: Record<FlagCategory, string> = {
+  pdf_forensics: 'PDF Forensics',
+  ai_content: 'AI Content Detection',
+  cross_reference: 'Cross-Reference',
+  consistency: 'Consistency Check',
+  broker_risk: 'Broker Risk',
+  identity: 'Identity',
+}
+
+export const CATEGORY_ICONS: Record<FlagCategory, string> = {
+  pdf_forensics: '🔬',
+  ai_content: '🤖',
+  cross_reference: '🔗',
+  consistency: '🧮',
+  broker_risk: '👥',
+  identity: '🪪',
+}
