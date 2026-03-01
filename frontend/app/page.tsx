@@ -104,6 +104,10 @@ export default function Landing() {
         <div className="flex items-center gap-3 sm:gap-6">
           <a href="#features" className="hidden sm:inline text-white/50 hover:text-white/80 text-sm transition">Features</a>
           <a href="#pricing" className="hidden sm:inline text-white/50 hover:text-white/80 text-sm transition">Pricing</a>
+          <Link href="/docs"
+            className="hidden sm:inline text-white/50 hover:text-white/80 text-sm transition">
+            Docs
+          </Link>
           <Link href="/demo"
             className="text-emerald-300 hover:text-emerald-200 text-sm font-medium transition">
             Live Demo
