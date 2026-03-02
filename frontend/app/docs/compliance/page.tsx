@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { Logo } from '@/components/Logo'
 
 export default function ComplianceBrief() {
   return (
@@ -44,9 +45,7 @@ export default function ComplianceBrief() {
 
         {/* Nav */}
         <nav className="no-print flex items-center justify-between px-4 sm:px-8 py-5 border-b border-white/5">
-          <Link href="/" className="text-xl font-bold">
-            Tru<span className="text-blue-400">tina</span>
-          </Link>
+          <Logo variant="combo" height={36} />
           <div className="flex items-center gap-4 sm:gap-6">
             <Link href="/docs" className="text-white/50 hover:text-white/80 text-sm transition">
               Docs

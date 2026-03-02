@@ -15,6 +15,13 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Trutina — AI Lending Fraud Detection",
   description: "Detect AI-generated payslips, forged bank statements, and invalid ABNs in loan applications. Mortgage, personal, and business lending. Built for Australian lenders.",
+  icons: {
+    icon: '/favicon.ico',
+    apple: '/logo/apple-touch-icon.png',
+  },
+  openGraph: {
+    images: [{ url: '/logo/combo.png', width: 1408, height: 768 }],
+  },
 };
 
 export default function RootLayout({

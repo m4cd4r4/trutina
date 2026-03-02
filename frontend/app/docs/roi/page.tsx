@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
+import { Logo } from '@/components/Logo'
 
 function formatAUD(value: number): string {
   if (value >= 1_000_000_000) {
@@ -116,9 +117,7 @@ export default function ROICalculator() {
       >
         {/* Nav */}
         <nav className="flex items-center justify-between px-4 sm:px-8 py-5 border-b border-white/5 no-print">
-          <Link href="/" className="text-xl font-bold">
-            Tru<span className="text-blue-400">tina</span>
-          </Link>
+          <Logo variant="combo" height={36} />
           <div className="flex items-center gap-4 sm:gap-6">
             <Link href="/docs" className="text-white/50 hover:text-white/80 text-sm transition">
               Docs

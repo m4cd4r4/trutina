@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Microscope, Bot, Link2, Calculator, Users, ClipboardList, Check } from 'lucide-react'
+import { Logo } from '@/components/Logo'
 
 const MODULES = [
   {
@@ -102,9 +103,7 @@ export default function OnePager() {
 
         {/* Screen nav */}
         <nav className="no-print flex items-center justify-between px-4 sm:px-8 py-5 border-b border-white/5">
-          <Link href="/" className="text-xl font-bold">
-            Tru<span className="text-blue-400">tina</span>
-          </Link>
+          <Logo variant="combo" height={36} />
           <div className="flex items-center gap-4 sm:gap-6">
             <Link href="/docs" className="text-white/50 hover:text-white/80 text-sm transition">
               All docs
@@ -116,9 +115,7 @@ export default function OnePager() {
 
           {/* Header */}
           <div className="text-center mb-8 sm:mb-10">
-            <div className="text-2xl sm:text-3xl font-bold mb-1">
-              Tru<span className="text-blue-400 print-blue">tina</span>
-            </div>
+            <Logo variant="text" href="" className="text-2xl sm:text-3xl" />
             <h1 className="text-lg sm:text-xl font-semibold text-white/80 print-muted mb-2">
               AI Lending Fraud Detection for Australian Lenders
             </h1>
