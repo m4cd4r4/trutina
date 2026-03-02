@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { ChevronRight } from 'lucide-react'
 import { DEMO_CASES } from '@/lib/demo-data'
+import { Logo } from '@/components/Logo'
 import ScoreGauge from '@/components/ui/ScoreGauge'
 import RiskBadge from '@/components/ui/RiskBadge'
 import DemoTour from '@/components/ui/DemoTour'
@@ -26,9 +27,7 @@ export default function DemoPage() {
 
       {/* Nav */}
       <nav className="flex items-center justify-between px-6 md:px-8 py-5 border-b border-white/5">
-        <Link href="/" className="text-xl font-bold">
-          Tru<span className="text-blue-400">tina</span>
-        </Link>
+        <Logo variant="combo" height={36} />
         <div className="flex items-center gap-4">
           <span className="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full px-3 py-1 font-medium">
             Live Demo

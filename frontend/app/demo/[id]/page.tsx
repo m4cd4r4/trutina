@@ -4,6 +4,7 @@ import { use } from 'react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ChevronLeft } from 'lucide-react'
+import { Logo } from '@/components/Logo'
 import { getDemoCase } from '@/lib/demo-data'
 import { CategoryIcon, getCategoryLabel } from '@/components/ui/CategoryIcon'
 import type { FlagCategory, FraudFlag, RiskLevel } from '@/lib/types'
@@ -48,9 +49,7 @@ export default function DemoCaseDetail({ params }: { params: Promise<{ id: strin
 
       {/* Nav */}
       <nav className="flex items-center justify-between px-6 md:px-8 py-5 border-b border-white/5">
-        <Link href="/" className="text-xl font-bold">
-          Tru<span className="text-blue-400">tina</span>
-        </Link>
+        <Logo variant="combo" height={36} />
         <div className="flex items-center gap-4">
           <span className="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full px-3 py-1 font-medium">
             Live Demo

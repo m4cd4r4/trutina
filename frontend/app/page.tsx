@@ -4,6 +4,7 @@ import { useState, type ReactNode } from 'react'
 import Link from 'next/link'
 import { Microscope, Bot, Link2, Calculator, Users, ClipboardList, Check } from 'lucide-react'
 import LoginModal from '../components/LoginModal'
+import { Logo } from '../components/Logo'
 
 const ICON_CLASS = 'w-8 h-8 text-blue-400'
 
@@ -98,9 +99,7 @@ export default function Landing() {
 
       {/* Nav */}
       <nav className="flex items-center justify-between px-4 sm:px-8 py-5 border-b border-white/5">
-        <div className="text-xl font-bold">
-          Tru<span className="text-blue-400">tina</span>
-        </div>
+        <Logo variant="combo" height={36} />
         <div className="flex items-center gap-3 sm:gap-6">
           <a href="#features" className="hidden sm:inline text-white/50 hover:text-white/80 text-sm transition">Features</a>
           <a href="#pricing" className="hidden sm:inline text-white/50 hover:text-white/80 text-sm transition">Pricing</a>

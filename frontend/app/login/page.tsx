@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { Logo } from '@/components/Logo'
 
 export default function LoginPage() {
   const [password, setPassword] = useState('')
@@ -36,9 +37,7 @@ export default function LoginPage() {
       style={{ background: 'radial-gradient(ellipse at 20% 50%, rgba(30,27,75,0.8) 0%, #0a0a1a 60%)' }}>
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <div className="text-3xl font-bold text-white tracking-tight">
-            Tru<span className="text-blue-400">tina</span>
-          </div>
+          <Logo variant="wordmark" height={48} href="" />
           <p className="text-white/40 mt-2 text-sm">AI Lending Fraud Detection</p>
         </div>
 
