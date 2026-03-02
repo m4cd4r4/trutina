@@ -1,6 +1,12 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
+const ASPECT_RATIOS: Record<string, number> = {
+  combo: 1408 / 768,    // ~1.83:1
+  mark: 1,               // 1:1
+  wordmark: 850 / 470,  // ~1.81:1
+}
+
 interface LogoProps {
   variant?: 'combo' | 'mark' | 'wordmark' | 'text'
   href?: string
@@ -18,9 +24,10 @@ export function Logo({ variant = 'text', href = '/', height = 32, className = ''
       src={`/logo/${variant}.png`}
       alt="Trutina"
       height={height}
-      width={variant === 'mark' ? height : height * (variant === 'combo' ? 4.5 : 3.5)}
+      width={Math.round(height * (ASPECT_RATIOS[variant] ?? 1))}
       className={className}
       priority
+      unoptimized
     />
   )
 

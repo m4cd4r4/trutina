@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, type ReactNode } from 'react'
+import { useState, useEffect, type ReactNode } from 'react'
 import Link from 'next/link'
 import { Microscope, Bot, Link2, Calculator, Users, ClipboardList, Check } from 'lucide-react'
 import LoginModal from '../components/LoginModal'
@@ -91,11 +91,16 @@ const PRICING = [
 export default function Landing() {
   const [loginMode, setLoginMode] = useState<'signin' | 'trial' | null>(null)
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    if (params.get('trial') === '1') setLoginMode('trial')
+  }, [])
+
   return (
     <div className="min-h-screen text-white"
       style={{ background: 'radial-gradient(ellipse at 20% 0%, rgba(30,27,75,0.9) 0%, #0a0a1a 50%)' }}>
 
-      <LoginModal open={loginMode !== null} onClose={() => setLoginMode(null)} mode={loginMode ?? 'signin'} />
+      <LoginModal open={loginMode !== null} onClose={() => setLoginMode(null)} mode={loginMode ?? 'signin'} onSwitchMode={setLoginMode} />
 
       {/* Nav */}
       <nav className="flex items-center justify-between px-4 sm:px-8 py-5 border-b border-white/5">
