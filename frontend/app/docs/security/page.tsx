@@ -59,7 +59,7 @@ export default function SecurityWhitepaper() {
             </Link>
             <h1 className="text-3xl sm:text-4xl font-bold mt-2 mb-3">Security &amp; Privacy Whitepaper</h1>
             <p className="text-white/50 max-w-2xl">
-              How Trutina protects sensitive mortgage application data. Designed for CISOs, procurement teams, and compliance officers at regulated financial institutions.
+              How Trutina protects sensitive loan application data. Designed for CISOs, procurement teams, and compliance officers at regulated financial institutions.
             </p>
           </div>
 
@@ -69,7 +69,7 @@ export default function SecurityWhitepaper() {
             <div className="rounded-xl border border-white/10 p-5 sm:p-6 print-card"
               style={{ background: 'rgba(255,255,255,0.04)' }}>
               <p className="text-white/70 print-muted text-sm leading-relaxed">
-                Trutina processes sensitive mortgage application documents to detect fraud. This document outlines our
+                Trutina processes sensitive loan application documents to detect fraud. This document outlines our
                 security architecture, data handling practices, and privacy commitments. We are designed for regulated
                 financial institutions subject to APRA and Privacy Act 1988 requirements.
               </p>
@@ -429,7 +429,7 @@ export default function SecurityWhitepaper() {
           {/* Footer */}
           <div className="mt-12 pt-6 border-t border-white/5 text-center text-white/20 text-xs">
             <p>Last updated: March 2026</p>
-            <p className="mt-1">&copy; Trutina &mdash; AI Mortgage Fraud Detection</p>
+            <p className="mt-1">&copy; Trutina &mdash; AI Lending Fraud Detection</p>
           </div>
 
         </div>

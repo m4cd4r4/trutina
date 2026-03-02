@@ -136,6 +136,7 @@ export default function Landing() {
         <p className="text-white/50 text-base sm:text-xl max-w-2xl mx-auto mb-8 sm:mb-10">
           Trutina analyses loan application documents for AI-fabricated payslips, forged bank statements,
           and invalid ABNs — returning an explainable risk score in under 60 seconds.
+          <span className="block mt-2 text-white/35 text-sm sm:text-base">Mortgage, personal, and business lending.</span>
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
@@ -254,7 +255,7 @@ export default function Landing() {
 
       {/* Footer */}
       <footer className="border-t border-white/5 px-4 sm:px-8 py-6 text-center text-white/20 text-xs">
-        Trutina by Solaisoft Pty Ltd · hello@trutina.com.au · Built for Australian lenders
+        Trutina by Solaisoft Pty Ltd · hello@trutina.com.au · Document fraud detection for Australian lenders
       </footer>
     </div>
   )

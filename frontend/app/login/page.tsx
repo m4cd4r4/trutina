@@ -39,7 +39,7 @@ export default function LoginPage() {
           <div className="text-3xl font-bold text-white tracking-tight">
             Tru<span className="text-blue-400">tina</span>
           </div>
-          <p className="text-white/40 mt-2 text-sm">AI Mortgage Fraud Detection</p>
+          <p className="text-white/40 mt-2 text-sm">AI Lending Fraud Detection</p>
         </div>
 
         <form onSubmit={handleSubmit}

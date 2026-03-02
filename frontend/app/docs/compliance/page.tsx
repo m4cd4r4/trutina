@@ -415,7 +415,7 @@ export default function ComplianceBrief() {
               Organisations should consult their own legal and compliance teams.
             </p>
             <p className="text-white/20 text-xs">Last updated: March 2026</p>
-            <p className="text-white/20 text-xs">&copy; Trutina &mdash; AI Mortgage Fraud Detection</p>
+            <p className="text-white/20 text-xs">&copy; Trutina &mdash; AI Lending Fraud Detection</p>
           </div>
 
         </div>

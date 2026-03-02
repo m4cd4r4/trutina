@@ -120,7 +120,7 @@ export default function OnePager() {
               Tru<span className="text-blue-400 print-blue">tina</span>
             </div>
             <h1 className="text-lg sm:text-xl font-semibold text-white/80 print-muted mb-2">
-              AI Mortgage Fraud Detection for Australian Lenders
+              AI Lending Fraud Detection for Australian Lenders
             </h1>
             <div className="w-16 h-0.5 bg-blue-500 mx-auto" />
           </div>
@@ -153,7 +153,7 @@ export default function OnePager() {
               What Trutina Does
             </h2>
             <p className="text-white/60 print-muted text-sm leading-relaxed">
-              Upload mortgage application documents. Trutina runs a 6-layer AI analysis and returns an
+              Upload loan application documents. Trutina runs a 6-layer AI analysis and returns an
               explainable risk score in approximately 60 seconds. It catches what humans cannot &mdash;
               AI-generated patterns, metadata anomalies, invalid references, and mathematical inconsistencies.
             </p>

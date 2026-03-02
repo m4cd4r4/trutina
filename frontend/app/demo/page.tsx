@@ -44,7 +44,7 @@ export default function DemoPage() {
         <div className="text-center mb-12" data-tour="demo-header">
           <h1 className="text-3xl md:text-4xl font-bold mb-4">See Trutina in action</h1>
           <p className="text-white/50 max-w-2xl mx-auto">
-            Five pre-analysed mortgage applications demonstrating how Trutina catches AI-generated documents,
+            Five pre-analysed loan applications demonstrating how Trutina catches AI-generated documents,
             invalid ABNs, forged bank statements, and suspicious broker patterns. Click any case to see the full breakdown.
           </p>
         </div>
@@ -128,7 +128,7 @@ export default function DemoPage() {
           <h2 className="text-2xl font-bold mb-3">Ready to try with your own documents?</h2>
           <p className="text-white/50 mb-6 max-w-lg mx-auto">
             Start a free trial — upload up to 5 documents with no credit card required.
-            See exactly how Trutina would assess your real mortgage applications.
+            See exactly how Trutina would assess your real loan applications.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link href="/#pricing"

@@ -334,7 +334,7 @@ export default function ROICalculator() {
 
           {/* Footer */}
           <div className="mt-12 pt-6 border-t border-white/5 text-center text-white/20 text-xs">
-            <p>&copy; {new Date().getFullYear()} Trutina &mdash; AI Mortgage Fraud Detection</p>
+            <p>&copy; {new Date().getFullYear()} Trutina &mdash; AI Lending Fraud Detection</p>
             <p className="mt-1">
               Questions? <a href="mailto:hello@trutina.com.au" className="text-blue-400 hover:text-blue-300">hello@trutina.com.au</a>
             </p>

@@ -630,7 +630,7 @@ Content-Type: application/json`}
 
           {/* Footer */}
           <div className="mt-14 pt-6 border-t border-white/5 text-center text-white/20 text-xs">
-            <p>&copy; {new Date().getFullYear()} Trutina &mdash; AI Mortgage Fraud Detection</p>
+            <p>&copy; {new Date().getFullYear()} Trutina &mdash; AI Lending Fraud Detection</p>
             <p className="mt-1">
               <Link href="/docs" className="text-blue-400 hover:text-blue-300 transition">All documentation</Link>
               {' '}&middot;{' '}
