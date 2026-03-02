@@ -23,7 +23,7 @@ export default function LoginPage() {
         setError('Invalid password')
         return
       }
-      router.push('/dashboard')
+      router.push('/')
     } catch {
       setError('Connection error')
     } finally {

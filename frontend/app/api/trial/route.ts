@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { sendTrialNotification, sendTrialConfirmation } from '@/lib/email'
 
 export async function POST(req: Request) {
   const { name, email, company } = await req.json()
@@ -7,11 +8,12 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Name and email are required' }, { status: 400 })
   }
 
-  // Log trial sign-up (visible in Vercel function logs)
   console.log('[TRIAL SIGNUP]', { name, email, company, at: new Date().toISOString() })
 
-  // TODO: Send notification email via Resend when RESEND_API_KEY is set
-  // TODO: Store in database when backend is deployed
+  await Promise.all([
+    sendTrialNotification({ name, email, company }),
+    sendTrialConfirmation({ name, email }),
+  ])
 
   return NextResponse.json({ ok: true })
 }
