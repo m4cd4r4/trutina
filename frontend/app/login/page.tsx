@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Logo } from '@/components/Logo'
+import Link from 'next/link'
 
 export default function LoginPage() {
   const [password, setPassword] = useState('')
@@ -68,6 +69,13 @@ export default function LoginPage() {
             >
               {loading ? 'Signing in...' : 'Sign in'}
             </button>
+
+            <p className="text-center text-sm text-white/40">
+              Don&apos;t have an account?{' '}
+              <Link href="/?trial=1" className="text-blue-400 hover:text-blue-300 transition font-medium">
+                Start free trial
+              </Link>
+            </p>
           </div>
         </form>
       </div>

@@ -3,14 +3,16 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { X, Check } from 'lucide-react'
+import { Logo } from '@/components/Logo'
 
 interface LoginModalProps {
   open: boolean
   onClose: () => void
   mode?: 'signin' | 'trial'
+  onSwitchMode?: (mode: 'signin' | 'trial') => void
 }
 
-export default function LoginModal({ open, onClose, mode = 'signin' }: LoginModalProps) {
+export default function LoginModal({ open, onClose, mode = 'signin', onSwitchMode }: LoginModalProps) {
   const [password, setPassword] = useState('')
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -89,10 +91,8 @@ export default function LoginModal({ open, onClose, mode = 'signin' }: LoginModa
         </button>
 
         <div className="text-center mb-6">
-          <div className="text-2xl font-bold text-white tracking-tight">
-            Tru<span className="text-blue-400">tina</span>
-          </div>
-          <p className="text-white/40 mt-1 text-sm">
+          <Logo variant="mark" height={40} href="" className="mx-auto" />
+          <p className="text-white/40 mt-2 text-sm">
             {mode === 'trial' ? 'Start your free trial' : 'Sign in to continue'}
           </p>
         </div>
@@ -157,6 +157,19 @@ export default function LoginModal({ open, onClose, mode = 'signin' }: LoginModa
               <p className="text-white/20 text-xs text-center">
                 No credit card required. 5 documents included.
               </p>
+
+              {onSwitchMode && (
+                <p className="text-center text-sm text-white/40 pt-1">
+                  Already have an account?{' '}
+                  <button
+                    type="button"
+                    onClick={() => onSwitchMode('signin')}
+                    className="text-blue-400 hover:text-blue-300 transition font-medium"
+                  >
+                    Sign in
+                  </button>
+                </p>
+              )}
             </div>
           </form>
         ) : (
@@ -183,6 +196,19 @@ export default function LoginModal({ open, onClose, mode = 'signin' }: LoginModa
               >
                 {loading ? 'Signing in...' : 'Sign in'}
               </button>
+
+              {onSwitchMode && (
+                <p className="text-center text-sm text-white/40">
+                  Don&apos;t have an account?{' '}
+                  <button
+                    type="button"
+                    onClick={() => onSwitchMode('trial')}
+                    className="text-blue-400 hover:text-blue-300 transition font-medium"
+                  >
+                    Start free trial
+                  </button>
+                </p>
+              )}
             </div>
           </form>
         )}
