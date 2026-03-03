@@ -91,7 +91,7 @@ export default function LoginModal({ open, onClose, mode = 'signin', onSwitchMod
         </button>
 
         <div className="text-center mb-6">
-          <Logo variant="text" href="" className="text-2xl justify-center" />
+          <Logo variant="mark" height={40} href="" className="mx-auto" />
           <p className="text-white/40 mt-2 text-sm">
             {mode === 'trial' ? 'Start your free trial' : 'Sign in to continue'}
           </p>

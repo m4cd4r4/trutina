@@ -117,7 +117,7 @@ export default function ROICalculator() {
       >
         {/* Nav */}
         <nav className="flex items-center justify-between px-4 sm:px-8 py-5 border-b border-white/5 no-print">
-          <Logo variant="combo" height={36} />
+          <Logo variant="combo" height={40} />
           <div className="flex items-center gap-4 sm:gap-6">
             <Link href="/docs" className="text-white/50 hover:text-white/80 text-sm transition">
               Docs
