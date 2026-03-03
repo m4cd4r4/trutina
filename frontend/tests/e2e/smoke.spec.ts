@@ -54,6 +54,14 @@ test.describe('Smoke Tests — all routes load', () => {
     await expect(page.getByText('Sign in').first()).toBeVisible()
   })
 
+  test('login page has "Start free trial" link', async ({ page }) => {
+    await page.goto('/login')
+    const trialLink = page.locator('a:has-text("Start free trial")')
+    await expect(trialLink).toBeVisible()
+    const href = await trialLink.getAttribute('href')
+    expect(href).toContain('trial=1')
+  })
+
   test('invalid demo case returns 404', async ({ page }) => {
     const resp = await page.goto('/demo/nonexistent-case')
     expect(resp?.status()).toBe(404)

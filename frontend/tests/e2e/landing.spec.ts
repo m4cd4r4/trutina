@@ -79,8 +79,8 @@ test.describe('Landing Page', () => {
 
   test('nav bar has Trutina branding', async ({ page }) => {
     await page.goto('/')
-    const brand = page.locator('nav').first()
-    await expect(brand).toContainText('Trutina')
+    const nav = page.locator('nav').first()
+    await expect(nav.locator('img[alt="Trutina"]')).toBeVisible()
   })
 
   test('"Most Popular" label appears on Professional plan', async ({ page }) => {
@@ -94,5 +94,42 @@ test.describe('Landing Page', () => {
     await expect(page.locator('text=Start your free trial')).toBeVisible()
     await expect(page.locator('input[type="email"]')).toBeVisible()
     await expect(page.locator('input[type="password"]')).not.toBeVisible()
+  })
+
+  test('sign-in modal has "Start free trial" toggle link', async ({ page }) => {
+    await page.goto('/')
+    await page.locator('nav button:has-text("Sign in")').click()
+    await expect(page.locator('input[type="password"]')).toBeVisible()
+    // The toggle link should be inside the modal form
+    const modal = page.locator('[class*="fixed"]')
+    await modal.locator('button:has-text("Start free trial")').click()
+    await expect(page.locator('text=Start your free trial')).toBeVisible()
+    await expect(page.locator('input[type="email"]')).toBeVisible()
+  })
+
+  test('trial modal has "Sign in" toggle link', async ({ page }) => {
+    await page.goto('/')
+    await page.locator('nav button:has-text("Sign in")').click()
+    await expect(page.locator('input[type="password"]')).toBeVisible()
+    const modal = page.locator('[class*="fixed"]')
+    // Switch to trial
+    await modal.locator('button:has-text("Start free trial")').click()
+    await expect(page.locator('input[type="email"]')).toBeVisible()
+    // Switch back to sign-in
+    await modal.locator('button:has-text("Sign in")').click()
+    await expect(page.locator('input[type="password"]')).toBeVisible()
+  })
+
+  test('/?trial=1 auto-opens trial modal', async ({ page }) => {
+    await page.goto('/?trial=1')
+    await expect(page.locator('text=Start your free trial')).toBeVisible()
+    await expect(page.locator('input[type="email"]')).toBeVisible()
+  })
+
+  test('login modal shows Trutina branding', async ({ page }) => {
+    await page.goto('/')
+    await page.locator('nav button:has-text("Sign in")').click()
+    const modal = page.locator('[class*="fixed"]')
+    await expect(modal.locator('text=Sign in to continue')).toBeVisible()
   })
 })

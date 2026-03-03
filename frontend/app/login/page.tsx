@@ -38,7 +38,7 @@ export default function LoginPage() {
       style={{ background: 'radial-gradient(ellipse at 20% 50%, rgba(30,27,75,0.8) 0%, #0a0a1a 60%)' }}>
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <Logo variant="wordmark" height={48} href="" />
+          <Logo variant="text" href="" className="text-3xl" />
           <p className="text-white/40 mt-2 text-sm">AI Lending Fraud Detection</p>
         </div>
 
