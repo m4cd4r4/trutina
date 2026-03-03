@@ -45,7 +45,7 @@ services:
 
   worker:
     build: ./backend
-    command: celery -A app.worker celery_app worker --loglevel=info --concurrency=4
+    command: celery -A app.worker:celery_app worker --loglevel=info --concurrency=4
     depends_on:
       postgres:
         condition: service_healthy
