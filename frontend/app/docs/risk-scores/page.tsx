@@ -263,7 +263,8 @@ export default function RiskScoresGuide() {
       }}
     >
       {/* Nav */}
-      <nav className="flex items-center justify-between px-4 sm:px-8 py-5 border-b border-white/5">
+      <nav className="border-b border-white/5">
+        <div className="flex items-center justify-between px-4 sm:px-8 py-4 max-w-7xl mx-auto">
         <Logo variant="combo" height={40} />
         <div className="flex items-center gap-4 sm:gap-6">
           <Link
@@ -278,6 +279,7 @@ export default function RiskScoresGuide() {
           >
             Home
           </Link>
+        </div>
         </div>
       </nav>
 

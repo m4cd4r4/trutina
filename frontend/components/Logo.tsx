@@ -2,9 +2,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 const ASPECT_RATIOS: Record<string, number> = {
-  combo: 1408 / 768,    // ~1.83:1
-  mark: 1,               // 1:1
-  wordmark: 850 / 470,  // ~1.81:1
+  combo: 1212 / 330,    // ~3.67:1 (cropped)
+  mark: 323 / 269,      // ~1.20:1 (cropped)
+  wordmark: 767 / 190,  // ~4.04:1 (cropped)
 }
 
 interface LogoProps {
