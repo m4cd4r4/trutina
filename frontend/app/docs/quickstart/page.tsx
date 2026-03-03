@@ -1,5 +1,12 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Logo } from '@/components/Logo'
+
+export const metadata: Metadata = {
+  title: 'Quick-Start Guide',
+  description: 'Get your first Trutina risk report in under 5 minutes. Step-by-step guide to uploading documents, running analysis, and reading risk scores.',
+  alternates: { canonical: '/docs/quickstart' },
+}
 
 const STEPS = [
   {

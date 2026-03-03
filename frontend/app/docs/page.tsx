@@ -1,6 +1,13 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { FileText, Presentation, Calculator, Code, BarChart3, Zap, Shield, Scale } from 'lucide-react'
 import { Logo } from '@/components/Logo'
+
+export const metadata: Metadata = {
+  title: 'Documentation & Resources',
+  description: 'Technical documentation, integration guides, risk score methodology, ROI calculator, and compliance briefs for Trutina AI lending fraud detection.',
+  alternates: { canonical: '/docs' },
+}
 
 const DOCS = [
   {

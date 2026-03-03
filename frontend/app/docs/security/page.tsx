@@ -1,5 +1,12 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Logo } from '@/components/Logo'
+
+export const metadata: Metadata = {
+  title: 'Security & Privacy Whitepaper',
+  description: 'How Trutina protects sensitive loan application data: encryption standards, data retention policies, Anthropic no-training guarantee, and penetration testing.',
+  alternates: { canonical: '/docs/security' },
+}
 
 export default function SecurityWhitepaper() {
   return (

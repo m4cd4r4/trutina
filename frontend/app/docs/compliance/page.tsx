@@ -1,5 +1,12 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Logo } from '@/components/Logo'
+
+export const metadata: Metadata = {
+  title: 'APRA/ASIC Compliance Brief',
+  description: 'How Trutina aligns with APRA CPS 220, CPS 234, and ASIC RG 209 requirements for responsible lending and operational risk management.',
+  alternates: { canonical: '/docs/compliance' },
+}
 
 export default function ComplianceBrief() {
   return (

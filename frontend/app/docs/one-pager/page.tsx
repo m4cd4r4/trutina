@@ -1,6 +1,13 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Microscope, Bot, Link2, Calculator, Users, ClipboardList, Check } from 'lucide-react'
 import { Logo } from '@/components/Logo'
+
+export const metadata: Metadata = {
+  title: 'Sales One-Pager — AI Lending Fraud Detection',
+  description: 'One-page overview of Trutina: the problem of AI-generated mortgage fraud, how the six-layer detection engine works, and pricing for Australian lenders.',
+  alternates: { canonical: '/docs/one-pager' },
+}
 
 const MODULES = [
   {

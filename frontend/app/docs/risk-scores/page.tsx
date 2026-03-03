@@ -1,5 +1,12 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Logo } from '@/components/Logo'
+
+export const metadata: Metadata = {
+  title: 'Risk Score Guide',
+  description: 'How Trutina calculates risk scores: flag categories, severity levels, weight multipliers, and recommended actions for each risk threshold.',
+  alternates: { canonical: '/docs/risk-scores' },
+}
 
 const THRESHOLDS = [
   {

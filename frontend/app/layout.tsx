@@ -13,14 +13,27 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Trutina — AI Lending Fraud Detection",
-  description: "Detect AI-generated payslips, forged bank statements, and invalid ABNs in loan applications. Mortgage, personal, and business lending. Built for Australian lenders.",
+  metadataBase: new URL('https://trutina.com.au'),
+  title: {
+    default: 'Trutina — AI Lending Fraud Detection for Australian Lenders',
+    template: '%s | Trutina',
+  },
+  description: 'Detect AI-generated payslips, forged bank statements, and invalid ABNs in loan applications. Six-layer analysis returns an explainable risk score in under 60 seconds. Built for Australian mortgage, personal, and business lenders.',
   icons: {
     icon: '/favicon.ico',
     apple: '/logo/apple-touch-icon.png',
   },
   openGraph: {
-    images: [{ url: '/logo/combo.png', width: 1408, height: 768 }],
+    type: 'website',
+    siteName: 'Trutina',
+    locale: 'en_AU',
+    images: [{ url: '/logo/combo.png', width: 1212, height: 330, alt: 'Trutina — AI Lending Fraud Detection' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+  },
+  alternates: {
+    canonical: '/',
   },
 };
 
@@ -34,6 +47,32 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'SoftwareApplication',
+              name: 'Trutina',
+              applicationCategory: 'FinanceApplication',
+              operatingSystem: 'Web',
+              description: 'AI-powered lending fraud detection platform for Australian lenders. Detects AI-generated payslips, forged bank statements, and invalid ABNs.',
+              url: 'https://trutina.com.au',
+              offers: {
+                '@type': 'AggregateOffer',
+                priceCurrency: 'AUD',
+                lowPrice: '0',
+                highPrice: '6000',
+                offerCount: '4',
+              },
+              provider: {
+                '@type': 'Organization',
+                name: 'Trutina',
+                url: 'https://trutina.com.au',
+              },
+            }),
+          }}
+        />
         {children}
       </body>
     </html>
