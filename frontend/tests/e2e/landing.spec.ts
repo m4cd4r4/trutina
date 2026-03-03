@@ -130,6 +130,6 @@ test.describe('Landing Page', () => {
     await page.goto('/')
     await page.locator('nav button:has-text("Sign in")').click()
     const modal = page.locator('[class*="fixed"]')
-    await expect(modal.locator('text=Sign in to continue')).toBeVisible()
+    await expect(modal.locator('img[alt="Trutina"]')).toBeVisible()
   })
 })

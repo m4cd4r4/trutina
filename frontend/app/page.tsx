@@ -104,7 +104,7 @@ export default function Landing() {
 
       {/* Nav */}
       <nav className="flex items-center justify-between px-4 sm:px-8 py-5 border-b border-white/5">
-        <Logo variant="combo" height={36} />
+        <Logo variant="combo" height={40} />
         <div className="flex items-center gap-3 sm:gap-6">
           <a href="#features" className="hidden sm:inline text-white/50 hover:text-white/80 text-sm transition">Features</a>
           <a href="#pricing" className="hidden sm:inline text-white/50 hover:text-white/80 text-sm transition">Pricing</a>
