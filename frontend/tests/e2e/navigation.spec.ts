@@ -66,7 +66,7 @@ test.describe('Navigation', () => {
 
   test('Trutina logo links to homepage from demo', async ({ page }) => {
     await page.goto('/demo')
-    await page.locator('nav a:has-text("Trutina")').first().click()
+    await page.locator('nav a').filter({ has: page.locator('img[alt="Trutina"]') }).first().click()
     await page.waitForURL('**/')
     const url = page.url()
     expect(url.endsWith('/') || url.endsWith('.au')).toBeTruthy()

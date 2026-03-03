@@ -112,6 +112,7 @@ interface Props {
 
 export default function DemoTour({ page }: Props) {
   const [hasRun, setHasRun] = useState(false)
+  const storageKey = `trutina-tour-${page}`
 
   const startTour = useCallback(() => {
     const steps = page === 'case-list' ? CASE_LIST_STEPS : CASE_DETAIL_STEPS
@@ -126,38 +127,23 @@ export default function DemoTour({ page }: Props) {
       popoverClass: 'trutina-tour-popover',
       onDestroyStarted: () => {
         d.destroy()
+        setHasRun(true)
+        try { localStorage.setItem(storageKey, '1') } catch {}
       },
     })
     d.drive()
-    setHasRun(true)
-    try {
-      sessionStorage.setItem(`tour-${page}`, '1')
-    } catch {}
-  }, [page])
+  }, [page, storageKey])
 
   useEffect(() => {
     try {
-      if (sessionStorage.getItem(`tour-${page}`)) {
+      if (localStorage.getItem(storageKey)) {
         setHasRun(true)
       }
     } catch {}
-  }, [page])
+  }, [storageKey])
 
-  if (hasRun) {
-    return (
-      <button
-        onClick={() => { setHasRun(false); setTimeout(startTour, 100) }}
-        className="fixed bottom-6 right-6 z-50 bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium px-4 py-2.5 rounded-full shadow-lg transition flex items-center gap-2"
-      >
-        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-          <circle cx="12" cy="12" r="10" />
-          <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3" />
-          <path d="M12 17h.01" />
-        </svg>
-        Guided Tour
-      </button>
-    )
-  }
+  // After tour: no FAB — clean screen
+  if (hasRun) return null
 
   return (
     <button

@@ -42,3 +42,7 @@ next-env.d.ts
 
 .vercel
 .env*.local
+
+# test artifacts
+/test-results/
+/visual-audit/
