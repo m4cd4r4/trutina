@@ -3,9 +3,10 @@ from contextlib import asynccontextmanager
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import analyse, brokers, cases, documents, health
+from app.api import analyse, brokers, cases, documents, health, trial
 from app.core.auth import verify_api_key
 from app.core.database import Base, engine
+from app.models import trial as _trial_models  # noqa: F401 — registers table for create_all
 
 
 @asynccontextmanager
@@ -33,6 +34,7 @@ app.add_middleware(
 
 # Public
 app.include_router(health.router)
+app.include_router(trial.router)
 
 # Protected
 protected = {"dependencies": [Depends(verify_api_key)]}
