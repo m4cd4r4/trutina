@@ -5,6 +5,19 @@ import { useRouter } from 'next/navigation'
 import { X, Check } from 'lucide-react'
 import { Logo } from '@/components/Logo'
 
+const PERSONAL_DOMAINS = new Set([
+  'gmail.com', 'googlemail.com', 'yahoo.com', 'yahoo.com.au',
+  'hotmail.com', 'hotmail.com.au', 'outlook.com', 'live.com', 'live.com.au',
+  'icloud.com', 'me.com', 'mac.com', 'aol.com', 'protonmail.com',
+  'proton.me', 'mail.com', 'zoho.com', 'ymail.com', 'msn.com',
+  'fastmail.com', 'tutanota.com', 'gmx.com', 'inbox.com',
+])
+
+function isWorkEmail(email: string): boolean {
+  const domain = email.split('@')[1]?.toLowerCase()
+  return !!domain && !PERSONAL_DOMAINS.has(domain)
+}
+
 interface LoginModalProps {
   open: boolean
   onClose: () => void
@@ -48,8 +61,12 @@ export default function LoginModal({ open, onClose, mode = 'signin', onSwitchMod
 
   async function handleTrial(e: React.FormEvent) {
     e.preventDefault()
-    setLoading(true)
     setError('')
+    if (!isWorkEmail(email)) {
+      setError('Please use your work email. Personal addresses (Gmail, Hotmail, etc.) are not accepted.')
+      return
+    }
+    setLoading(true)
     try {
       const res = await fetch('/api/trial', {
         method: 'POST',
