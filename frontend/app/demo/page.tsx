@@ -26,7 +26,8 @@ export default function DemoPage() {
       style={{ background: 'radial-gradient(ellipse at 20% 0%, rgba(30,27,75,0.9) 0%, #0a0a1a 50%)' }}>
 
       {/* Nav */}
-      <nav className="flex items-center justify-between px-6 md:px-8 py-5 border-b border-white/5">
+      <nav className="border-b border-white/5">
+        <div className="flex items-center justify-between px-6 md:px-8 py-4 max-w-7xl mx-auto">
         <Logo variant="combo" height={40} />
         <div className="flex items-center gap-4">
           <span className="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full px-3 py-1 font-medium">
@@ -35,6 +36,7 @@ export default function DemoPage() {
           <Link href="/" className="text-white/50 hover:text-white/80 text-sm transition">
             Back to site
           </Link>
+        </div>
         </div>
       </nav>
 

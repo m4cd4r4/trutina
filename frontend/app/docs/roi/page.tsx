@@ -116,12 +116,14 @@ export default function ROICalculator() {
         style={{ background: 'radial-gradient(ellipse at 20% 0%, rgba(30,27,75,0.9) 0%, #0a0a1a 50%)' }}
       >
         {/* Nav */}
-        <nav className="flex items-center justify-between px-4 sm:px-8 py-5 border-b border-white/5 no-print">
+        <nav className="border-b border-white/5 no-print">
+          <div className="flex items-center justify-between px-4 sm:px-8 py-4 max-w-7xl mx-auto">
           <Logo variant="combo" height={40} />
           <div className="flex items-center gap-4 sm:gap-6">
             <Link href="/docs" className="text-white/50 hover:text-white/80 text-sm transition">
               Docs
             </Link>
+          </div>
           </div>
         </nav>
 

@@ -103,7 +103,8 @@ export default function Landing() {
       <LoginModal open={loginMode !== null} onClose={() => setLoginMode(null)} mode={loginMode ?? 'signin'} onSwitchMode={setLoginMode} />
 
       {/* Nav */}
-      <nav className="flex items-center justify-between px-4 sm:px-8 py-5 border-b border-white/5">
+      <nav className="border-b border-white/5">
+        <div className="flex items-center justify-between px-4 sm:px-8 py-4 max-w-7xl mx-auto">
         <Logo variant="combo" height={40} />
         <div className="flex items-center gap-3 sm:gap-6">
           <a href="#features" className="hidden sm:inline text-white/50 hover:text-white/80 text-sm transition">Features</a>
@@ -121,6 +122,7 @@ export default function Landing() {
             className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-2 rounded-lg transition">
             Sign in
           </button>
+        </div>
         </div>
       </nav>
 

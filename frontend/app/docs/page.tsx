@@ -66,7 +66,8 @@ export default function DocsHub() {
     <div className="min-h-screen text-white"
       style={{ background: 'radial-gradient(ellipse at 20% 0%, rgba(30,27,75,0.9) 0%, #0a0a1a 50%)' }}>
 
-      <nav className="flex items-center justify-between px-4 sm:px-8 py-5 border-b border-white/5">
+      <nav className="border-b border-white/5">
+        <div className="flex items-center justify-between px-4 sm:px-8 py-4 max-w-7xl mx-auto">
         <Logo variant="combo" height={40} />
         <div className="flex items-center gap-4 sm:gap-6">
           <Link href="/demo" className="text-emerald-300 hover:text-emerald-200 text-sm font-medium transition">
@@ -75,6 +76,7 @@ export default function DocsHub() {
           <Link href="/" className="text-white/50 hover:text-white/80 text-sm transition">
             Home
           </Link>
+        </div>
         </div>
       </nav>
 
