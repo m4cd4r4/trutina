@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     type: 'website',
     siteName: 'Trutina',
     locale: 'en_AU',
-    images: [{ url: '/logo/combo.png', width: 1212, height: 330, alt: 'Trutina — AI Lending Fraud Detection' }],
+    images: [{ url: '/og-image.png', width: 1200, height: 627, alt: 'Trutina — Stop AI-generated mortgage fraud before it costs billions' }],
   },
   twitter: {
     card: 'summary_large_image',
