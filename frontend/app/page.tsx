@@ -246,12 +246,13 @@ export default function Landing() {
                 </button>
               ) : (
                 <a href="mailto:hello@trutina.com.au"
-                  className={`block text-center font-semibold py-3 rounded-xl transition text-sm ${
+                  className={`group/cta block text-center font-semibold py-3 rounded-xl transition text-sm ${
                     plan.highlight
                       ? 'bg-blue-600 hover:bg-blue-500 text-white'
                       : 'border border-white/20 hover:border-white/40 text-white/70 hover:text-white'
                   }`}>
-                  {plan.cta}
+                  <span className="group-hover/cta:hidden">{plan.cta}</span>
+                  <span className="hidden group-hover/cta:inline text-xs font-normal tracking-wide">hello@trutina.com.au</span>
                 </a>
               )}
             </div>

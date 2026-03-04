@@ -137,8 +137,9 @@ export default function DemoPage() {
               Start free trial
             </Link>
             <a href="mailto:hello@trutina.com.au"
-              className="text-white/50 hover:text-white/70 transition text-sm">
-              Or request a demo call
+              className="group text-white/50 hover:text-white/70 transition text-sm">
+              <span className="group-hover:hidden">Or request a demo call</span>
+              <span className="hidden group-hover:inline tracking-wide">hello@trutina.com.au</span>
             </a>
           </div>
         </div>
