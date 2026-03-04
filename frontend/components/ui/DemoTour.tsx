@@ -142,18 +142,19 @@ export default function DemoTour({ page }: Props) {
     } catch {}
   }, [storageKey])
 
-  // After tour: no FAB — clean screen
-  if (hasRun) return null
-
   return (
     <button
       onClick={startTour}
-      className="fixed bottom-6 right-6 z-50 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-5 py-3 rounded-full shadow-lg transition animate-pulse flex items-center gap-2"
+      className={`fixed bottom-6 right-6 z-50 rounded-full shadow-lg transition flex items-center gap-2 ${
+        hasRun
+          ? 'bg-white/10 hover:bg-white/20 text-white/40 hover:text-white/70 text-xs px-3 py-1.5 border border-white/10'
+          : 'bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-5 py-3 animate-pulse'
+      }`}
     >
-      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <svg className={hasRun ? 'w-3 h-3' : 'w-4 h-4'} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
         <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
-      Start Guided Tour
+      {hasRun ? 'Tour' : 'Start Guided Tour'}
     </button>
   )
 }
