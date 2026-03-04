@@ -64,7 +64,7 @@ export default function Dashboard() {
               <span className="text-white/50 text-sm">5 document analyses included</span>
             </div>
           </div>
-          <a href="mailto:macdara.work@gmail.com?subject=Trutina%20%E2%80%94%20Interested%20in%20more%20credits"
+          <a href="mailto:hello@trutina.com.au?subject=Trutina%20%E2%80%94%20Interested%20in%20more%20credits"
             className="text-sm text-blue-400 hover:text-blue-300 font-medium transition whitespace-nowrap">
             Need more? Contact us &rarr;
           </a>

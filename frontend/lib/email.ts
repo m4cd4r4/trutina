@@ -5,7 +5,7 @@ const resend = process.env.RESEND_API_KEY
   : null
 
 const FROM = 'Trutina <noreply@trutina.com.au>'
-const ADMIN_EMAIL = 'macdara.work@gmail.com'
+const ADMIN_EMAIL = 'hello@trutina.com.au'
 
 export async function sendTrialNotification(data: {
   name: string
