@@ -73,7 +73,7 @@ test.describe('Landing Page', () => {
 
   test('footer renders with company info', async ({ page }) => {
     await page.goto('/')
-    await expect(page.locator('footer')).toContainText('Solaisoft')
+    await expect(page.locator('footer')).toContainText('Trutina')
     await expect(page.locator('footer')).toContainText('hello@trutina.com.au')
   })
 

@@ -478,7 +478,7 @@ export default function QuickStartGuide() {
 
         {/* Footer */}
         <footer className="border-t border-white/5 pt-6 text-center text-white/20 text-xs">
-          Trutina by Solaisoft Pty Ltd &middot; hello@trutina.com.au
+          Trutina &middot; hello@trutina.com.au
         </footer>
       </div>
     </div>

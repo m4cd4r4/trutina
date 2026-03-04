@@ -253,7 +253,7 @@ export default function OnePager() {
               </a>
             </div>
             <div className="mt-3 text-white/20 print-light text-xs">
-              Solaisoft Pty Ltd &middot; ABN pending &middot; Sydney, Australia
+              trutina.com.au &middot; hello@trutina.com.au
             </div>
           </div>
 

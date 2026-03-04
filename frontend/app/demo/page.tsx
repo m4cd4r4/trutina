@@ -146,7 +146,7 @@ export default function DemoPage() {
       </div>
 
       <footer className="border-t border-white/5 px-8 py-6 text-center text-white/20 text-xs mt-12">
-        Trutina by Solaisoft Pty Ltd · hello@trutina.com.au · All sample data is synthetic — no real applicant data is shown
+        Trutina · hello@trutina.com.au · All sample data is synthetic — no real applicant data is shown
       </footer>
 
       <DemoTour page="case-list" />

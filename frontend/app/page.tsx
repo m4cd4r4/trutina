@@ -274,7 +274,7 @@ export default function Landing() {
 
       {/* Footer */}
       <footer className="border-t border-white/5 px-4 sm:px-8 py-6 text-center text-white/20 text-xs">
-        Trutina by Solaisoft Pty Ltd · hello@trutina.com.au · Document fraud detection for Australian lenders
+        Trutina · hello@trutina.com.au · Document fraud detection for Australian lenders
       </footer>
     </div>
   )

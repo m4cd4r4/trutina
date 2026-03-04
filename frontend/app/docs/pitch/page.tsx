@@ -496,7 +496,7 @@ function NextStepsSlide() {
             hello@trutina.com.au
           </a>
           <div className="text-white/30 text-sm">
-            trutina.com.au &middot; Solaisoft Pty Ltd
+            trutina.com.au
           </div>
         </div>
       </div>
