@@ -53,6 +53,23 @@ export default function Dashboard() {
           ))}
         </div>
 
+        {/* Credits banner */}
+        <div className="rounded-xl border border-white/10 p-4 mb-8 flex items-center justify-between"
+          style={{ background: 'rgba(255,255,255,0.03)' }}>
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-blue-600/20 flex items-center justify-center text-blue-400 text-sm">&#9889;</div>
+            <div>
+              <span className="text-white/70 text-sm">Free trial</span>
+              <span className="text-white/30 text-sm mx-2">&middot;</span>
+              <span className="text-white/50 text-sm">5 document analyses included</span>
+            </div>
+          </div>
+          <a href="mailto:macdara.work@gmail.com?subject=Trutina%20%E2%80%94%20Interested%20in%20more%20credits"
+            className="text-sm text-blue-400 hover:text-blue-300 font-medium transition whitespace-nowrap">
+            Need more? Contact us &rarr;
+          </a>
+        </div>
+
         {/* Cases table */}
         <div className="rounded-xl border border-white/10 overflow-hidden"
           style={{ background: 'rgba(255,255,255,0.03)' }}>

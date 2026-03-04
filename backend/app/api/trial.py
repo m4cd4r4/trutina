@@ -66,6 +66,35 @@ async def provision_trial(body: ProvisionRequest, db: AsyncSession = Depends(get
     )
 
 
+class ResendRequest(BaseModel):
+    email: EmailStr
+
+
+class ResendResponse(BaseModel):
+    access_code: str
+    name: str
+    email: str
+
+
+@router.post("/resend", response_model=ResendResponse)
+async def resend_access_code(body: ResendRequest, db: AsyncSession = Depends(get_db)):
+    email_lower = body.email.lower().strip()
+
+    result = await db.execute(
+        select(TrialAccount).where(TrialAccount.email == email_lower)
+    )
+    account = result.scalar_one_or_none()
+
+    if not account or not account.is_active:
+        raise HTTPException(status_code=404, detail="No account found for this email")
+
+    return ResendResponse(
+        access_code=account.access_code,
+        name=account.name,
+        email=account.email,
+    )
+
+
 @router.post("/validate", response_model=ValidateResponse)
 async def validate_access_code(body: ValidateRequest, db: AsyncSession = Depends(get_db)):
     code = body.access_code.strip().upper()
