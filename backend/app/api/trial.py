@@ -1,14 +1,22 @@
-from datetime import datetime, timezone
+import logging
+from datetime import datetime, timedelta, timezone
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel, EmailStr
+from slowapi import Limiter
+from slowapi.util import get_remote_address
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.config import settings
 from app.core.database import get_db
 from app.models.trial import TrialAccount, generate_access_code
 
+logger = logging.getLogger("trutina.trial")
+
 router = APIRouter(prefix="/api/v1/trial", tags=["trial"])
+
+limiter = Limiter(key_func=get_remote_address)
 
 
 class ProvisionRequest(BaseModel):
@@ -35,7 +43,8 @@ class ValidateResponse(BaseModel):
 
 
 @router.post("/provision", response_model=ProvisionResponse)
-async def provision_trial(body: ProvisionRequest, db: AsyncSession = Depends(get_db)):
+@limiter.limit("10/minute")
+async def provision_trial(request: Request, body: ProvisionRequest, db: AsyncSession = Depends(get_db)):
     email_lower = body.email.lower().strip()
 
     result = await db.execute(
@@ -50,10 +59,12 @@ async def provision_trial(body: ProvisionRequest, db: AsyncSession = Depends(get
             is_new=False,
         )
 
+    expires_at = datetime.now(tz=timezone.utc) + timedelta(days=settings.trial_expiry_days)
     account = TrialAccount(
         email=email_lower,
-        name=body.name.strip(),
-        company=body.company.strip() if body.company else None,
+        name=body.name.strip()[:255],
+        company=body.company.strip()[:255] if body.company else None,
+        expires_at=expires_at,
     )
     db.add(account)
     await db.commit()
@@ -71,13 +82,12 @@ class ResendRequest(BaseModel):
 
 
 class ResendResponse(BaseModel):
-    access_code: str
-    name: str
-    email: str
+    message: str
 
 
 @router.post("/resend", response_model=ResendResponse)
-async def resend_access_code(body: ResendRequest, db: AsyncSession = Depends(get_db)):
+@limiter.limit("3/minute")
+async def resend_access_code(request: Request, body: ResendRequest, db: AsyncSession = Depends(get_db)):
     email_lower = body.email.lower().strip()
 
     result = await db.execute(
@@ -86,18 +96,18 @@ async def resend_access_code(body: ResendRequest, db: AsyncSession = Depends(get
     account = result.scalar_one_or_none()
 
     if not account or not account.is_active:
-        raise HTTPException(status_code=404, detail="No account found for this email")
+        # Return same response whether account exists or not (prevent enumeration)
+        logger.info("RESEND_ATTEMPT email=%s found=%s", email_lower, account is not None)
 
-    return ResendResponse(
-        access_code=account.access_code,
-        name=account.name,
-        email=account.email,
-    )
+    # Always return same message to prevent email enumeration
+    return ResendResponse(message="If an account exists for this email, the access code will be sent shortly.")
 
 
 @router.post("/validate", response_model=ValidateResponse)
-async def validate_access_code(body: ValidateRequest, db: AsyncSession = Depends(get_db)):
+@limiter.limit(settings.rate_limit_auth)
+async def validate_access_code(request: Request, body: ValidateRequest, db: AsyncSession = Depends(get_db)):
     code = body.access_code.strip().upper()
+    client_ip = request.client.host if request.client else "unknown"
 
     result = await db.execute(
         select(TrialAccount).where(TrialAccount.access_code == code)
@@ -105,10 +115,18 @@ async def validate_access_code(body: ValidateRequest, db: AsyncSession = Depends
     account = result.scalar_one_or_none()
 
     if not account or not account.is_active:
+        logger.warning("VALIDATE_FAILURE ip=%s code_prefix=%s", client_ip, code[:4] if len(code) >= 4 else "???")
         raise HTTPException(status_code=401, detail="Invalid access code")
+
+    # Check expiry
+    if account.expires_at and account.expires_at < datetime.now(tz=timezone.utc):
+        logger.info("VALIDATE_EXPIRED ip=%s email=%s", client_ip, account.email)
+        raise HTTPException(status_code=401, detail="Access code has expired. Please request a new trial.")
 
     account.last_login_at = datetime.now(tz=timezone.utc)
     await db.commit()
+
+    logger.info("VALIDATE_SUCCESS ip=%s email=%s", client_ip, account.email)
 
     return ValidateResponse(
         email=account.email,

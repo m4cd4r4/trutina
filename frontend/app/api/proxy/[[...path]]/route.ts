@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 const BACKEND = process.env.BACKEND_URL || 'http://localhost:3004'
-const API_KEY = process.env.SHIELDAPI_KEY || 'dev-key-change-in-prod'
+const API_KEY = process.env.SHIELDAPI_KEY || ''
 
 async function proxy(req: NextRequest, { params }: { params: Promise<{ path?: string[] }> }) {
   const { path: pathParts } = await params

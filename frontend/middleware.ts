@@ -10,10 +10,9 @@ export function middleware(req: NextRequest) {
     return NextResponse.next()
   }
 
-  // If SITE_GATE is not set, allow everything (gate disabled)
-  const gateEnabled = process.env.SITE_GATE === 'true'
-  if (!gateEnabled) {
-    // Original behaviour: only protect app routes
+  // Gate defaults to ENABLED — set SITE_GATE=false to explicitly disable
+  const gateDisabled = process.env.SITE_GATE === 'false'
+  if (gateDisabled) {
     const appRoutes = ['/dashboard', '/cases', '/brokers']
     const isAppRoute = appRoutes.some(
       (r) => pathname === r || pathname.startsWith(r + '/'),

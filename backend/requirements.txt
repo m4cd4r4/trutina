@@ -11,9 +11,8 @@ httpx==0.28.1
 PyMuPDF==1.25.1
 pillow==11.0.0
 python-multipart==0.0.19
-python-jose[cryptography]==3.3.0
-passlib==1.7.4
 anthropic==0.40.0
 rapidfuzz==3.11.0
 python-dateutil==2.9.0
 psycopg2-binary==2.9.10
+slowapi==0.1.9

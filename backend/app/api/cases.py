@@ -77,6 +77,9 @@ class CaseDetail(CaseSummary):
     flags: list[FlagOut]
 
 
+ALLOWED_STATUSES = {"pending", "processing", "complete", "failed", "flagged_for_review"}
+
+
 class CasePatch(BaseModel):
     status: str | None = None
     notes: str | None = None
@@ -221,9 +224,11 @@ async def patch_case(case_id: uuid.UUID, body: CasePatch, db: AsyncSession = Dep
         raise HTTPException(status_code=404, detail="Case not found")
 
     if body.status:
+        if body.status not in ALLOWED_STATUSES:
+            raise HTTPException(status_code=400, detail=f"Invalid status. Allowed: {', '.join(sorted(ALLOWED_STATUSES))}")
         case.status = body.status
     if body.notes:
-        case.metadata_["notes"] = body.notes
+        case.metadata_["notes"] = body.notes[:2000]
 
     db.add(AuditEvent(case_id=case_id, event_type="case_updated", detail=body.model_dump(exclude_none=True)))
     await db.commit()

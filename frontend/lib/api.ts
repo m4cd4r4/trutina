@@ -1,13 +1,12 @@
 import type { Broker, Case, CaseDetail } from './types'
 
-const BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3004'
-const API_KEY = process.env.NEXT_PUBLIC_API_KEY || 'dev-key-change-in-prod'
+// All API calls go through the Next.js proxy to keep the API key server-side
+const BASE = ''
 
 async function req<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${BASE}${path}`, {
     ...init,
     headers: {
-      'X-Api-Key': API_KEY,
       'Content-Type': 'application/json',
       ...(init?.headers ?? {}),
     },
@@ -21,35 +20,36 @@ async function req<T>(path: string, init?: RequestInit): Promise<T> {
 
 export const api = {
   cases: {
-    list: (params?: { status?: string; risk_level?: string; limit?: number }) => {
+    list: (params?: { status?: string; risk_level?: string; limit?: number; search?: string }) => {
       const qs = new URLSearchParams()
       if (params?.status) qs.set('status', params.status)
       if (params?.risk_level) qs.set('risk_level', params.risk_level)
       if (params?.limit) qs.set('limit', String(params.limit))
-      return req<Case[]>(`/api/v1/cases?${qs}`)
+      return req<Case[]>(`/api/proxy/cases?${qs}`)
     },
-    get: (id: string) => req<CaseDetail>(`/api/v1/cases/${id}`),
+    get: (id: string) => req<CaseDetail>(`/api/proxy/cases/${id}`),
     create: (body: {
       applicant_name?: string
       loan_amount?: number
       property_address?: string
       broker_name?: string
       broker_abn?: string
-    }) => req<Case>('/api/v1/cases', { method: 'POST', body: JSON.stringify(body) }),
+    }) => req<Case>('/api/proxy/cases', { method: 'POST', body: JSON.stringify(body) }),
     triggerAnalysis: (id: string) =>
-      req<{ job_id: string; status: string }>(`/api/v1/cases/${id}/analyse`, { method: 'POST' }),
+      req<{ job_id: string; status: string }>(`/api/proxy/cases/${id}/analyse`, { method: 'POST' }),
     pollStatus: (id: string) =>
-      req<{ status: string; risk_score: number | null; risk_level: string | null }>(`/api/v1/cases/${id}/analyse/status`),
-    audit: (id: string) => req<unknown[]>(`/api/v1/cases/${id}/audit`),
+      req<{ status: string; risk_score: number | null; risk_level: string | null }>(`/api/proxy/cases/${id}/analyse/status`),
+    audit: (id: string) => req<unknown[]>(`/api/proxy/cases/${id}/audit`),
+    patch: (id: string, body: { status?: string; notes?: string }) =>
+      req<{ ok: boolean }>(`/api/proxy/cases/${id}`, { method: 'PATCH', body: JSON.stringify(body) }),
   },
 
   documents: {
     upload: async (caseId: string, files: File[], docType: string) => {
       const form = new FormData()
       files.forEach(f => form.append('files', f))
-      const res = await fetch(`${BASE}/api/v1/cases/${caseId}/documents?doc_type=${docType}`, {
+      const res = await fetch(`/api/proxy/cases/${caseId}/documents?doc_type=${encodeURIComponent(docType)}`, {
         method: 'POST',
-        headers: { 'X-Api-Key': API_KEY },
         body: form,
       })
       if (!res.ok) throw new Error(await res.text())
@@ -58,8 +58,8 @@ export const api = {
   },
 
   brokers: {
-    list: () => req<Broker[]>('/api/v1/brokers'),
-    get: (id: string) => req<Broker>(`/api/v1/brokers/${id}`),
-    cases: (id: string) => req<Case[]>(`/api/v1/brokers/${id}/cases`),
+    list: () => req<Broker[]>('/api/proxy/brokers'),
+    get: (id: string) => req<Broker>(`/api/proxy/brokers/${id}`),
+    cases: (id: string) => req<Case[]>(`/api/proxy/brokers/${id}/cases`),
   },
 }

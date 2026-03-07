@@ -49,6 +49,7 @@ export default function CasePage() {
 
   const action = caseData.recommended_action
   const actionCfg = action ? ACTION_CONFIG[action] : null
+  const isAnalysed = caseData.status !== 'pending' && caseData.status !== 'processing'
 
   // Group flags by category
   const byCategory: Record<string, typeof caseData.flags> = {}
@@ -202,6 +203,37 @@ export default function CasePage() {
             ))}
           </div>
         )}
+
+        {/* Spacer for sticky bar */}
+        <div className="h-20" />
+      </div>
+
+      {/* Sticky action bar */}
+      <div className="fixed bottom-0 left-0 right-0 border-t border-white/10 z-50"
+        style={{ background: 'rgba(10,10,26,0.92)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
+        <div className="max-w-5xl mx-auto px-6 py-3 flex items-center justify-between gap-3">
+          <Link href="/dashboard"
+            className="text-white/50 hover:text-white/80 text-sm font-medium px-4 py-2 rounded-lg border border-white/10 hover:border-white/20 transition">
+            &larr; Back to Dashboard
+          </Link>
+
+          <div className="flex items-center gap-3">
+            {isAnalysed && caseData.recommended_action && (
+              <span className={`text-xs font-semibold px-3 py-1.5 rounded-lg ${
+                caseData.recommended_action === 'approve' ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/20' :
+                caseData.recommended_action === 'manual_review' ? 'bg-amber-500/15 text-amber-400 border border-amber-500/20' :
+                'bg-red-500/15 text-red-400 border border-red-500/20'
+              }`}>
+                {ACTION_CONFIG[caseData.recommended_action].label}
+              </span>
+            )}
+
+            <Link href="/cases/new"
+              className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-2 rounded-lg transition">
+              + New Case
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   )

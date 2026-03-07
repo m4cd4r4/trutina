@@ -176,6 +176,22 @@ export default function NewCase() {
               </div>
             )}
 
+            {/* Credit quota note */}
+            <div className="flex items-start gap-2.5 rounded-lg border border-blue-500/15 px-4 py-3"
+              style={{ background: 'rgba(59,130,246,0.06)' }}>
+              <span className="text-blue-400 text-sm mt-0.5">&#9889;</span>
+              <div className="text-xs leading-relaxed">
+                <span className="text-blue-300/80">Each analysis uses 1 credit from your trial.</span>
+                <span className="text-white/30 mx-1">&middot;</span>
+                <span className="text-white/40">Free trial includes 5 analyses.</span>
+                <span className="text-white/30 mx-1">&middot;</span>
+                <a href="mailto:hello@trutina.com.au?subject=Trutina%20%E2%80%94%20Credit%20Inquiry"
+                  className="text-blue-400 hover:text-blue-300 transition">
+                  Need more?
+                </a>
+              </div>
+            </div>
+
             {error && <p className="text-red-400 text-sm">{error}</p>}
 
             <button

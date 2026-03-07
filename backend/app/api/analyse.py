@@ -125,16 +125,30 @@ async def webhook_ingest(body: WebhookIngestRequest, db: AsyncSession = Depends(
     upload_dir = Path("/uploads") / str(case.id)
     upload_dir.mkdir(parents=True, exist_ok=True)
 
+    from app.core.config import settings as app_settings
+    ALLOWED_EXTENSIONS = {".pdf", ".jpg", ".jpeg", ".png", ".tiff", ".tif"}
+
     for doc_data in body.documents:
+        # Validate base64 payload size before decoding
+        if len(doc_data.content_base64) > app_settings.max_webhook_payload_bytes:
+            raise HTTPException(status_code=413, detail=f"Document '{doc_data.filename}' exceeds maximum payload size")
+
         file_bytes = base64.b64decode(doc_data.content_base64)
+
+        if len(file_bytes) > app_settings.max_upload_bytes:
+            raise HTTPException(status_code=413, detail=f"Document '{doc_data.filename}' exceeds {app_settings.max_upload_bytes // (1024*1024)}MB limit")
+
+        # Validate and sanitize file extension
+        raw_suffix = Path(doc_data.filename).suffix.lower()
+        suffix = raw_suffix if raw_suffix in ALLOWED_EXTENSIONS else ".pdf"
         file_id = uuid.uuid4()
-        suffix = Path(doc_data.filename).suffix or ".pdf"
         dest = upload_dir / f"{file_id}{suffix}"
         dest.write_bytes(file_bytes)
 
+        safe_filename = Path(doc_data.filename).name[:255]
         doc = CaseDocument(
             id=file_id, case_id=case.id,
-            doc_type=doc_data.doc_type, filename=doc_data.filename,
+            doc_type=doc_data.doc_type, filename=safe_filename,
             file_path=str(dest), file_size=len(file_bytes),
         )
         db.add(doc)

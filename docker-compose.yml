@@ -37,8 +37,9 @@ services:
       DATABASE_URL: postgresql+asyncpg://trutina:${POSTGRES_PASSWORD:-trutina_dev}@postgres:5432/trutina
       REDIS_URL: redis://redis:6379/0
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
-      TRUTINA_API_KEY: ${TRUTINA_API_KEY:-dev-key-change-in-prod}
+      TRUTINA_API_KEY: ${TRUTINA_API_KEY:?TRUTINA_API_KEY must be set in .env}
       ABN_API_GUID: ${ABN_API_GUID:-}
+      CORS_ORIGINS: ${CORS_ORIGINS:-https://trutina.vercel.app,https://trutina.com.au}
     volumes:
       - uploads:/uploads
     restart: unless-stopped
@@ -55,7 +56,7 @@ services:
       DATABASE_URL: postgresql+asyncpg://trutina:${POSTGRES_PASSWORD:-trutina_dev}@postgres:5432/trutina
       REDIS_URL: redis://redis:6379/0
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
-      TRUTINA_API_KEY: ${TRUTINA_API_KEY:-dev-key-change-in-prod}
+      TRUTINA_API_KEY: ${TRUTINA_API_KEY:?TRUTINA_API_KEY must be set in .env}
       ABN_API_GUID: ${ABN_API_GUID:-}
     volumes:
       - uploads:/uploads
