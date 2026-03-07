@@ -10,6 +10,7 @@ from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.auth import get_tenant_id
 from app.core.database import get_db
 from app.models.case import AuditEvent, BrokerProfile, Case, CaseDocument
 from app.worker import celery_app, run_case_analysis
@@ -18,8 +19,11 @@ router = APIRouter(prefix="/api/v1", tags=["analysis"])
 
 
 @router.post("/cases/{case_id}/analyse")
-async def trigger_analysis(case_id: uuid.UUID, db: AsyncSession = Depends(get_db)):
-    result = await db.execute(select(Case).where(Case.id == case_id))
+async def trigger_analysis(case_id: uuid.UUID, db: AsyncSession = Depends(get_db), tenant_id: uuid.UUID | None = Depends(get_tenant_id)):
+    q = select(Case).where(Case.id == case_id)
+    if tenant_id:
+        q = q.where(Case.tenant_id == tenant_id)
+    result = await db.execute(q)
     case = result.scalar_one_or_none()
     if not case:
         raise HTTPException(status_code=404, detail="Case not found")
@@ -35,8 +39,11 @@ async def trigger_analysis(case_id: uuid.UUID, db: AsyncSession = Depends(get_db
 
 
 @router.get("/cases/{case_id}/analyse/status")
-async def get_analysis_status(case_id: uuid.UUID, db: AsyncSession = Depends(get_db)):
-    result = await db.execute(select(Case).where(Case.id == case_id))
+async def get_analysis_status(case_id: uuid.UUID, db: AsyncSession = Depends(get_db), tenant_id: uuid.UUID | None = Depends(get_tenant_id)):
+    q = select(Case).where(Case.id == case_id)
+    if tenant_id:
+        q = q.where(Case.tenant_id == tenant_id)
+    result = await db.execute(q)
     case = result.scalar_one_or_none()
     if not case:
         raise HTTPException(status_code=404, detail="Case not found")

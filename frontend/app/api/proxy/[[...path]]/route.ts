@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { CSRF_COOKIE } from '@/lib/auth'
+import { CSRF_COOKIE, TENANT_COOKIE } from '@/lib/auth'
 
 const BACKEND = process.env.BACKEND_URL || 'http://localhost:3004'
 const API_KEY = process.env.SHIELDAPI_KEY || ''
@@ -19,10 +19,12 @@ async function proxy(req: NextRequest, { params }: { params: Promise<{ path?: st
     }
   }
 
+  const tenantId = req.cookies.get(TENANT_COOKIE)?.value || ''
   const init: RequestInit = {
     method: req.method,
     headers: {
       'X-Api-Key': API_KEY,
+      'X-Tenant-Id': tenantId,
       'Content-Type': req.headers.get('content-type') || 'application/json',
     },
   }

@@ -1,5 +1,6 @@
 export const AUTH_COOKIE = 'trutina_auth'
 export const CSRF_COOKIE = 'trutina_csrf'
+export const TENANT_COOKIE = 'trutina_tenant'
 
 export function isAuthenticated(req: Request): boolean {
   const cookie = req.headers.get('cookie') || ''

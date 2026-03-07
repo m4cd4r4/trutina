@@ -36,6 +36,7 @@ class ValidateRequest(BaseModel):
 
 
 class ValidateResponse(BaseModel):
+    id: str
     email: str
     name: str
     credits_remaining: int
@@ -129,6 +130,7 @@ async def validate_access_code(request: Request, body: ValidateRequest, db: Asyn
     logger.info("VALIDATE_SUCCESS ip=%s email=%s", client_ip, account.email)
 
     return ValidateResponse(
+        id=str(account.id),
         email=account.email,
         name=account.name,
         credits_remaining=account.credits_remaining,

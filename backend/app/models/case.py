@@ -37,6 +37,7 @@ class Case(Base):
     loan_amount: Mapped[Decimal | None] = mapped_column(NUMERIC(15, 2))
     property_address: Mapped[str | None] = mapped_column(TEXT)
     broker_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), ForeignKey("broker_profiles.id"))
+    tenant_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), ForeignKey("trial_accounts.id"), index=True)
     status: Mapped[str] = mapped_column(VARCHAR(32), default="pending")
     risk_score: Mapped[int | None] = mapped_column(SmallInteger)
     risk_level: Mapped[str | None] = mapped_column(VARCHAR(16))

@@ -42,12 +42,18 @@ app.add_middleware(
     allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
-    allow_headers=["X-Api-Key", "Content-Type", "Authorization"],
+    allow_headers=["X-Api-Key", "X-Tenant-Id", "Content-Type", "Authorization"],
 )
 
 
 @app.middleware("http")
 async def security_headers(request: Request, call_next):
+    # Reject oversized request bodies before processing (S8 hardening)
+    content_length = request.headers.get("content-length")
+    if content_length and int(content_length) > settings.max_webhook_payload_bytes:
+        from fastapi.responses import JSONResponse
+        return JSONResponse(status_code=413, content={"detail": "Request body too large"})
+
     response: Response = await call_next(request)
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["X-Frame-Options"] = "DENY"

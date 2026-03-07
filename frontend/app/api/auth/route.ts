@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { AUTH_COOKIE, CSRF_COOKIE, generateCsrfToken } from '@/lib/auth'
+import { AUTH_COOKIE, CSRF_COOKIE, TENANT_COOKIE, generateCsrfToken } from '@/lib/auth'
 
 const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:3004'
 
@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
 
   // Admin backdoor — static password from env var
   if (password === process.env.LOGIN_PASSWORD) {
-    return setAuthCookie(NextResponse.json({ ok: true }))
+    return setAuthCookie(NextResponse.json({ ok: true }), 'admin')
   }
 
   // Trial access code — validate against backend DB
@@ -20,7 +20,8 @@ export async function POST(req: NextRequest) {
     })
 
     if (res.ok) {
-      return setAuthCookie(NextResponse.json({ ok: true }))
+      const data = await res.json()
+      return setAuthCookie(NextResponse.json({ ok: true }), data.id)
     }
   } catch (err) {
     console.error('[AUTH] Backend validation failed:', err)
@@ -33,10 +34,11 @@ export async function DELETE() {
   const res = NextResponse.json({ ok: true })
   res.cookies.delete(AUTH_COOKIE)
   res.cookies.delete(CSRF_COOKIE)
+  res.cookies.delete(TENANT_COOKIE)
   return res
 }
 
-function setAuthCookie(res: NextResponse): NextResponse {
+function setAuthCookie(res: NextResponse, tenantId: string): NextResponse {
   const isProd = process.env.NODE_ENV === 'production'
   res.cookies.set(AUTH_COOKIE, 'authenticated', {
     httpOnly: true,
@@ -47,6 +49,13 @@ function setAuthCookie(res: NextResponse): NextResponse {
   })
   res.cookies.set(CSRF_COOKIE, generateCsrfToken(), {
     httpOnly: false,
+    secure: isProd,
+    sameSite: 'strict',
+    maxAge: 60 * 60 * 24 * 7,
+    path: '/',
+  })
+  res.cookies.set(TENANT_COOKIE, tenantId, {
+    httpOnly: true,
     secure: isProd,
     sameSite: 'strict',
     maxAge: 60 * 60 * 24 * 7,

@@ -9,6 +9,7 @@ from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
+from app.core.auth import get_tenant_id
 from app.core.database import get_db
 from app.models.case import AuditEvent, BrokerProfile, Case, CaseDocument, FraudFlag
 
@@ -119,7 +120,7 @@ async def _generate_reference(db: AsyncSession) -> str:
 # --- Routes ---
 
 @router.post("", response_model=CaseSummary, status_code=status.HTTP_201_CREATED)
-async def create_case(body: CaseCreate, db: AsyncSession = Depends(get_db)):
+async def create_case(body: CaseCreate, db: AsyncSession = Depends(get_db), tenant_id: uuid.UUID | None = Depends(get_tenant_id)):
     broker = None
     if body.broker_name:
         broker = await _get_or_create_broker(db, body.broker_name, body.broker_abn, body.broker_license)
@@ -132,6 +133,7 @@ async def create_case(body: CaseCreate, db: AsyncSession = Depends(get_db)):
         loan_amount=body.loan_amount,
         property_address=body.property_address,
         broker_id=broker.id if broker else None,
+        tenant_id=tenant_id,
     )
     db.add(case)
     db.add(AuditEvent(case_id=None, event_type="case_created", detail={"reference": reference}))
@@ -156,6 +158,7 @@ async def list_cases(
     limit: int = Query(50, le=200),
     skip: int = 0,
     db: AsyncSession = Depends(get_db),
+    tenant_id: uuid.UUID | None = Depends(get_tenant_id),
 ):
     q = select(Case).options(
         selectinload(Case.broker),
@@ -163,6 +166,8 @@ async def list_cases(
         selectinload(Case.flags),
     ).order_by(Case.submitted_at.desc()).limit(limit).offset(skip)
 
+    if tenant_id:
+        q = q.where(Case.tenant_id == tenant_id)
     if status_filter:
         q = q.where(Case.status == status_filter)
     if risk_level:
@@ -187,16 +192,15 @@ async def list_cases(
 
 
 @router.get("/{case_id}", response_model=CaseDetail)
-async def get_case(case_id: uuid.UUID, db: AsyncSession = Depends(get_db)):
-    result = await db.execute(
-        select(Case)
-        .options(
-            selectinload(Case.broker),
-            selectinload(Case.documents),
-            selectinload(Case.flags),
-        )
-        .where(Case.id == case_id)
-    )
+async def get_case(case_id: uuid.UUID, db: AsyncSession = Depends(get_db), tenant_id: uuid.UUID | None = Depends(get_tenant_id)):
+    q = select(Case).options(
+        selectinload(Case.broker),
+        selectinload(Case.documents),
+        selectinload(Case.flags),
+    ).where(Case.id == case_id)
+    if tenant_id:
+        q = q.where(Case.tenant_id == tenant_id)
+    result = await db.execute(q)
     case = result.scalar_one_or_none()
     if not case:
         raise HTTPException(status_code=404, detail="Case not found")
@@ -217,8 +221,11 @@ async def get_case(case_id: uuid.UUID, db: AsyncSession = Depends(get_db)):
 
 
 @router.patch("/{case_id}")
-async def patch_case(case_id: uuid.UUID, body: CasePatch, db: AsyncSession = Depends(get_db)):
-    result = await db.execute(select(Case).where(Case.id == case_id))
+async def patch_case(case_id: uuid.UUID, body: CasePatch, db: AsyncSession = Depends(get_db), tenant_id: uuid.UUID | None = Depends(get_tenant_id)):
+    q = select(Case).where(Case.id == case_id)
+    if tenant_id:
+        q = q.where(Case.tenant_id == tenant_id)
+    result = await db.execute(q)
     case = result.scalar_one_or_none()
     if not case:
         raise HTTPException(status_code=404, detail="Case not found")
@@ -236,7 +243,15 @@ async def patch_case(case_id: uuid.UUID, body: CasePatch, db: AsyncSession = Dep
 
 
 @router.get("/{case_id}/audit")
-async def get_audit(case_id: uuid.UUID, db: AsyncSession = Depends(get_db)):
+async def get_audit(case_id: uuid.UUID, db: AsyncSession = Depends(get_db), tenant_id: uuid.UUID | None = Depends(get_tenant_id)):
+    # Verify case belongs to tenant before showing audit trail
+    q = select(Case.id).where(Case.id == case_id)
+    if tenant_id:
+        q = q.where(Case.tenant_id == tenant_id)
+    case_check = await db.execute(q)
+    if not case_check.scalar_one_or_none():
+        raise HTTPException(status_code=404, detail="Case not found")
+
     result = await db.execute(
         select(AuditEvent)
         .where(AuditEvent.case_id == case_id)

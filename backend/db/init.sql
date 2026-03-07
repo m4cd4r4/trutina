@@ -32,6 +32,7 @@ CREATE TABLE cases (
     loan_amount        NUMERIC(15, 2),
     property_address   TEXT,
     broker_id          UUID REFERENCES broker_profiles (id),
+    tenant_id          UUID REFERENCES trial_accounts (id),
     status             case_status DEFAULT 'pending',
     risk_score         SMALLINT CHECK (risk_score BETWEEN 0 AND 100),
     risk_level         risk_level,
@@ -89,6 +90,7 @@ CREATE TABLE audit_events (
 CREATE INDEX idx_cases_status ON cases (status);
 CREATE INDEX idx_cases_risk_level ON cases (risk_level);
 CREATE INDEX idx_cases_broker_id ON cases (broker_id);
+CREATE INDEX idx_cases_tenant_id ON cases (tenant_id);
 CREATE INDEX idx_cases_submitted_at ON cases (submitted_at DESC);
 CREATE INDEX idx_flags_case_id ON fraud_flags (case_id);
 CREATE INDEX idx_flags_category ON fraud_flags (category);

@@ -6,6 +6,7 @@ from fastapi import APIRouter, Depends, HTTPException, UploadFile
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.auth import get_tenant_id
 from app.core.config import settings
 from app.core.database import get_db
 from app.models.case import AuditEvent, Case, CaseDocument
@@ -23,8 +24,12 @@ async def upload_documents(
     files: list[UploadFile],
     doc_type: str = "other",
     db: AsyncSession = Depends(get_db),
+    tenant_id: uuid.UUID | None = Depends(get_tenant_id),
 ):
-    result = await db.execute(select(Case).where(Case.id == case_id))
+    q = select(Case).where(Case.id == case_id)
+    if tenant_id:
+        q = q.where(Case.tenant_id == tenant_id)
+    result = await db.execute(q)
     case = result.scalar_one_or_none()
     if not case:
         raise HTTPException(status_code=404, detail="Case not found")
@@ -80,7 +85,14 @@ async def upload_documents(
 
 
 @router.get("/{case_id}/documents")
-async def list_documents(case_id: uuid.UUID, db: AsyncSession = Depends(get_db)):
+async def list_documents(case_id: uuid.UUID, db: AsyncSession = Depends(get_db), tenant_id: uuid.UUID | None = Depends(get_tenant_id)):
+    # Verify case belongs to tenant
+    q = select(Case.id).where(Case.id == case_id)
+    if tenant_id:
+        q = q.where(Case.tenant_id == tenant_id)
+    if not (await db.execute(q)).scalar_one_or_none():
+        raise HTTPException(status_code=404, detail="Case not found")
+
     result = await db.execute(select(CaseDocument).where(CaseDocument.case_id == case_id))
     docs = result.scalars().all()
     return [
