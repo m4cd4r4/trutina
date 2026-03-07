@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { CSRF_COOKIE } from '@/lib/auth'
 
 const BACKEND = process.env.BACKEND_URL || 'http://localhost:3004'
 const API_KEY = process.env.SHIELDAPI_KEY || ''
@@ -8,6 +9,15 @@ async function proxy(req: NextRequest, { params }: { params: Promise<{ path?: st
   const path = pathParts?.join('/') ?? ''
   const qs = req.nextUrl.search
   const url = `${BACKEND}/api/v1/${path}${qs}`
+
+  // CSRF validation on state-changing requests
+  if (req.method !== 'GET' && req.method !== 'HEAD') {
+    const cookieToken = req.cookies.get(CSRF_COOKIE)?.value
+    const headerToken = req.headers.get('x-csrf-token')
+    if (!cookieToken || !headerToken || cookieToken !== headerToken) {
+      return NextResponse.json({ error: 'CSRF token mismatch' }, { status: 403 })
+    }
+  }
 
   const init: RequestInit = {
     method: req.method,

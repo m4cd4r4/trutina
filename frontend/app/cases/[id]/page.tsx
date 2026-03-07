@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { api } from '@/lib/api'
+import { exportCasePDF } from '@/lib/export-pdf'
 import type { CaseDetail, FlagCategory, RiskLevel } from '@/lib/types'
 import RiskBadge from '@/components/ui/RiskBadge'
 import ScoreGauge from '@/components/ui/ScoreGauge'
@@ -218,6 +219,17 @@ export default function CasePage() {
           </Link>
 
           <div className="flex items-center gap-3">
+            {isAnalysed && (
+              <button
+                onClick={() => exportCasePDF(caseData)}
+                className="text-white/50 hover:text-white/80 text-sm font-medium px-4 py-2 rounded-lg border border-white/10 hover:border-white/20 transition flex items-center gap-2"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Export PDF
+              </button>
+            )}
             {isAnalysed && caseData.recommended_action && (
               <span className={`text-xs font-semibold px-3 py-1.5 rounded-lg ${
                 caseData.recommended_action === 'approve' ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/20' :

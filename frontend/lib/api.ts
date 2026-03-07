@@ -3,11 +3,19 @@ import type { Broker, Case, CaseDetail } from './types'
 // All API calls go through the Next.js proxy to keep the API key server-side
 const BASE = ''
 
+function getCsrfToken(): string {
+  if (typeof document === 'undefined') return ''
+  const match = document.cookie.match(/(?:^|;\s*)trutina_csrf=([^;]+)/)
+  return match?.[1] ?? ''
+}
+
 async function req<T>(path: string, init?: RequestInit): Promise<T> {
+  const isWrite = init?.method && init.method !== 'GET' && init.method !== 'HEAD'
   const res = await fetch(`${BASE}${path}`, {
     ...init,
     headers: {
       'Content-Type': 'application/json',
+      ...(isWrite ? { 'X-Csrf-Token': getCsrfToken() } : {}),
       ...(init?.headers ?? {}),
     },
   })
@@ -50,6 +58,7 @@ export const api = {
       files.forEach(f => form.append('files', f))
       const res = await fetch(`/api/proxy/cases/${caseId}/documents?doc_type=${encodeURIComponent(docType)}`, {
         method: 'POST',
+        headers: { 'X-Csrf-Token': getCsrfToken() },
         body: form,
       })
       if (!res.ok) throw new Error(await res.text())
