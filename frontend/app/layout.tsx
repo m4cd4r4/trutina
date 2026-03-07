@@ -78,6 +78,12 @@ export default function RootLayout({
         {children}
         <Analytics />
         <PageTracker />
+        <script src="https://donnacha.app/booking-widget.js" defer />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.addEventListener('load',function(){if(window.BookingWidget)BookingWidget.init({project:'trutina',host:'https://donnacha.app'})})`,
+          }}
+        />
       </body>
     </html>
   );

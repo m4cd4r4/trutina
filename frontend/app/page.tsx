@@ -245,15 +245,15 @@ export default function Landing() {
                   {plan.cta}
                 </button>
               ) : (
-                <a href="mailto:hello@trutina.com.au"
-                  className={`group/cta block text-center font-semibold py-3 rounded-xl transition text-sm ${
+                <button
+                  onClick={() => { if (typeof window !== 'undefined' && (window as any).BookingWidget) (window as any).BookingWidget.open() }}
+                  className={`block w-full text-center font-semibold py-3 rounded-xl transition text-sm cursor-pointer ${
                     plan.highlight
                       ? 'bg-blue-600 hover:bg-blue-500 text-white'
                       : 'border border-white/20 hover:border-white/40 text-white/70 hover:text-white'
                   }`}>
-                  <span className="group-hover/cta:hidden">{plan.cta}</span>
-                  <span className="hidden group-hover/cta:inline text-xs font-normal tracking-wide">hello@trutina.com.au</span>
-                </a>
+                  {plan.cta}
+                </button>
               )}
             </div>
           ))}
