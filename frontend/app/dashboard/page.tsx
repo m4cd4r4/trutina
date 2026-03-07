@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { api } from '@/lib/api'
 import type { Case, CaseStatus, RiskLevel } from '@/lib/types'
 import RiskBadge from '@/components/ui/RiskBadge'
+import DemoTour from '@/components/ui/DemoTour'
 
 const STATUS_OPTIONS: { value: string; label: string }[] = [
   { value: '', label: 'All Statuses' },
@@ -66,17 +67,17 @@ export default function Dashboard() {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-2xl font-bold">Mortgage<span className="text-blue-400">Shield</span></h1>
-            <p className="text-white/40 text-sm mt-0.5">Mortgage Fraud Detection Dashboard</p>
+            <h1 className="text-2xl font-bold">Tru<span className="text-blue-400">tina</span></h1>
+            <p className="text-white/40 text-sm mt-0.5">AI Lending Fraud Detection</p>
           </div>
-          <Link href="/cases/new"
+          <Link href="/cases/new" data-tour="dash-new-case"
             className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-2 rounded-lg transition">
             + New Case
           </Link>
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div data-tour="dash-stats" className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {stats.map(s => (
             <div key={s.label}
               className="rounded-xl border border-white/10 p-4"
@@ -110,7 +111,7 @@ export default function Dashboard() {
 
         {/* Credits banner (normal state) */}
         {(creditsRemaining === null || creditsRemaining > 1) && (
-          <div className="rounded-xl border border-white/10 p-4 mb-8 flex items-center justify-between"
+          <div data-tour="dash-credits" className="rounded-xl border border-white/10 p-4 mb-8 flex items-center justify-between"
             style={{ background: 'rgba(255,255,255,0.03)' }}>
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-blue-600/20 flex items-center justify-center text-blue-400 text-sm">&#9889;</div>
@@ -128,7 +129,7 @@ export default function Dashboard() {
         )}
 
         {/* Filters */}
-        <div className="flex flex-wrap items-center gap-3 mb-4">
+        <div data-tour="dash-filters" className="flex flex-wrap items-center gap-3 mb-4">
           <select
             value={statusFilter}
             onChange={e => setStatusFilter(e.target.value)}
@@ -172,7 +173,7 @@ export default function Dashboard() {
         </div>
 
         {/* Cases table */}
-        <div className="rounded-xl border border-white/10 overflow-hidden"
+        <div data-tour="dash-cases" className="rounded-xl border border-white/10 overflow-hidden"
           style={{ background: 'rgba(255,255,255,0.03)' }}>
           <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
             <h2 className="font-semibold text-white/80">
@@ -234,6 +235,7 @@ export default function Dashboard() {
           )}
         </div>
       </div>
+      <DemoTour page="dashboard" />
     </div>
   )
 }

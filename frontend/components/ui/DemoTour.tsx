@@ -106,8 +106,56 @@ const CASE_LIST_STEPS: DriveStep[] = [
   },
 ]
 
+const DASHBOARD_STEPS: DriveStep[] = [
+  {
+    element: '[data-tour="dash-stats"]',
+    popover: {
+      title: 'Your Overview',
+      description: 'These stats update in real-time as you process cases. Track total submissions, high-risk flags, and your average risk score across all analyses.',
+      side: 'bottom',
+      align: 'center',
+    },
+  },
+  {
+    element: '[data-tour="dash-credits"]',
+    popover: {
+      title: 'Trial Credits',
+      description: 'Your free trial includes 5 document analyses. Each case submission uses one credit. Need more? Contact us to upgrade.',
+      side: 'bottom',
+      align: 'center',
+    },
+  },
+  {
+    element: '[data-tour="dash-filters"]',
+    popover: {
+      title: 'Filter & Search',
+      description: 'Filter cases by status (pending, complete, flagged) or risk level. Use the search bar to find specific applicants or case references.',
+      side: 'bottom',
+      align: 'start',
+    },
+  },
+  {
+    element: '[data-tour="dash-cases"]',
+    popover: {
+      title: 'Case List',
+      description: 'All your submitted cases appear here. Click any case reference to see the full fraud analysis report with risk score, flags, and recommended action.',
+      side: 'top',
+      align: 'center',
+    },
+  },
+  {
+    element: '[data-tour="dash-new-case"]',
+    popover: {
+      title: 'Create a Case',
+      description: 'Ready to analyse a loan application? Click here to upload documents — payslips, bank statements, or ID documents. Analysis takes about 60 seconds.',
+      side: 'left',
+      align: 'center',
+    },
+  },
+]
+
 interface Props {
-  page: 'case-list' | 'case-detail'
+  page: 'case-list' | 'case-detail' | 'dashboard'
 }
 
 export default function DemoTour({ page }: Props) {
@@ -115,7 +163,7 @@ export default function DemoTour({ page }: Props) {
   const storageKey = `trutina-tour-${page}`
 
   const startTour = useCallback(() => {
-    const steps = page === 'case-list' ? CASE_LIST_STEPS : CASE_DETAIL_STEPS
+    const steps = page === 'dashboard' ? DASHBOARD_STEPS : page === 'case-list' ? CASE_LIST_STEPS : CASE_DETAIL_STEPS
     const d = driver({
       showProgress: true,
       steps,
