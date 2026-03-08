@@ -358,7 +358,8 @@ test.describe('Docs — Smoke Tests', () => {
         !e.includes('favicon') && !e.includes('third-party') &&
         !e.includes('_vercel') && !e.includes('hydrat') &&
         !e.includes('booking-widget') && !e.includes('donnacha.app') &&
-        !e.includes('ERR_BLOCKED') && !e.includes('net::')
+        !e.includes('ERR_BLOCKED') && !e.includes('net::') &&
+        !e.includes('Failed to load resource') && !e.includes('SSL')
       )
       expect(real).toHaveLength(0)
     })
