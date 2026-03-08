@@ -2,22 +2,19 @@ import { NextRequest, NextResponse } from 'next/server'
 
 const AUTH_COOKIE = 'trutina_auth'
 
+// Public pages that never require authentication
+const PUBLIC_ROUTES = ['/', '/login', '/demo', '/docs']
+
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
 
-  // Always allow the login page and auth API
-  if (pathname === '/login' || pathname.startsWith('/api/auth')) {
+  // Always allow public pages, auth API, and static demo assets
+  if (
+    pathname.startsWith('/api/auth') ||
+    pathname.startsWith('/demo-docs/') ||
+    PUBLIC_ROUTES.some((r) => pathname === r || pathname.startsWith(r + '/'))
+  ) {
     return NextResponse.next()
-  }
-
-  // Gate defaults to ENABLED — set SITE_GATE=false to explicitly disable
-  const gateDisabled = process.env.SITE_GATE === 'false'
-  if (gateDisabled) {
-    const appRoutes = ['/dashboard', '/cases', '/brokers']
-    const isAppRoute = appRoutes.some(
-      (r) => pathname === r || pathname.startsWith(r + '/'),
-    )
-    if (!isAppRoute) return NextResponse.next()
   }
 
   const auth = req.cookies.get(AUTH_COOKIE)?.value
