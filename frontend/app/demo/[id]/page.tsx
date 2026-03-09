@@ -129,7 +129,7 @@ export default function DemoCaseDetail({ params }: { params: Promise<{ id: strin
           {(Object.entries(grouped) as [FlagCategory, FraudFlag[]][]).map(([category, flags]) => (
             <div key={category}>
               <div className="flex items-center gap-2 mb-3">
-                <CategoryIcon category={category} className="w-5 h-5 text-blue-400" />
+                <CategoryIcon category={category} className="w-5 h-5 text-teal-400" />
                 <span className="text-white/60 text-sm font-medium">{getCategoryLabel(category)}</span>
                 <span className="text-white/20 text-xs">({flags.length})</span>
               </div>
@@ -176,7 +176,7 @@ export default function DemoCaseDetail({ params }: { params: Promise<{ id: strin
             All demo cases
           </Link>
           <Link href="/#pricing"
-            className="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-2.5 rounded-xl transition text-sm">
+            className="bg-teal-600 hover:bg-teal-500 text-white font-semibold px-6 py-2.5 rounded-xl transition text-sm">
             Start free trial
           </Link>
         </div>

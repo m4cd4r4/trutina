@@ -34,7 +34,7 @@ function TitleSlide() {
         <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold leading-tight mb-6">
           Stop AI-Generated Mortgage Fraud
           <br />
-          <span className="text-blue-400">Before It Costs Billions</span>
+          <span className="text-teal-400">Before It Costs Billions</span>
         </h1>
 
         <p className="text-white/50 text-lg sm:text-xl max-w-2xl mx-auto mb-10">
@@ -49,7 +49,7 @@ function TitleSlide() {
             { value: '~95%', label: 'Gross margin' },
           ].map(s => (
             <div key={s.label} className="text-center">
-              <div className="text-2xl sm:text-3xl font-bold text-blue-400">{s.value}</div>
+              <div className="text-2xl sm:text-3xl font-bold text-teal-400">{s.value}</div>
               <div className="text-white/30 text-xs mt-1">{s.label}</div>
             </div>
           ))}
@@ -69,7 +69,7 @@ function ProblemSlide() {
   return (
     <SlideWrapper>
       <div>
-        <div className="text-blue-400 text-sm font-semibold uppercase tracking-wider mb-3">The Problem</div>
+        <div className="text-teal-400 text-sm font-semibold uppercase tracking-wider mb-3">The Problem</div>
         <h2 className="text-3xl sm:text-4xl font-bold mb-3">
           AI tools now generate mortgage documents
           <br className="hidden sm:block" />
@@ -102,7 +102,7 @@ function CostSlide() {
   return (
     <SlideWrapper>
       <div>
-        <div className="text-blue-400 text-sm font-semibold uppercase tracking-wider mb-3">The Cost of Inaction</div>
+        <div className="text-teal-400 text-sm font-semibold uppercase tracking-wider mb-3">The Cost of Inaction</div>
         <h2 className="text-3xl sm:text-4xl font-bold mb-8">
           Every month without detection
           <br />
@@ -168,9 +168,9 @@ function HowItWorksSlide() {
   return (
     <SlideWrapper>
       <div>
-        <div className="text-blue-400 text-sm font-semibold uppercase tracking-wider mb-3">How It Works</div>
+        <div className="text-teal-400 text-sm font-semibold uppercase tracking-wider mb-3">How It Works</div>
         <h2 className="text-3xl sm:text-4xl font-bold mb-3">
-          One API call. <span className="text-blue-400">Instant protection.</span>
+          One API call. <span className="text-teal-400">Instant protection.</span>
         </h2>
         <p className="text-white/50 text-base sm:text-lg mb-10 max-w-2xl">
           Integrate with a single webhook endpoint. Send base64-encoded documents.
@@ -182,7 +182,7 @@ function HowItWorksSlide() {
             <div key={step.num} className="flex-1 flex items-stretch">
               <div className="flex-1 rounded-xl border border-white/10 p-6 text-center"
                 style={{ background: 'rgba(255,255,255,0.04)' }}>
-                <div className="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white text-xl font-bold mx-auto mb-4">
+                <div className="w-12 h-12 rounded-full bg-teal-600 flex items-center justify-center text-white text-xl font-bold mx-auto mb-4">
                   {step.num}
                 </div>
                 <h3 className="font-bold text-lg mb-2">{step.title}</h3>
@@ -199,7 +199,7 @@ function HowItWorksSlide() {
 
         <div className="rounded-xl border border-white/10 p-4 sm:p-5" style={{ background: 'rgba(255,255,255,0.04)' }}>
           <div className="text-xs text-white/30 font-mono mb-2">POST /api/v1/webhooks/ingest</div>
-          <pre className="text-xs sm:text-sm text-blue-300 font-mono overflow-x-auto whitespace-pre">
+          <pre className="text-xs sm:text-sm text-teal-300 font-mono overflow-x-auto whitespace-pre">
 {`{
   "application_id": "APP-2026-00142",
   "documents": [
@@ -216,7 +216,7 @@ function HowItWorksSlide() {
 
 function EngineSlide() {
   const MODULES = [
-    { icon: <Microscope className="w-6 h-6 text-blue-400" />, title: 'PDF Forensics', desc: 'Creator metadata, font fingerprints, modification timestamps, embedded image manipulation. Detects documents made from templates.' },
+    { icon: <Microscope className="w-6 h-6 text-teal-400" />, title: 'PDF Forensics', desc: 'Creator metadata, font fingerprints, modification timestamps, embedded image manipulation. Detects documents made from templates.' },
     { icon: <Bot className="w-6 h-6 text-violet-400" />, title: 'AI Content Detection', desc: 'Claude Sonnet reads each document for AI-generation patterns, terminology anomalies, and field inconsistencies specific to Australian payroll.' },
     { icon: <Link2 className="w-6 h-6 text-emerald-400" />, title: 'Cross-Reference Verification', desc: 'Live ABN Lookup (ABR API), BSB directory validation, ABS wage benchmarks by occupation and region. Invalid employers caught instantly.' },
     { icon: <Calculator className="w-6 h-6 text-amber-400" />, title: 'Math & Date Consistency', desc: 'Deterministic checks: gross minus tax equals net, super at 11.5% SGC, YTD consistent with pay periods since 1 July. Impossible dates flagged.' },
@@ -227,9 +227,9 @@ function EngineSlide() {
   return (
     <SlideWrapper>
       <div>
-        <div className="text-blue-400 text-sm font-semibold uppercase tracking-wider mb-3">Detection Engine</div>
+        <div className="text-teal-400 text-sm font-semibold uppercase tracking-wider mb-3">Detection Engine</div>
         <h2 className="text-3xl sm:text-4xl font-bold mb-8">
-          Six layers. <span className="text-blue-400">Nothing slips through.</span>
+          Six layers. <span className="text-teal-400">Nothing slips through.</span>
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -252,9 +252,9 @@ function DemoSlide() {
   return (
     <SlideWrapper>
       <div>
-        <div className="text-blue-400 text-sm font-semibold uppercase tracking-wider mb-3">Live Demo</div>
+        <div className="text-teal-400 text-sm font-semibold uppercase tracking-wider mb-3">Live Demo</div>
         <h2 className="text-3xl sm:text-4xl font-bold mb-8">
-          See it <span className="text-blue-400">in action</span>
+          See it <span className="text-teal-400">in action</span>
         </h2>
 
         <div className="rounded-2xl border border-white/10 overflow-hidden"
@@ -306,7 +306,7 @@ function DemoSlide() {
                     <span className={`shrink-0 mt-1 w-2 h-2 rounded-full ${
                       flag.severity === 'critical' ? 'bg-red-400' :
                       flag.severity === 'high' ? 'bg-orange-400' :
-                      flag.severity === 'medium' ? 'bg-amber-400' : 'bg-blue-400'
+                      flag.severity === 'medium' ? 'bg-amber-400' : 'bg-teal-400'
                     }`} />
                     <span className="text-white/60">{flag.text}</span>
                   </div>
@@ -321,7 +321,7 @@ function DemoSlide() {
         </div>
 
         <div className="text-center mt-6">
-          <Link href="/demo" className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-3 rounded-xl transition text-sm">
+          <Link href="/demo" className="inline-flex items-center gap-2 bg-teal-600 hover:bg-teal-500 text-white font-semibold px-6 py-3 rounded-xl transition text-sm">
             <Play className="w-4 h-4" />
             Try the interactive demo
           </Link>
@@ -370,22 +370,22 @@ function PricingSlide() {
   return (
     <SlideWrapper>
       <div>
-        <div className="text-blue-400 text-sm font-semibold uppercase tracking-wider mb-3">Pricing</div>
+        <div className="text-teal-400 text-sm font-semibold uppercase tracking-wider mb-3">Pricing</div>
         <h2 className="text-3xl sm:text-4xl font-bold mb-3">
-          Start free. <span className="text-blue-400">Scale when ready.</span>
+          Start free. <span className="text-teal-400">Scale when ready.</span>
         </h2>
         <p className="text-white/50 mb-8 max-w-xl">
-          Also available: <span className="text-blue-400 font-semibold">$15/case</span> pay-as-you-go API.
+          Also available: <span className="text-teal-400 font-semibold">$15/case</span> pay-as-you-go API.
           Claude API cost per case is ~$0.20&ndash;$0.50 &mdash; approximately <span className="text-emerald-400 font-semibold">95% gross margin</span>.
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {PLANS.map(plan => (
             <div key={plan.name}
-              className={`rounded-xl border p-5 flex flex-col ${plan.highlight ? 'border-blue-500/40 bg-blue-500/5' : 'border-white/10'}`}
+              className={`rounded-xl border p-5 flex flex-col ${plan.highlight ? 'border-teal-500/40 bg-teal-500/5' : 'border-white/10'}`}
               style={!plan.highlight ? { background: 'rgba(255,255,255,0.04)' } : {}}>
               {plan.highlight && (
-                <div className="text-xs text-blue-400 font-semibold tracking-wider uppercase mb-1">Most Popular</div>
+                <div className="text-xs text-teal-400 font-semibold tracking-wider uppercase mb-1">Most Popular</div>
               )}
               <div className="text-base font-bold text-white mb-1">{plan.name}</div>
               <div className="flex items-baseline gap-0.5 mb-1">
@@ -412,11 +412,11 @@ function WhyNowSlide() {
   return (
     <SlideWrapper>
       <div className="text-center">
-        <div className="text-blue-400 text-sm font-semibold uppercase tracking-wider mb-3">Why Now</div>
+        <div className="text-teal-400 text-sm font-semibold uppercase tracking-wider mb-3">Why Now</div>
         <h2 className="text-3xl sm:text-4xl font-bold mb-6 max-w-3xl mx-auto">
           The question isn&apos;t whether you need this.
           <br />
-          <span className="text-blue-400">It&apos;s how many fraudulent loans are already on your book.</span>
+          <span className="text-teal-400">It&apos;s how many fraudulent loans are already on your book.</span>
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto mb-10">
@@ -447,7 +447,7 @@ function WhyNowSlide() {
           ))}
         </div>
 
-        <div className="rounded-xl border border-blue-500/20 p-6 max-w-2xl mx-auto"
+        <div className="rounded-xl border border-teal-500/20 p-6 max-w-2xl mx-auto"
           style={{ background: 'rgba(59,130,246,0.05)' }}>
           <p className="text-white/70 text-base sm:text-lg italic leading-relaxed">
             &ldquo;Banks are in an arms race against AI-generated fraud. The tools that create fake documents
@@ -463,9 +463,9 @@ function NextStepsSlide() {
   return (
     <SlideWrapper>
       <div className="text-center">
-        <div className="text-blue-400 text-sm font-semibold uppercase tracking-wider mb-3">Next Steps</div>
+        <div className="text-teal-400 text-sm font-semibold uppercase tracking-wider mb-3">Next Steps</div>
         <h2 className="text-3xl sm:text-4xl font-bold mb-10">
-          Get started <span className="text-blue-400">today</span>
+          Get started <span className="text-teal-400">today</span>
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto mb-10">
@@ -477,13 +477,13 @@ function NextStepsSlide() {
             <div key={item.num}
               className="rounded-xl border border-white/10 p-6"
               style={{ background: 'rgba(255,255,255,0.04)' }}>
-              <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold mx-auto mb-4">
+              <div className="w-10 h-10 rounded-full bg-teal-600 flex items-center justify-center text-white font-bold mx-auto mb-4">
                 {item.num}
               </div>
               <h3 className="font-semibold text-white mb-2">{item.title}</h3>
               <p className="text-white/40 text-sm leading-relaxed mb-4">{item.desc}</p>
               <Link href={item.href}
-                className="inline-flex items-center gap-1.5 text-blue-400 hover:text-blue-300 text-sm font-medium transition">
+                className="inline-flex items-center gap-1.5 text-teal-400 hover:text-teal-300 text-sm font-medium transition">
                 {item.cta} <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
@@ -492,7 +492,7 @@ function NextStepsSlide() {
 
         <div className="space-y-3">
           <a href="mailto:hello@trutina.com.au"
-            className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-8 py-3.5 rounded-xl transition text-lg">
+            className="inline-flex items-center gap-2 bg-teal-600 hover:bg-teal-500 text-white font-semibold px-8 py-3.5 rounded-xl transition text-lg">
             hello@trutina.com.au
           </a>
           <div className="text-white/30 text-sm">
@@ -602,7 +602,7 @@ export default function PitchDeck() {
           <button key={i} onClick={() => goTo(i)}
             className={`transition-all duration-300 rounded-full ${
               i === current
-                ? 'w-6 h-2 bg-blue-400'
+                ? 'w-6 h-2 bg-teal-400'
                 : 'w-2 h-2 bg-white/20 hover:bg-white/40'
             }`}
             aria-label={`Go to slide ${i + 1}`}

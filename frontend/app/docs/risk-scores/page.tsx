@@ -105,8 +105,8 @@ const CATEGORIES = [
     number: 2,
     name: 'AI Content Detection',
     maxPoints: 35,
-    color: 'text-blue-400',
-    borderColor: 'border-blue-400/20',
+    color: 'text-teal-400',
+    borderColor: 'border-teal-400/20',
     checks: [
       'Semantic analysis for AI-generation patterns and phrasing',
       'Terminology anomalies (UK/US terms in Australian documents)',
@@ -318,24 +318,24 @@ export default function RiskScoresGuide() {
           >
             <ul className="space-y-3 text-white/60 text-sm leading-relaxed">
               <li className="flex items-start gap-3">
-                <span className="text-blue-400 font-bold mt-0.5">&bull;</span>
+                <span className="text-teal-400 font-bold mt-0.5">&bull;</span>
                 Scores range from <strong className="text-white">0 to 100</strong>,
                 where 0 is lowest risk and 100 is highest risk.
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-blue-400 font-bold mt-0.5">&bull;</span>
+                <span className="text-teal-400 font-bold mt-0.5">&bull;</span>
                 The composite score is derived from{' '}
                 <strong className="text-white">5 detection categories</strong>,
                 each with its own maximum point cap.
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-blue-400 font-bold mt-0.5">&bull;</span>
+                <span className="text-teal-400 font-bold mt-0.5">&bull;</span>
                 Each flag has a <strong className="text-white">severity</strong>{' '}
                 and <strong className="text-white">weight</strong> that
                 contribute to the category total.
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-blue-400 font-bold mt-0.5">&bull;</span>
+                <span className="text-teal-400 font-bold mt-0.5">&bull;</span>
                 Scores are{' '}
                 <strong className="text-white">deterministic</strong> &mdash;
                 the same inputs always produce the same score.
@@ -582,7 +582,7 @@ export default function RiskScoresGuide() {
                 <div className="text-white/40 text-xs uppercase tracking-wider mb-2">
                   Category score
                 </div>
-                <code className="text-blue-400 text-sm font-mono bg-blue-400/5 px-3 py-2 rounded-lg block">
+                <code className="text-teal-400 text-sm font-mono bg-teal-400/5 px-3 py-2 rounded-lg block">
                   category_score = min(category_cap, sum(flag_weight &times;
                   severity_multiplier))
                 </code>
@@ -591,7 +591,7 @@ export default function RiskScoresGuide() {
                 <div className="text-white/40 text-xs uppercase tracking-wider mb-2">
                   Total score
                 </div>
-                <code className="text-blue-400 text-sm font-mono bg-blue-400/5 px-3 py-2 rounded-lg block">
+                <code className="text-teal-400 text-sm font-mono bg-teal-400/5 px-3 py-2 rounded-lg block">
                   total_score = min(100, sum(all_category_scores))
                 </code>
               </div>
@@ -632,13 +632,13 @@ export default function RiskScoresGuide() {
           >
             <ul className="space-y-3 text-white/60 text-sm leading-relaxed">
               <li className="flex items-start gap-3">
-                <span className="text-blue-400 font-bold mt-0.5">&bull;</span>
+                <span className="text-teal-400 font-bold mt-0.5">&bull;</span>
                 Every analysis includes a{' '}
                 <strong className="text-white">plain-English summary</strong>{' '}
                 written for bank credit officers and compliance teams.
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-blue-400 font-bold mt-0.5">&bull;</span>
+                <span className="text-teal-400 font-bold mt-0.5">&bull;</span>
                 The narrative references{' '}
                 <strong className="text-white">specific evidence</strong> from
                 the documents (e.g., &ldquo;ABN 12345678901 is registered to
@@ -646,7 +646,7 @@ export default function RiskScoresGuide() {
                 Corp&rsquo; as stated on the payslip&rdquo;).
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-blue-400 font-bold mt-0.5">&bull;</span>
+                <span className="text-teal-400 font-bold mt-0.5">&bull;</span>
                 Reports are suitable for inclusion in{' '}
                 <strong className="text-white">
                   APRA/ASIC documentation
@@ -654,7 +654,7 @@ export default function RiskScoresGuide() {
                 and audit trails.
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-blue-400 font-bold mt-0.5">&bull;</span>
+                <span className="text-teal-400 font-bold mt-0.5">&bull;</span>
                 Each flag in the report is expandable, showing the raw field
                 values, expected values, and the confidence level of the
                 detection.

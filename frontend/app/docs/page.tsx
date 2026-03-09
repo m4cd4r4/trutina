@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 const DOCS = [
   {
     href: '/docs/one-pager',
-    icon: <FileText className="w-6 h-6 text-blue-400" />,
+    icon: <FileText className="w-6 h-6 text-teal-400" />,
     title: 'Sales One-Pager',
     desc: 'Leave-behind PDF summarising the fraud problem, what Trutina does, and pricing.',
     audience: 'Prospects, meeting follow-ups',
@@ -102,7 +102,7 @@ export default function DocsHub() {
               <div className="flex items-start gap-4">
                 <div className="shrink-0 mt-0.5">{d.icon}</div>
                 <div>
-                  <h2 className="font-semibold text-white group-hover:text-blue-300 transition mb-1">{d.title}</h2>
+                  <h2 className="font-semibold text-white group-hover:text-teal-300 transition mb-1">{d.title}</h2>
                   <p className="text-white/40 text-sm leading-relaxed mb-2">{d.desc}</p>
                   <span className="text-white/20 text-xs">For: {d.audience}</span>
                 </div>
@@ -112,7 +112,7 @@ export default function DocsHub() {
         </div>
 
         <div className="mt-12 text-center text-white/20 text-sm">
-          Need something else? <a href="mailto:hello@trutina.com.au" className="text-blue-400 hover:text-blue-300">hello@trutina.com.au</a>
+          Need something else? <a href="mailto:hello@trutina.com.au" className="text-teal-400 hover:text-teal-300">hello@trutina.com.au</a>
         </div>
       </div>
     </div>

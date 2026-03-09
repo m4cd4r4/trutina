@@ -67,11 +67,11 @@ export default function Dashboard() {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-2xl font-bold">Tru<span className="text-blue-400">tina</span></h1>
+            <h1 className="text-2xl font-bold">Tru<span className="text-teal-400">tina</span></h1>
             <p className="text-white/40 text-sm mt-0.5">AI Lending Fraud Detection</p>
           </div>
           <Link href="/cases/new" data-tour="dash-new-case"
-            className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-2 rounded-lg transition">
+            className="bg-teal-600 hover:bg-teal-500 text-white text-sm font-semibold px-4 py-2 rounded-lg transition">
             + New Case
           </Link>
         </div>
@@ -114,7 +114,7 @@ export default function Dashboard() {
           <div data-tour="dash-credits" className="rounded-xl border border-white/10 p-4 mb-8 flex items-center justify-between"
             style={{ background: 'rgba(255,255,255,0.03)' }}>
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-blue-600/20 flex items-center justify-center text-blue-400 text-sm">&#9889;</div>
+              <div className="w-8 h-8 rounded-full bg-teal-600/20 flex items-center justify-center text-teal-400 text-sm">&#9889;</div>
               <div>
                 <span className="text-white/70 text-sm">Free trial</span>
                 <span className="text-white/30 text-sm mx-2">&middot;</span>
@@ -122,7 +122,7 @@ export default function Dashboard() {
               </div>
             </div>
             <a href="mailto:hello@trutina.com.au?subject=Trutina%20%E2%80%94%20Interested%20in%20more%20credits"
-              className="text-sm text-blue-400 hover:text-blue-300 font-medium transition whitespace-nowrap">
+              className="text-sm text-teal-400 hover:text-teal-300 font-medium transition whitespace-nowrap">
               Need more? Contact us &rarr;
             </a>
           </div>
@@ -133,7 +133,7 @@ export default function Dashboard() {
           <select
             value={statusFilter}
             onChange={e => setStatusFilter(e.target.value)}
-            className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white/80 text-sm focus:outline-none focus:border-blue-500/50 transition appearance-none cursor-pointer"
+            className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white/80 text-sm focus:outline-none focus:border-teal-500/50 transition appearance-none cursor-pointer"
             style={{ minWidth: '160px' }}
           >
             {STATUS_OPTIONS.map(opt => (
@@ -144,7 +144,7 @@ export default function Dashboard() {
           <select
             value={riskFilter}
             onChange={e => setRiskFilter(e.target.value)}
-            className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white/80 text-sm focus:outline-none focus:border-blue-500/50 transition appearance-none cursor-pointer"
+            className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white/80 text-sm focus:outline-none focus:border-teal-500/50 transition appearance-none cursor-pointer"
             style={{ minWidth: '160px' }}
           >
             {RISK_OPTIONS.map(opt => (
@@ -158,7 +158,7 @@ export default function Dashboard() {
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               placeholder="Search by applicant name or reference..."
-              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white placeholder-white/20 text-sm focus:outline-none focus:border-blue-500/50 transition"
+              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white placeholder-white/20 text-sm focus:outline-none focus:border-teal-500/50 transition"
             />
           </div>
 
@@ -179,7 +179,7 @@ export default function Dashboard() {
             <h2 className="font-semibold text-white/80">
               {statusFilter || riskFilter || searchQuery ? `Filtered Cases (${filteredCases.length})` : 'Recent Cases'}
             </h2>
-            <Link href="/cases" className="text-blue-400 text-sm hover:text-blue-300">View all</Link>
+            <Link href="/cases" className="text-teal-400 text-sm hover:text-teal-300">View all</Link>
           </div>
 
           {loading ? (
@@ -187,7 +187,7 @@ export default function Dashboard() {
           ) : filteredCases.length === 0 ? (
             <div className="p-8 text-center text-white/30">
               {cases.length === 0
-                ? <>No cases yet. <Link href="/cases/new" className="text-blue-400 hover:underline">Create one.</Link></>
+                ? <>No cases yet. <Link href="/cases/new" className="text-teal-400 hover:underline">Create one.</Link></>
                 : 'No cases match the current filters.'}
             </div>
           ) : (
@@ -203,7 +203,7 @@ export default function Dashboard() {
                 {filteredCases.slice(0, 20).map(c => (
                   <tr key={c.id} className="border-b border-white/5 hover:bg-white/[0.02] transition">
                     <td className="px-6 py-3">
-                      <Link href={`/cases/${c.id}`} className="text-blue-400 hover:text-blue-300 font-mono text-xs">
+                      <Link href={`/cases/${c.id}`} className="text-teal-400 hover:text-teal-300 font-mono text-xs">
                         {c.reference}
                       </Link>
                     </td>
@@ -221,7 +221,7 @@ export default function Dashboard() {
                       </div>
                     </td>
                     <td className="px-6 py-3">
-                      <span className={`text-xs ${c.status === 'flagged_for_review' ? 'text-orange-400' : c.status === 'failed' ? 'text-red-400' : c.status === 'processing' ? 'text-blue-400' : 'text-white/50'}`}>
+                      <span className={`text-xs ${c.status === 'flagged_for_review' ? 'text-orange-400' : c.status === 'failed' ? 'text-red-400' : c.status === 'processing' ? 'text-teal-400' : 'text-white/50'}`}>
                         {c.status.replace(/_/g, ' ')}
                       </span>
                     </td>

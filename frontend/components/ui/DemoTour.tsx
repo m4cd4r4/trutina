@@ -196,7 +196,7 @@ export default function DemoTour({ page }: Props) {
       className={`fixed bottom-6 right-6 z-50 rounded-full shadow-lg transition flex items-center gap-2 ${
         hasRun
           ? 'bg-white/10 hover:bg-white/20 text-white/40 hover:text-white/70 text-xs px-3 py-1.5 border border-white/10'
-          : 'bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-5 py-3 animate-pulse'
+          : 'bg-teal-600 hover:bg-teal-500 text-white text-sm font-semibold px-5 py-3 animate-pulse'
       }`}
     >
       <svg className={hasRun ? 'w-3 h-3' : 'w-4 h-4'} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

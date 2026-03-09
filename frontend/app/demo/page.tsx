@@ -74,7 +74,7 @@ export default function DemoPage() {
                       </span>
                     )}
                   </div>
-                  <div className="text-white font-semibold group-hover:text-blue-300 transition">
+                  <div className="text-white font-semibold group-hover:text-teal-300 transition">
                     {c.applicant_name}
                   </div>
                   <div className="text-white/40 text-sm mt-1">{c.headline}</div>
@@ -124,7 +124,7 @@ export default function DemoPage() {
         </div>
 
         {/* CTA */}
-        <div className="text-center mt-16 rounded-2xl border border-blue-500/20 p-10"
+        <div className="text-center mt-16 rounded-2xl border border-teal-500/20 p-10"
           style={{ background: 'rgba(59,130,246,0.05)' }}>
           <h2 className="text-2xl font-bold mb-3">Ready to try with your own documents?</h2>
           <p className="text-white/50 mb-6 max-w-lg mx-auto">
@@ -133,7 +133,7 @@ export default function DemoPage() {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link href="/#pricing"
-              className="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-8 py-3 rounded-xl transition">
+              className="bg-teal-600 hover:bg-teal-500 text-white font-semibold px-8 py-3 rounded-xl transition">
               Start free trial
             </Link>
             <a href="mailto:hello@trutina.com.au"

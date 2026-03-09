@@ -32,7 +32,7 @@ export default function SecurityWhitepaper() {
             color: #111 !important;
             border-color: #ddd !important;
           }
-          .print-page .print-blue { color: #2563eb !important; }
+          .print-page .print-blue { color: #0d9488 !important; }
           .print-page .print-muted { color: #555 !important; }
           .print-page .print-light { color: #888 !important; }
           .print-page .print-card {
@@ -73,7 +73,7 @@ export default function SecurityWhitepaper() {
 
           {/* Executive Summary */}
           <section className="mb-8">
-            <h2 className="text-lg font-bold text-blue-400 print-blue mb-3">Executive Summary</h2>
+            <h2 className="text-lg font-bold text-teal-400 print-blue mb-3">Executive Summary</h2>
             <div className="rounded-xl border border-white/10 p-5 sm:p-6 print-card"
               style={{ background: 'rgba(255,255,255,0.04)' }}>
               <p className="text-white/70 print-muted text-sm leading-relaxed">
@@ -86,28 +86,28 @@ export default function SecurityWhitepaper() {
 
           {/* Architecture Overview */}
           <section className="mb-8">
-            <h2 className="text-lg font-bold text-blue-400 print-blue mb-3">Architecture Overview</h2>
+            <h2 className="text-lg font-bold text-teal-400 print-blue mb-3">Architecture Overview</h2>
             <div className="rounded-xl border border-white/10 p-5 sm:p-6 print-card"
               style={{ background: 'rgba(255,255,255,0.04)' }}>
               <ul className="space-y-3 text-sm text-white/70 print-muted">
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span><strong className="text-white/90">Frontend:</strong> Hosted on Vercel (SOC 2 Type II, ISO 27001)</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span><strong className="text-white/90">Backend:</strong> Hosted on dedicated VPS in Sydney, Australia (data sovereignty)</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span><strong className="text-white/90">AI Engine:</strong> Anthropic Claude Sonnet (SOC 2 Type II compliant)</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span><strong className="text-white/90">Database:</strong> PostgreSQL with encryption at rest (AES-256)</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span><strong className="text-white/90">Jurisdiction:</strong> All data stays within Australian jurisdiction</span>
                 </li>
               </ul>
@@ -116,7 +116,7 @@ export default function SecurityWhitepaper() {
 
           {/* Data Processing */}
           <section className="mb-8">
-            <h2 className="text-lg font-bold text-blue-400 print-blue mb-3">Data Processing</h2>
+            <h2 className="text-lg font-bold text-teal-400 print-blue mb-3">Data Processing</h2>
             <div className="rounded-xl border border-white/10 p-5 sm:p-6 print-card"
               style={{ background: 'rgba(255,255,255,0.04)' }}>
               <ol className="space-y-3 text-sm text-white/70 print-muted list-decimal list-inside">
@@ -131,7 +131,7 @@ export default function SecurityWhitepaper() {
 
           {/* Anthropic AI - No Training Guarantee */}
           <section className="mb-8">
-            <h2 className="text-lg font-bold text-blue-400 print-blue mb-3">Anthropic AI &mdash; No Training Guarantee</h2>
+            <h2 className="text-lg font-bold text-teal-400 print-blue mb-3">Anthropic AI &mdash; No Training Guarantee</h2>
             <div className="rounded-xl border border-emerald-500/20 p-5 sm:p-6"
               style={{ background: 'rgba(16,185,129,0.04)' }}>
               <p className="text-sm font-semibold text-emerald-300 mb-3">Critical for regulated customers:</p>
@@ -154,7 +154,7 @@ export default function SecurityWhitepaper() {
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5" />
-                  <span>Source: <a href="https://www.anthropic.com/policies/privacy" className="text-blue-400 hover:text-blue-300 underline underline-offset-2 transition" target="_blank" rel="noopener noreferrer">anthropic.com/policies/privacy</a></span>
+                  <span>Source: <a href="https://www.anthropic.com/policies/privacy" className="text-teal-400 hover:text-teal-300 underline underline-offset-2 transition" target="_blank" rel="noopener noreferrer">anthropic.com/policies/privacy</a></span>
                 </li>
               </ul>
             </div>
@@ -162,7 +162,7 @@ export default function SecurityWhitepaper() {
 
           {/* Data Retention */}
           <section className="mb-8">
-            <h2 className="text-lg font-bold text-blue-400 print-blue mb-3">Data Retention</h2>
+            <h2 className="text-lg font-bold text-teal-400 print-blue mb-3">Data Retention</h2>
             <div className="rounded-xl border border-white/10 overflow-hidden print-card">
               <table className="w-full text-sm">
                 <thead>
@@ -206,24 +206,24 @@ export default function SecurityWhitepaper() {
 
           {/* Encryption */}
           <section className="mb-8">
-            <h2 className="text-lg font-bold text-blue-400 print-blue mb-3">Encryption</h2>
+            <h2 className="text-lg font-bold text-teal-400 print-blue mb-3">Encryption</h2>
             <div className="rounded-xl border border-white/10 p-5 sm:p-6 print-card"
               style={{ background: 'rgba(255,255,255,0.04)' }}>
               <ul className="space-y-3 text-sm text-white/70 print-muted">
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span><strong className="text-white/90">In transit:</strong> TLS 1.3 for all API communication</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span><strong className="text-white/90">At rest:</strong> AES-256 for database (PostgreSQL). Documents stored on encrypted filesystem.</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span><strong className="text-white/90">API keys:</strong> Hashed with bcrypt. Never stored in plaintext.</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span><strong className="text-white/90">Secrets management:</strong> Environment variables injected at deployment. No hardcoded credentials.</span>
                 </li>
               </ul>
@@ -232,24 +232,24 @@ export default function SecurityWhitepaper() {
 
           {/* Authentication & Access Control */}
           <section className="mb-8">
-            <h2 className="text-lg font-bold text-blue-400 print-blue mb-3">Authentication &amp; Access Control</h2>
+            <h2 className="text-lg font-bold text-teal-400 print-blue mb-3">Authentication &amp; Access Control</h2>
             <div className="rounded-xl border border-white/10 p-5 sm:p-6 print-card"
               style={{ background: 'rgba(255,255,255,0.04)' }}>
               <ul className="space-y-3 text-sm text-white/70 print-muted">
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span><strong className="text-white/90">API access:</strong> Per-customer API keys with rate limiting</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span><strong className="text-white/90">Dashboard:</strong> Password-based authentication with httpOnly secure cookies</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span><strong className="text-white/90">Future:</strong> SSO/SAML integration for Enterprise customers</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span><strong className="text-white/90">RBAC:</strong> Role-based access control planned for multi-user accounts</span>
                 </li>
               </ul>
@@ -258,28 +258,28 @@ export default function SecurityWhitepaper() {
 
           {/* Network Security */}
           <section className="mb-8">
-            <h2 className="text-lg font-bold text-blue-400 print-blue mb-3">Network Security</h2>
+            <h2 className="text-lg font-bold text-teal-400 print-blue mb-3">Network Security</h2>
             <div className="rounded-xl border border-white/10 p-5 sm:p-6 print-card"
               style={{ background: 'rgba(255,255,255,0.04)' }}>
               <ul className="space-y-3 text-sm text-white/70 print-muted">
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Backend runs on dedicated infrastructure (not shared hosting)</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span><strong className="text-white/90">Firewall:</strong> Only ports 443 (HTTPS) and 22 (SSH management) exposed</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span><strong className="text-white/90">DDoS protection:</strong> Via Vercel&apos;s edge network (frontend)</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Rate limiting on all API endpoints</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span><strong className="text-white/90">IP allowlisting:</strong> Available for Enterprise customers</span>
                 </li>
               </ul>
@@ -288,25 +288,25 @@ export default function SecurityWhitepaper() {
 
           {/* Incident Response */}
           <section className="mb-8">
-            <h2 className="text-lg font-bold text-blue-400 print-blue mb-3">Incident Response</h2>
+            <h2 className="text-lg font-bold text-teal-400 print-blue mb-3">Incident Response</h2>
             <div className="rounded-xl border border-white/10 p-5 sm:p-6 print-card"
               style={{ background: 'rgba(255,255,255,0.04)' }}>
               <ul className="space-y-3 text-sm text-white/70 print-muted">
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Automated monitoring with alerting</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Security incidents communicated within 24 hours</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Post-incident review and report provided to affected customers</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
-                  <span>Contact: <a href="mailto:security@trutina.com.au" className="text-blue-400 hover:text-blue-300 transition">security@trutina.com.au</a></span>
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
+                  <span>Contact: <a href="mailto:security@trutina.com.au" className="text-teal-400 hover:text-teal-300 transition">security@trutina.com.au</a></span>
                 </li>
               </ul>
             </div>
@@ -314,7 +314,7 @@ export default function SecurityWhitepaper() {
 
           {/* Third-Party Dependencies */}
           <section className="mb-8">
-            <h2 className="text-lg font-bold text-blue-400 print-blue mb-3">Third-Party Dependencies</h2>
+            <h2 className="text-lg font-bold text-teal-400 print-blue mb-3">Third-Party Dependencies</h2>
             <div className="rounded-xl border border-white/10 overflow-hidden print-card">
               <table className="w-full text-sm">
                 <thead>
@@ -352,32 +352,32 @@ export default function SecurityWhitepaper() {
 
           {/* Privacy Act 1988 Compliance */}
           <section className="mb-8">
-            <h2 className="text-lg font-bold text-blue-400 print-blue mb-3">Privacy Act 1988 Compliance</h2>
+            <h2 className="text-lg font-bold text-teal-400 print-blue mb-3">Privacy Act 1988 Compliance</h2>
             <div className="rounded-xl border border-white/10 p-5 sm:p-6 print-card"
               style={{ background: 'rgba(255,255,255,0.04)' }}>
               <ul className="space-y-3 text-sm text-white/70 print-muted">
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Trutina processes personal information (names, financial data) as a service provider</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Data Processing Agreement available for all customers</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>We collect only what&apos;s necessary for fraud detection</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>No data sold to third parties</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Individuals can request data deletion (right to erasure)</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Australian Privacy Principles (APPs) 1&ndash;13 addressed in full DPA</span>
                 </li>
               </ul>
@@ -386,20 +386,20 @@ export default function SecurityWhitepaper() {
 
           {/* Penetration Testing */}
           <section className="mb-8">
-            <h2 className="text-lg font-bold text-blue-400 print-blue mb-3">Penetration Testing</h2>
+            <h2 className="text-lg font-bold text-teal-400 print-blue mb-3">Penetration Testing</h2>
             <div className="rounded-xl border border-white/10 p-5 sm:p-6 print-card"
               style={{ background: 'rgba(255,255,255,0.04)' }}>
               <ul className="space-y-3 text-sm text-white/70 print-muted">
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Annual third-party penetration testing (report available under NDA)</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Continuous automated vulnerability scanning</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Dependency monitoring for known CVEs</span>
                 </li>
               </ul>
@@ -408,25 +408,25 @@ export default function SecurityWhitepaper() {
 
           {/* Contact */}
           <section className="mb-8">
-            <h2 className="text-lg font-bold text-blue-400 print-blue mb-3">Contact</h2>
+            <h2 className="text-lg font-bold text-teal-400 print-blue mb-3">Contact</h2>
             <div className="rounded-xl border border-white/10 p-5 sm:p-6 print-card"
               style={{ background: 'rgba(255,255,255,0.04)' }}>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
                 <div>
                   <p className="text-white/40 text-xs uppercase tracking-wider mb-1">Security Inquiries</p>
-                  <a href="mailto:security@trutina.com.au" className="text-blue-400 hover:text-blue-300 transition">
+                  <a href="mailto:security@trutina.com.au" className="text-teal-400 hover:text-teal-300 transition">
                     security@trutina.com.au
                   </a>
                 </div>
                 <div>
                   <p className="text-white/40 text-xs uppercase tracking-wider mb-1">Privacy Officer</p>
-                  <a href="mailto:privacy@trutina.com.au" className="text-blue-400 hover:text-blue-300 transition">
+                  <a href="mailto:privacy@trutina.com.au" className="text-teal-400 hover:text-teal-300 transition">
                     privacy@trutina.com.au
                   </a>
                 </div>
                 <div>
                   <p className="text-white/40 text-xs uppercase tracking-wider mb-1">General</p>
-                  <a href="mailto:hello@trutina.com.au" className="text-blue-400 hover:text-blue-300 transition">
+                  <a href="mailto:hello@trutina.com.au" className="text-teal-400 hover:text-teal-300 transition">
                     hello@trutina.com.au
                   </a>
                 </div>

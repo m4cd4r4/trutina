@@ -125,14 +125,14 @@ export default function NewCase() {
                   value={(form as any)[field.key]}
                   onChange={e => setForm(prev => ({ ...prev, [field.key]: e.target.value }))}
                   placeholder={field.placeholder}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-white placeholder-white/20 focus:outline-none focus:border-blue-500/50 transition text-sm"
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-white placeholder-white/20 focus:outline-none focus:border-teal-500/50 transition text-sm"
                 />
               </div>
             ))}
 
             {error && <p className="text-red-400 text-sm">{error}</p>}
             <button type="submit" disabled={loading}
-              className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition">
+              className="w-full bg-teal-600 hover:bg-teal-500 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition">
               {loading ? 'Creating...' : 'Create Case & Upload Documents →'}
             </button>
           </form>
@@ -148,7 +148,7 @@ export default function NewCase() {
             </div>
 
             {/* Dropzone */}
-            <label className="block border-2 border-dashed border-white/20 rounded-xl p-8 text-center cursor-pointer hover:border-blue-500/50 transition">
+            <label className="block border-2 border-dashed border-white/20 rounded-xl p-8 text-center cursor-pointer hover:border-teal-500/50 transition">
               <input type="file" multiple accept=".pdf,.jpg,.jpeg,.png" className="hidden" onChange={addFile} />
               <div className="text-white/40 text-sm">Drop PDF/image files here or click to browse</div>
               <div className="text-white/20 text-xs mt-1">Max 20MB per file</div>
@@ -177,16 +177,16 @@ export default function NewCase() {
             )}
 
             {/* Credit quota note */}
-            <div className="flex items-start gap-2.5 rounded-lg border border-blue-500/15 px-4 py-3"
+            <div className="flex items-start gap-2.5 rounded-lg border border-teal-500/15 px-4 py-3"
               style={{ background: 'rgba(59,130,246,0.06)' }}>
-              <span className="text-blue-400 text-sm mt-0.5">&#9889;</span>
+              <span className="text-teal-400 text-sm mt-0.5">&#9889;</span>
               <div className="text-xs leading-relaxed">
-                <span className="text-blue-300/80">Each analysis uses 1 credit from your trial.</span>
+                <span className="text-teal-300/80">Each analysis uses 1 credit from your trial.</span>
                 <span className="text-white/30 mx-1">&middot;</span>
                 <span className="text-white/40">Free trial includes 5 analyses.</span>
                 <span className="text-white/30 mx-1">&middot;</span>
                 <a href="mailto:hello@trutina.com.au?subject=Trutina%20%E2%80%94%20Credit%20Inquiry"
-                  className="text-blue-400 hover:text-blue-300 transition">
+                  className="text-teal-400 hover:text-teal-300 transition">
                   Need more?
                 </a>
               </div>
@@ -197,7 +197,7 @@ export default function NewCase() {
             <button
               onClick={handleUploadAndAnalyse}
               disabled={uploads.length === 0 || loading}
-              className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition"
+              className="w-full bg-teal-600 hover:bg-teal-500 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition"
             >
               {loading ? 'Uploading...' : `Analyse ${uploads.length} document${uploads.length !== 1 ? 's' : ''} →`}
             </button>
@@ -208,7 +208,7 @@ export default function NewCase() {
         {step === 'analysing' && (
           <div className="rounded-xl border border-white/10 p-12 text-center"
             style={{ background: 'rgba(255,255,255,0.04)' }}>
-            <ScanSearch className="w-10 h-10 text-blue-400 mx-auto mb-4 animate-pulse" />
+            <ScanSearch className="w-10 h-10 text-teal-400 mx-auto mb-4 animate-pulse" />
             <h2 className="text-lg font-semibold text-white mb-2">Analysing Documents</h2>
             <p className="text-white/40 text-sm">Running PDF forensics, AI detection, and cross-reference checks…</p>
             <p className="text-white/20 text-xs mt-2">This takes 15–45 seconds. Redirecting when complete.</p>

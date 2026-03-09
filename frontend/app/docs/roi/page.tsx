@@ -50,7 +50,7 @@ function SliderInput({ label, value, min, max, step, format, onChange }: SliderI
         onChange={e => onChange(Number(e.target.value))}
         className="w-full h-1.5 rounded-full appearance-none cursor-pointer"
         style={{
-          background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${((value - min) / (max - min)) * 100}%, rgba(255,255,255,0.1) ${((value - min) / (max - min)) * 100}%, rgba(255,255,255,0.1) 100%)`,
+          background: `linear-gradient(to right, #0d9488 0%, #0d9488 ${((value - min) / (max - min)) * 100}%, rgba(255,255,255,0.1) ${((value - min) / (max - min)) * 100}%, rgba(255,255,255,0.1) 100%)`,
         }}
       />
       <div className="flex justify-between mt-1">
@@ -97,7 +97,7 @@ export default function ROICalculator() {
           width: 16px;
           height: 16px;
           border-radius: 50%;
-          background: #3b82f6;
+          background: #0d9488;
           border: 2px solid #1e1b4b;
           cursor: pointer;
         }
@@ -105,7 +105,7 @@ export default function ROICalculator() {
           width: 16px;
           height: 16px;
           border-radius: 50%;
-          background: #3b82f6;
+          background: #0d9488;
           border: 2px solid #1e1b4b;
           cursor: pointer;
         }
@@ -209,7 +209,7 @@ export default function ROICalculator() {
                   style={{ background: 'rgba(255,255,255,0.04)' }}
                 >
                   <p className="text-xs uppercase tracking-wider text-white/40 mb-2">Annual Savings</p>
-                  <p className="text-2xl sm:text-3xl font-bold text-blue-400">{formatAUD(results.annualSavings)}</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-teal-400">{formatAUD(results.annualSavings)}</p>
                   <p className="text-[11px] text-white/30 mt-1">
                     After Trutina cost ({results.plan.monthly})
                   </p>
@@ -265,7 +265,7 @@ export default function ROICalculator() {
                     </tr>
                     <tr>
                       <td className="py-2.5 text-white/80 font-semibold">Net annual savings</td>
-                      <td className="py-2.5 text-right font-mono text-blue-400 font-semibold">{formatAUDFull(results.annualSavings)}</td>
+                      <td className="py-2.5 text-right font-mono text-teal-400 font-semibold">{formatAUDFull(results.annualSavings)}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -273,16 +273,16 @@ export default function ROICalculator() {
 
               {/* Trutina Plan */}
               <div
-                className="rounded-xl border border-blue-500/20 p-5 flex items-center justify-between"
+                className="rounded-xl border border-teal-500/20 p-5 flex items-center justify-between"
                 style={{ background: 'rgba(59,130,246,0.06)' }}
               >
                 <div>
                   <p className="text-sm text-white/60">Recommended plan for {volume.toLocaleString()} apps/mo</p>
-                  <p className="text-lg font-bold text-blue-400">{results.plan.name} &mdash; {results.plan.monthly}</p>
+                  <p className="text-lg font-bold text-teal-400">{results.plan.name} &mdash; {results.plan.monthly}</p>
                 </div>
                 <Link
                   href="/#pricing"
-                  className="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 rounded-lg text-sm font-semibold transition whitespace-nowrap no-print"
+                  className="px-5 py-2.5 bg-teal-600 hover:bg-teal-500 rounded-lg text-sm font-semibold transition whitespace-nowrap no-print"
                 >
                   View plans
                 </Link>
@@ -327,7 +327,7 @@ export default function ROICalculator() {
             <p className="text-white/50 text-sm mb-5">Start with a free trial &mdash; 5 documents, full analysis, no credit card.</p>
             <Link
               href="/#pricing"
-              className="inline-block px-8 py-3 bg-blue-600 hover:bg-blue-500 rounded-lg text-sm font-semibold transition"
+              className="inline-block px-8 py-3 bg-teal-600 hover:bg-teal-500 rounded-lg text-sm font-semibold transition"
             >
               Get started
             </Link>
@@ -337,7 +337,7 @@ export default function ROICalculator() {
           <div className="mt-12 pt-6 border-t border-white/5 text-center text-white/20 text-xs">
             <p>&copy; {new Date().getFullYear()} Trutina &mdash; AI Lending Fraud Detection</p>
             <p className="mt-1">
-              Questions? <a href="mailto:hello@trutina.com.au" className="text-blue-400 hover:text-blue-300">hello@trutina.com.au</a>
+              Questions? <a href="mailto:hello@trutina.com.au" className="text-teal-400 hover:text-teal-300">hello@trutina.com.au</a>
             </p>
           </div>
         </div>

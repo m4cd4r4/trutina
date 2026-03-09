@@ -32,7 +32,7 @@ export default function ComplianceBrief() {
             color: #111 !important;
             border-color: #ddd !important;
           }
-          .print-page .print-blue { color: #2563eb !important; }
+          .print-page .print-blue { color: #0d9488 !important; }
           .print-page .print-muted { color: #555 !important; }
           .print-page .print-light { color: #888 !important; }
           .print-page .print-card {
@@ -41,7 +41,7 @@ export default function ComplianceBrief() {
           }
           .print-page .print-highlight {
             background: #eff6ff !important;
-            border: 2px solid #2563eb !important;
+            border: 2px solid #0d9488 !important;
           }
           .print-page a { text-decoration: none !important; }
         }
@@ -77,7 +77,7 @@ export default function ComplianceBrief() {
 
           {/* Purpose */}
           <section className="mb-8">
-            <h2 className="text-lg font-bold text-blue-400 print-blue mb-3">Purpose</h2>
+            <h2 className="text-lg font-bold text-teal-400 print-blue mb-3">Purpose</h2>
             <div className="rounded-xl border border-white/10 p-5 sm:p-6 print-card"
               style={{ background: 'rgba(255,255,255,0.04)' }}>
               <p className="text-white/70 print-muted text-sm leading-relaxed">
@@ -89,7 +89,7 @@ export default function ComplianceBrief() {
 
           {/* CPS 220 */}
           <section className="mb-8">
-            <h2 className="text-lg font-bold text-blue-400 print-blue mb-3">APRA CPS 220 &mdash; Risk Management</h2>
+            <h2 className="text-lg font-bold text-teal-400 print-blue mb-3">APRA CPS 220 &mdash; Risk Management</h2>
             <div className="rounded-xl border border-white/10 p-5 sm:p-6 print-card"
               style={{ background: 'rgba(255,255,255,0.04)' }}>
               <div className="rounded-lg border border-white/5 p-4 mb-4" style={{ background: 'rgba(255,255,255,0.03)' }}>
@@ -101,23 +101,23 @@ export default function ComplianceBrief() {
               <p className="text-white/40 text-xs uppercase tracking-wider mb-3">How Trutina helps</p>
               <ul className="space-y-2.5 text-sm text-white/70 print-muted">
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Automated fraud risk detection across 100% of applications (vs manual sampling)</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Quantified risk scoring (0&ndash;100) provides measurable risk metrics</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Continuous broker risk profiling identifies systemic risks</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Audit trail documents all risk assessments for prudential review</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Dashboard provides real-time portfolio risk visibility</span>
                 </li>
               </ul>
@@ -126,7 +126,7 @@ export default function ComplianceBrief() {
 
           {/* CPS 234 */}
           <section className="mb-8">
-            <h2 className="text-lg font-bold text-blue-400 print-blue mb-3">APRA CPS 234 &mdash; Information Security</h2>
+            <h2 className="text-lg font-bold text-teal-400 print-blue mb-3">APRA CPS 234 &mdash; Information Security</h2>
             <div className="rounded-xl border border-white/10 p-5 sm:p-6 print-card"
               style={{ background: 'rgba(255,255,255,0.04)' }}>
               <div className="rounded-lg border border-white/5 p-4 mb-4" style={{ background: 'rgba(255,255,255,0.03)' }}>
@@ -138,28 +138,28 @@ export default function ComplianceBrief() {
               <p className="text-white/40 text-xs uppercase tracking-wider mb-3">How Trutina helps</p>
               <ul className="space-y-2.5 text-sm text-white/70 print-muted">
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Detects AI-generated documents &mdash; a new and rapidly evolving threat vector</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>PDF forensics identifies document manipulation (metadata, font, timestamp analysis)</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Cross-references against authoritative data sources (ABN Register, BSB Directory)</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>All data encrypted in transit (TLS 1.3) and at rest (AES-256)</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Australian data sovereignty &mdash; all processing in Australia</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
-                  <span>See <Link href="/docs/security" className="text-blue-400 hover:text-blue-300 underline underline-offset-2 transition">Security &amp; Privacy Whitepaper</Link> for full details</span>
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
+                  <span>See <Link href="/docs/security" className="text-teal-400 hover:text-teal-300 underline underline-offset-2 transition">Security &amp; Privacy Whitepaper</Link> for full details</span>
                 </li>
               </ul>
             </div>
@@ -167,7 +167,7 @@ export default function ComplianceBrief() {
 
           {/* CPG 235 */}
           <section className="mb-8">
-            <h2 className="text-lg font-bold text-blue-400 print-blue mb-3">APRA CPG 235 &mdash; Managing Data Risk</h2>
+            <h2 className="text-lg font-bold text-teal-400 print-blue mb-3">APRA CPG 235 &mdash; Managing Data Risk</h2>
             <div className="rounded-xl border border-white/10 p-5 sm:p-6 print-card"
               style={{ background: 'rgba(255,255,255,0.04)' }}>
               <div className="rounded-lg border border-white/5 p-4 mb-4" style={{ background: 'rgba(255,255,255,0.03)' }}>
@@ -179,19 +179,19 @@ export default function ComplianceBrief() {
               <p className="text-white/40 text-xs uppercase tracking-wider mb-3">How Trutina helps</p>
               <ul className="space-y-2.5 text-sm text-white/70 print-muted">
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Validates document data against external authoritative sources</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Consistency checks ensure internal data integrity (math verification)</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Flags discrepancies between documents (payslip income vs bank statement credits)</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Structured data extraction with confidence scoring</span>
                 </li>
               </ul>
@@ -200,7 +200,7 @@ export default function ComplianceBrief() {
 
           {/* RG 209 */}
           <section className="mb-8">
-            <h2 className="text-lg font-bold text-blue-400 print-blue mb-3">ASIC RG 209 &mdash; Responsible Lending Conduct</h2>
+            <h2 className="text-lg font-bold text-teal-400 print-blue mb-3">ASIC RG 209 &mdash; Responsible Lending Conduct</h2>
             <div className="rounded-xl border border-white/10 p-5 sm:p-6 print-card"
               style={{ background: 'rgba(255,255,255,0.04)' }}>
               <div className="rounded-lg border border-white/5 p-4 mb-4" style={{ background: 'rgba(255,255,255,0.03)' }}>
@@ -212,23 +212,23 @@ export default function ComplianceBrief() {
               <p className="text-white/40 text-xs uppercase tracking-wider mb-3">How Trutina helps</p>
               <ul className="space-y-2.5 text-sm text-white/70 print-muted">
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Automated verification of income documentation (payslips, bank statements)</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Cross-references employer ABN against Australian Business Register</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Validates salary against ABS occupational benchmarks</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Detects forged or AI-generated evidence of financial capacity</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Provides documented verification trail for regulatory audit</span>
                 </li>
               </ul>
@@ -237,7 +237,7 @@ export default function ComplianceBrief() {
 
           {/* ASIC Report 780 */}
           <section className="mb-8">
-            <h2 className="text-lg font-bold text-blue-400 print-blue mb-3">ASIC Report 780 &mdash; Mortgage Fraud (2024)</h2>
+            <h2 className="text-lg font-bold text-teal-400 print-blue mb-3">ASIC Report 780 &mdash; Mortgage Fraud (2024)</h2>
             <div className="rounded-xl border border-amber-500/20 p-5 sm:p-6"
               style={{ background: 'rgba(245,158,11,0.04)' }}>
               <div className="rounded-lg border border-white/5 p-4 mb-4" style={{ background: 'rgba(255,255,255,0.03)' }}>
@@ -270,7 +270,7 @@ export default function ComplianceBrief() {
 
           {/* Explainability */}
           <section className="mb-8">
-            <h2 className="text-lg font-bold text-blue-400 print-blue mb-3">Explainability Requirement</h2>
+            <h2 className="text-lg font-bold text-teal-400 print-blue mb-3">Explainability Requirement</h2>
             <div className="rounded-xl border border-emerald-500/20 p-5 sm:p-6"
               style={{ background: 'rgba(16,185,129,0.04)' }}>
               <div className="rounded-lg border border-white/5 p-4 mb-4" style={{ background: 'rgba(255,255,255,0.03)' }}>
@@ -307,24 +307,24 @@ export default function ComplianceBrief() {
 
           {/* Record Keeping */}
           <section className="mb-8">
-            <h2 className="text-lg font-bold text-blue-400 print-blue mb-3">Record Keeping</h2>
+            <h2 className="text-lg font-bold text-teal-400 print-blue mb-3">Record Keeping</h2>
             <div className="rounded-xl border border-white/10 p-5 sm:p-6 print-card"
               style={{ background: 'rgba(255,255,255,0.04)' }}>
               <ul className="space-y-2.5 text-sm text-white/70 print-muted">
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Risk scores and flags retained for 7 years (APRA requirement)</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Immutable audit log of all actions (who, what, when)</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Full document analysis history available for regulatory review</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5" />
+                  <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5" />
                   <span>Export capability for APRA/ASIC information requests</span>
                 </li>
               </ul>
@@ -333,7 +333,7 @@ export default function ComplianceBrief() {
 
           {/* Regulatory Mapping Summary */}
           <section className="mb-8">
-            <h2 className="text-lg font-bold text-blue-400 print-blue mb-3">Regulatory Mapping Summary</h2>
+            <h2 className="text-lg font-bold text-teal-400 print-blue mb-3">Regulatory Mapping Summary</h2>
             <div className="rounded-xl border border-white/10 overflow-hidden print-card">
               <table className="w-full text-sm">
                 <thead>
@@ -376,8 +376,8 @@ export default function ComplianceBrief() {
 
           {/* Conclusion */}
           <section className="mb-8">
-            <h2 className="text-lg font-bold text-blue-400 print-blue mb-3">Conclusion</h2>
-            <div className="rounded-xl border border-blue-500/20 p-5 sm:p-6 print-highlight"
+            <h2 className="text-lg font-bold text-teal-400 print-blue mb-3">Conclusion</h2>
+            <div className="rounded-xl border border-teal-500/20 p-5 sm:p-6 print-highlight"
               style={{ background: 'rgba(59,130,246,0.04)' }}>
               <p className="text-white/70 print-muted text-sm leading-relaxed">
                 Trutina provides Australian lenders with a purpose-built fraud detection capability that directly
@@ -390,25 +390,25 @@ export default function ComplianceBrief() {
 
           {/* Contact */}
           <section className="mb-8">
-            <h2 className="text-lg font-bold text-blue-400 print-blue mb-3">Contact</h2>
+            <h2 className="text-lg font-bold text-teal-400 print-blue mb-3">Contact</h2>
             <div className="rounded-xl border border-white/10 p-5 sm:p-6 print-card"
               style={{ background: 'rgba(255,255,255,0.04)' }}>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
                 <div>
                   <p className="text-white/40 text-xs uppercase tracking-wider mb-1">Compliance Inquiries</p>
-                  <a href="mailto:compliance@trutina.com.au" className="text-blue-400 hover:text-blue-300 transition">
+                  <a href="mailto:compliance@trutina.com.au" className="text-teal-400 hover:text-teal-300 transition">
                     compliance@trutina.com.au
                   </a>
                 </div>
                 <div>
                   <p className="text-white/40 text-xs uppercase tracking-wider mb-1">General</p>
-                  <a href="mailto:hello@trutina.com.au" className="text-blue-400 hover:text-blue-300 transition">
+                  <a href="mailto:hello@trutina.com.au" className="text-teal-400 hover:text-teal-300 transition">
                     hello@trutina.com.au
                   </a>
                 </div>
                 <div>
                   <p className="text-white/40 text-xs uppercase tracking-wider mb-1">Website</p>
-                  <a href="https://trutina.com.au" className="text-blue-400 hover:text-blue-300 transition">
+                  <a href="https://trutina.com.au" className="text-teal-400 hover:text-teal-300 transition">
                     trutina.com.au
                   </a>
                 </div>

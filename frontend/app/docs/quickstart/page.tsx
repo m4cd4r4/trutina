@@ -60,7 +60,7 @@ const STEPS = [
     ],
     statuses: [
       { status: 'Pending', desc: 'Case created, awaiting analysis', color: 'text-white/50' },
-      { status: 'Processing', desc: 'Documents being analysed by 5 detection modules', color: 'text-blue-400' },
+      { status: 'Processing', desc: 'Documents being analysed by 5 detection modules', color: 'text-teal-400' },
       { status: 'Complete', desc: 'Risk score and report ready for review', color: 'text-emerald-400' },
     ],
     closing: 'You\u0027ll see the risk score gauge and flags when analysis is complete.',
@@ -182,7 +182,7 @@ export default function QuickStartGuide() {
             <div key={step.number} className="flex gap-4 sm:gap-6">
               {/* Step number circle */}
               <div className="shrink-0">
-                <div className="flex items-center justify-center w-10 h-10 rounded-full border-2 border-blue-400/40 bg-blue-400/10 text-blue-400 font-bold text-sm">
+                <div className="flex items-center justify-center w-10 h-10 rounded-full border-2 border-teal-400/40 bg-teal-400/10 text-teal-400 font-bold text-sm">
                   {step.number}
                 </div>
                 {step.number < STEPS.length && (
@@ -204,7 +204,7 @@ export default function QuickStartGuide() {
                         key={line}
                         className="text-white/60 text-sm leading-relaxed flex items-start gap-2"
                       >
-                        <span className="text-blue-400 mt-0.5">&bull;</span>
+                        <span className="text-teal-400 mt-0.5">&bull;</span>
                         {line}
                       </li>
                     ))}
@@ -369,10 +369,10 @@ export default function QuickStartGuide() {
                 {/* Tip box */}
                 {step.tip && (
                   <div
-                    className="rounded-lg border border-blue-400/20 px-4 py-3 mt-3"
+                    className="rounded-lg border border-teal-400/20 px-4 py-3 mt-3"
                     style={{ background: 'rgba(96,165,250,0.05)' }}
                   >
-                    <div className="text-blue-400 text-xs font-semibold uppercase tracking-wider mb-1">
+                    <div className="text-teal-400 text-xs font-semibold uppercase tracking-wider mb-1">
                       Tip
                     </div>
                     <div className="text-white/50 text-sm">
@@ -382,7 +382,7 @@ export default function QuickStartGuide() {
                           {' '}
                           <Link
                             href={step.tipLink}
-                            className="text-blue-400 hover:text-blue-300 underline transition"
+                            className="text-teal-400 hover:text-teal-300 underline transition"
                           >
                             View guide &rarr;
                           </Link>
@@ -424,7 +424,7 @@ export default function QuickStartGuide() {
               See the{' '}
               <Link
                 href="/docs/integration"
-                className="text-blue-400 hover:text-blue-300 underline transition"
+                className="text-teal-400 hover:text-teal-300 underline transition"
               >
                 Integration Guide
               </Link>{' '}
@@ -444,7 +444,7 @@ export default function QuickStartGuide() {
                 className="flex items-center gap-3 rounded-lg border border-white/10 px-4 py-3 hover:border-white/20 transition group"
                 style={{ background: 'rgba(255,255,255,0.04)' }}
               >
-                <span className="text-blue-400 group-hover:text-blue-300 transition">
+                <span className="text-teal-400 group-hover:text-teal-300 transition">
                   &rarr;
                 </span>
                 <span className="text-white/60 text-sm group-hover:text-white/80 transition">
@@ -456,12 +456,12 @@ export default function QuickStartGuide() {
               className="flex items-center gap-3 rounded-lg border border-white/10 px-4 py-3"
               style={{ background: 'rgba(255,255,255,0.04)' }}
             >
-              <span className="text-blue-400">&rarr;</span>
+              <span className="text-teal-400">&rarr;</span>
               <span className="text-white/60 text-sm">
                 Contact{' '}
                 <a
                   href="mailto:hello@trutina.com.au"
-                  className="text-blue-400 hover:text-blue-300 underline transition"
+                  className="text-teal-400 hover:text-teal-300 underline transition"
                 >
                   hello@trutina.com.au
                 </a>{' '}

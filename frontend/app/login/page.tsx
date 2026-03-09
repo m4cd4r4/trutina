@@ -82,7 +82,7 @@ export default function LoginPage() {
                   type="password"
                   value={password}
                   onChange={e => setPassword(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-blue-500/50 focus:bg-white/8 transition"
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-teal-500/50 focus:bg-white/8 transition"
                   placeholder="TRUT-XXXX-XXXX"
                   autoFocus
                 />
@@ -93,7 +93,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition"
+                className="w-full bg-teal-600 hover:bg-teal-500 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition"
               >
                 {loading ? 'Signing in...' : 'Sign in'}
               </button>
@@ -106,7 +106,7 @@ export default function LoginPage() {
                 >
                   Forgot your code?
                 </button>
-                <Link href="/?trial=1" className="text-blue-400 hover:text-blue-300 transition font-medium">
+                <Link href="/?trial=1" className="text-teal-400 hover:text-teal-300 transition font-medium">
                   Start free trial
                 </Link>
               </div>
@@ -125,7 +125,7 @@ export default function LoginPage() {
                 </p>
                 <button
                   onClick={() => { setShowResend(false); setResendStatus('idle') }}
-                  className="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 rounded-lg transition"
+                  className="w-full bg-teal-600 hover:bg-teal-500 text-white font-semibold py-3 rounded-lg transition"
                 >
                   Back to sign in
                 </button>
@@ -142,7 +142,7 @@ export default function LoginPage() {
                     type="email"
                     value={resendEmail}
                     onChange={e => setResendEmail(e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-blue-500/50 focus:bg-white/8 transition"
+                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-teal-500/50 focus:bg-white/8 transition"
                     placeholder="you@company.com"
                     autoFocus
                     required
@@ -154,7 +154,7 @@ export default function LoginPage() {
                 <button
                   type="submit"
                   disabled={resendStatus === 'loading'}
-                  className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition"
+                  className="w-full bg-teal-600 hover:bg-teal-500 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition"
                 >
                   {resendStatus === 'loading' ? 'Sending...' : 'Resend my code'}
                 </button>

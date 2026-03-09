@@ -140,7 +140,7 @@ export default function CasePage() {
             <div className="flex flex-wrap gap-2">
               {caseData.documents.map(d => (
                 <div key={d.id} className="bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-xs">
-                  <span className="text-blue-400">{d.doc_type.replace(/_/g, ' ')}</span>
+                  <span className="text-teal-400">{d.doc_type.replace(/_/g, ' ')}</span>
                   <span className="text-white/40 ml-2">{d.filename}</span>
                   <span className={`ml-2 ${d.status === 'processed' ? 'text-emerald-400' : 'text-white/30'}`}>
                     {d.status}
@@ -241,7 +241,7 @@ export default function CasePage() {
             )}
 
             <Link href="/cases/new"
-              className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-2 rounded-lg transition">
+              className="bg-teal-600 hover:bg-teal-500 text-white text-sm font-semibold px-4 py-2 rounded-lg transition">
               + New Case
             </Link>
           </div>

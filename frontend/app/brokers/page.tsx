@@ -45,7 +45,7 @@ export default function BrokersPage() {
                   contentStyle={{ background: '#1a1a2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, color: '#fff' }}
                   labelStyle={{ color: 'rgba(255,255,255,0.7)' }}
                 />
-                <Bar dataKey="score" fill="#3b82f6" radius={[4, 4, 0, 0]} name="Risk Score" />
+                <Bar dataKey="score" fill="#0d9488" radius={[4, 4, 0, 0]} name="Risk Score" />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -81,7 +81,7 @@ export default function BrokersPage() {
                   return (
                     <tr key={b.id} className="border-b border-white/5 hover:bg-white/[0.02] transition">
                       <td className="px-5 py-3">
-                        <Link href={`/brokers/${b.id}`} className="text-blue-400 hover:text-blue-300">
+                        <Link href={`/brokers/${b.id}`} className="text-teal-400 hover:text-teal-300">
                           {b.broker_name}
                         </Link>
                         {b.broker_license && (

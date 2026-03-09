@@ -152,7 +152,7 @@ function SectionHeading({ id, children }: { id: string; children: React.ReactNod
 function InlineCode({ children }: { children: React.ReactNode }) {
   return (
     <code
-      className="text-[13px] font-mono px-1.5 py-0.5 rounded text-blue-300"
+      className="text-[13px] font-mono px-1.5 py-0.5 rounded text-teal-300"
       style={{ background: 'rgba(59,130,246,0.1)' }}
     >
       {children}
@@ -220,7 +220,7 @@ export default function IntegrationGuide() {
                 ['webhooks', 'Webhooks'],
                 ['support', 'Support'],
               ].map(([id, label]) => (
-                <a key={id} href={`#${id}`} className="text-blue-400 hover:text-blue-300 transition">
+                <a key={id} href={`#${id}`} className="text-teal-400 hover:text-teal-300 transition">
                   {label}
                 </a>
               ))}
@@ -240,7 +240,7 @@ export default function IntegrationGuide() {
               style={{ background: 'rgba(255,255,255,0.04)' }}
             >
               <span className="px-2.5 py-1 bg-emerald-600/30 text-emerald-300 text-xs font-mono rounded shrink-0 w-fit">POST</span>
-              <code className="text-blue-300 text-sm font-mono break-all">/api/v1/webhooks/ingest</code>
+              <code className="text-teal-300 text-sm font-mono break-all">/api/v1/webhooks/ingest</code>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
               <div className="rounded-lg border border-white/10 p-3" style={{ background: 'rgba(255,255,255,0.04)' }}>
@@ -333,43 +333,43 @@ Content-Type: application/json`}
                 </thead>
                 <tbody className="text-white/60">
                   <tr className="border-b border-white/5">
-                    <td className="py-2 pr-4 font-mono text-blue-300">applicant_name</td>
+                    <td className="py-2 pr-4 font-mono text-teal-300">applicant_name</td>
                     <td className="py-2 pr-4">string</td>
                     <td className="py-2 pr-4">Yes</td>
                     <td className="py-2">Full name of the applicant</td>
                   </tr>
                   <tr className="border-b border-white/5">
-                    <td className="py-2 pr-4 font-mono text-blue-300">loan_amount</td>
+                    <td className="py-2 pr-4 font-mono text-teal-300">loan_amount</td>
                     <td className="py-2 pr-4">number</td>
                     <td className="py-2 pr-4">Yes</td>
                     <td className="py-2">Loan amount in AUD (no decimals)</td>
                   </tr>
                   <tr className="border-b border-white/5">
-                    <td className="py-2 pr-4 font-mono text-blue-300">broker_abn</td>
+                    <td className="py-2 pr-4 font-mono text-teal-300">broker_abn</td>
                     <td className="py-2 pr-4">string</td>
                     <td className="py-2 pr-4">No</td>
                     <td className="py-2">11-digit ABN for broker risk profiling</td>
                   </tr>
                   <tr className="border-b border-white/5">
-                    <td className="py-2 pr-4 font-mono text-blue-300">documents</td>
+                    <td className="py-2 pr-4 font-mono text-teal-300">documents</td>
                     <td className="py-2 pr-4">array</td>
                     <td className="py-2 pr-4">Yes</td>
                     <td className="py-2">One or more documents to analyse</td>
                   </tr>
                   <tr className="border-b border-white/5">
-                    <td className="py-2 pr-4 font-mono text-blue-300">documents[].type</td>
+                    <td className="py-2 pr-4 font-mono text-teal-300">documents[].type</td>
                     <td className="py-2 pr-4">string</td>
                     <td className="py-2 pr-4">Yes</td>
                     <td className="py-2">One of the supported document types</td>
                   </tr>
                   <tr className="border-b border-white/5">
-                    <td className="py-2 pr-4 font-mono text-blue-300">documents[].filename</td>
+                    <td className="py-2 pr-4 font-mono text-teal-300">documents[].filename</td>
                     <td className="py-2 pr-4">string</td>
                     <td className="py-2 pr-4">Yes</td>
                     <td className="py-2">Original filename (for logging)</td>
                   </tr>
                   <tr>
-                    <td className="py-2 pr-4 font-mono text-blue-300">documents[].content_base64</td>
+                    <td className="py-2 pr-4 font-mono text-teal-300">documents[].content_base64</td>
                     <td className="py-2 pr-4">string</td>
                     <td className="py-2 pr-4">Yes</td>
                     <td className="py-2">Base64-encoded document content (max 20MB)</td>
@@ -412,7 +412,7 @@ Content-Type: application/json`}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {[
                 { level: 'clear', range: '0-20', color: 'text-emerald-400', bg: 'rgba(16,185,129,0.08)' },
-                { level: 'low', range: '21-40', color: 'text-blue-400', bg: 'rgba(59,130,246,0.08)' },
+                { level: 'low', range: '21-40', color: 'text-teal-400', bg: 'rgba(59,130,246,0.08)' },
                 { level: 'medium', range: '41-60', color: 'text-amber-400', bg: 'rgba(245,158,11,0.08)' },
                 { level: 'high', range: '61-80', color: 'text-orange-400', bg: 'rgba(249,115,22,0.08)' },
               ].map(r => (
@@ -483,7 +483,7 @@ Content-Type: application/json`}
                   onClick={() => setActiveTab(key)}
                   className={`px-4 py-2.5 text-sm font-medium transition border-b-2 -mb-px ${
                     activeTab === key
-                      ? 'text-blue-400 border-blue-400'
+                      ? 'text-teal-400 border-teal-400'
                       : 'text-white/40 border-transparent hover:text-white/60'
                   }`}
                 >
@@ -606,7 +606,7 @@ Content-Type: application/json`}
                 style={{ background: 'rgba(255,255,255,0.04)' }}
               >
                 <h3 className="text-white/80 font-semibold mb-2">Email Support</h3>
-                <a href="mailto:hello@trutina.com.au" className="text-blue-400 hover:text-blue-300 transition">
+                <a href="mailto:hello@trutina.com.au" className="text-teal-400 hover:text-teal-300 transition">
                   hello@trutina.com.au
                 </a>
                 <div className="mt-3 text-xs text-white/40 space-y-1">
@@ -633,9 +633,9 @@ Content-Type: application/json`}
           <div className="mt-14 pt-6 border-t border-white/5 text-center text-white/20 text-xs">
             <p>&copy; {new Date().getFullYear()} Trutina &mdash; AI Lending Fraud Detection</p>
             <p className="mt-1">
-              <Link href="/docs" className="text-blue-400 hover:text-blue-300 transition">All documentation</Link>
+              <Link href="/docs" className="text-teal-400 hover:text-teal-300 transition">All documentation</Link>
               {' '}&middot;{' '}
-              <a href="mailto:hello@trutina.com.au" className="text-blue-400 hover:text-blue-300 transition">hello@trutina.com.au</a>
+              <a href="mailto:hello@trutina.com.au" className="text-teal-400 hover:text-teal-300 transition">hello@trutina.com.au</a>
             </p>
           </div>
         </div>

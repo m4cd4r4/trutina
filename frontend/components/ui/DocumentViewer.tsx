@@ -49,7 +49,7 @@ export default function DocumentViewer({ documents, flags }: Props) {
         className="w-full flex items-center justify-between p-6 hover:bg-white/5 transition"
       >
         <h2 className="text-white font-semibold flex items-center gap-2">
-          <FileText className="w-5 h-5 text-blue-400" />
+          <FileText className="w-5 h-5 text-teal-400" />
           Source Documents
           <span className="text-white/30 text-sm font-normal ml-1">
             (click to view originals)
@@ -77,7 +77,7 @@ export default function DocumentViewer({ documents, flags }: Props) {
                   onClick={() => setActiveDoc(isActive ? null : d.id)}
                   className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm transition border ${
                     isActive
-                      ? 'bg-blue-500/15 border-blue-500/40 text-white'
+                      ? 'bg-teal-500/15 border-teal-500/40 text-white'
                       : 'bg-white/5 border-white/10 text-white/60 hover:border-white/20 hover:text-white/80'
                   }`}
                 >
@@ -120,7 +120,7 @@ export default function DocumentViewer({ documents, flags }: Props) {
                       href={`/demo-docs/${activeDocument.filename}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-1 text-blue-600 text-xs hover:text-blue-500 transition"
+                      className="flex items-center gap-1 text-teal-600 text-xs hover:text-teal-500 transition"
                     >
                       Open in new tab <ExternalLink className="w-3 h-3" />
                     </a>

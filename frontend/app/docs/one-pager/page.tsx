@@ -11,32 +11,32 @@ export const metadata: Metadata = {
 
 const MODULES = [
   {
-    icon: <Microscope className="w-5 h-5 text-blue-400" />,
+    icon: <Microscope className="w-5 h-5 text-teal-400" />,
     title: 'PDF Forensics',
     desc: 'Metadata, font fingerprints, timestamp anomalies',
   },
   {
-    icon: <Bot className="w-5 h-5 text-blue-400" />,
+    icon: <Bot className="w-5 h-5 text-teal-400" />,
     title: 'AI Content Detection',
     desc: 'Claude Sonnet semantic analysis for AI-generation patterns',
   },
   {
-    icon: <Link2 className="w-5 h-5 text-blue-400" />,
+    icon: <Link2 className="w-5 h-5 text-teal-400" />,
     title: 'Cross-Reference Verification',
     desc: 'Live ABN Lookup, BSB directory, ABS wage benchmarks',
   },
   {
-    icon: <Calculator className="w-5 h-5 text-blue-400" />,
+    icon: <Calculator className="w-5 h-5 text-teal-400" />,
     title: 'Math & Date Consistency',
     desc: 'Gross\u2212tax=net, 11.5% SGC super, YTD validation',
   },
   {
-    icon: <Users className="w-5 h-5 text-blue-400" />,
+    icon: <Users className="w-5 h-5 text-teal-400" />,
     title: 'Broker Risk Profiling',
     desc: 'Velocity, fraud rates, network clustering',
   },
   {
-    icon: <ClipboardList className="w-5 h-5 text-blue-400" />,
+    icon: <ClipboardList className="w-5 h-5 text-teal-400" />,
     title: 'APRA-Ready Explainability',
     desc: 'Plain-English narrative + evidence for every score',
   },
@@ -81,7 +81,7 @@ export default function OnePager() {
             color: #111 !important;
             border-color: #ddd !important;
           }
-          .print-page .print-blue { color: #2563eb !important; }
+          .print-page .print-blue { color: #0d9488 !important; }
           .print-page .print-muted { color: #555 !important; }
           .print-page .print-light { color: #888 !important; }
           .print-page .print-card {
@@ -90,7 +90,7 @@ export default function OnePager() {
           }
           .print-page .print-highlight {
             background: #eff6ff !important;
-            border: 2px solid #2563eb !important;
+            border: 2px solid #0d9488 !important;
           }
           .print-page .print-alert {
             background: #fef2f2 !important;
@@ -98,7 +98,7 @@ export default function OnePager() {
           }
           .print-page .print-alert * { color: #991b1b !important; }
           .print-page .print-step-num {
-            background: #2563eb !important;
+            background: #0d9488 !important;
             color: white !important;
           }
           .print-page a { text-decoration: none !important; }
@@ -128,7 +128,7 @@ export default function OnePager() {
             <h1 className="text-lg sm:text-xl font-semibold text-white/80 print-muted mb-2">
               AI Lending Fraud Detection for Australian Lenders
             </h1>
-            <div className="w-16 h-0.5 bg-blue-500 mx-auto" />
+            <div className="w-16 h-0.5 bg-teal-500 mx-auto" />
           </div>
 
           {/* Problem */}
@@ -155,7 +155,7 @@ export default function OnePager() {
 
           {/* What Trutina does */}
           <div className="mb-6">
-            <h2 className="font-bold text-sm uppercase tracking-wider text-blue-400 print-blue mb-3">
+            <h2 className="font-bold text-sm uppercase tracking-wider text-teal-400 print-blue mb-3">
               What Trutina Does
             </h2>
             <p className="text-white/60 print-muted text-sm leading-relaxed">
@@ -167,13 +167,13 @@ export default function OnePager() {
 
           {/* How it works - 3 steps */}
           <div className="mb-6">
-            <h2 className="font-bold text-sm uppercase tracking-wider text-blue-400 print-blue mb-3">
+            <h2 className="font-bold text-sm uppercase tracking-wider text-teal-400 print-blue mb-3">
               How It Works
             </h2>
             <div className="grid grid-cols-3 gap-3">
               {STEPS.map(s => (
                 <div key={s.num} className="text-center">
-                  <div className="w-8 h-8 rounded-full bg-blue-600 print-step-num flex items-center justify-center text-white text-sm font-bold mx-auto mb-2">
+                  <div className="w-8 h-8 rounded-full bg-teal-600 print-step-num flex items-center justify-center text-white text-sm font-bold mx-auto mb-2">
                     {s.num}
                   </div>
                   <div className="text-white text-sm font-semibold mb-0.5">{s.title}</div>
@@ -185,7 +185,7 @@ export default function OnePager() {
 
           {/* 6 Detection Modules */}
           <div className="mb-6">
-            <h2 className="font-bold text-sm uppercase tracking-wider text-blue-400 print-blue mb-3">
+            <h2 className="font-bold text-sm uppercase tracking-wider text-teal-400 print-blue mb-3">
               Six Detection Modules
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -205,7 +205,7 @@ export default function OnePager() {
 
           {/* Pricing */}
           <div className="mb-6">
-            <h2 className="font-bold text-sm uppercase tracking-wider text-blue-400 print-blue mb-3">
+            <h2 className="font-bold text-sm uppercase tracking-wider text-teal-400 print-blue mb-3">
               Pricing
             </h2>
             <div className="rounded-xl border border-white/10 overflow-hidden print-card">
@@ -220,11 +220,11 @@ export default function OnePager() {
                 <tbody>
                   {PRICING.map(p => (
                     <tr key={p.name}
-                      className={`border-b border-white/5 last:border-b-0 ${p.highlight ? 'bg-blue-500/5 print-highlight' : ''}`}>
+                      className={`border-b border-white/5 last:border-b-0 ${p.highlight ? 'bg-teal-500/5 print-highlight' : ''}`}>
                       <td className="px-4 py-2.5 text-white font-medium text-sm">
                         {p.name}
                         {p.highlight && (
-                          <span className="ml-2 text-xs text-blue-400 print-blue font-normal">Most popular</span>
+                          <span className="ml-2 text-xs text-teal-400 print-blue font-normal">Most popular</span>
                         )}
                       </td>
                       <td className="px-4 py-2.5 text-white font-semibold text-sm">{p.price}</td>
@@ -244,11 +244,11 @@ export default function OnePager() {
               Start with a free trial &mdash; 5 documents, no credit card required.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-1 text-sm">
-              <a href="mailto:hello@trutina.com.au" className="text-blue-400 print-blue hover:text-blue-300 transition font-medium">
+              <a href="mailto:hello@trutina.com.au" className="text-teal-400 print-blue hover:text-teal-300 transition font-medium">
                 hello@trutina.com.au
               </a>
               <span className="text-white/20 hidden sm:inline">|</span>
-              <a href="https://trutina.com.au" className="text-blue-400 print-blue hover:text-blue-300 transition font-medium">
+              <a href="https://trutina.com.au" className="text-teal-400 print-blue hover:text-teal-300 transition font-medium">
                 trutina.com.au
               </a>
             </div>

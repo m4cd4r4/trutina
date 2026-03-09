@@ -133,7 +133,7 @@ export default function LoginModal({ open, onClose, mode = 'signin', onSwitchMod
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-blue-500/50 transition"
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-teal-500/50 transition"
                   placeholder="Your name"
                   required
                   autoFocus
@@ -145,7 +145,7 @@ export default function LoginModal({ open, onClose, mode = 'signin', onSwitchMod
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-blue-500/50 transition"
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-teal-500/50 transition"
                   placeholder="you@company.com"
                   required
                 />
@@ -156,7 +156,7 @@ export default function LoginModal({ open, onClose, mode = 'signin', onSwitchMod
                   type="text"
                   value={company}
                   onChange={(e) => setCompany(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-blue-500/50 transition"
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-teal-500/50 transition"
                   placeholder="Your organisation"
                 />
               </div>
@@ -166,7 +166,7 @@ export default function LoginModal({ open, onClose, mode = 'signin', onSwitchMod
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition"
+                className="w-full bg-teal-600 hover:bg-teal-500 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition"
               >
                 {loading ? 'Submitting...' : 'Start free trial'}
               </button>
@@ -181,7 +181,7 @@ export default function LoginModal({ open, onClose, mode = 'signin', onSwitchMod
                   <button
                     type="button"
                     onClick={() => onSwitchMode('signin')}
-                    className="text-blue-400 hover:text-blue-300 transition font-medium"
+                    className="text-teal-400 hover:text-teal-300 transition font-medium"
                   >
                     Sign in
                   </button>
@@ -198,7 +198,7 @@ export default function LoginModal({ open, onClose, mode = 'signin', onSwitchMod
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-blue-500/50 transition"
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-teal-500/50 transition"
                   placeholder="Enter password"
                   autoFocus
                 />
@@ -209,7 +209,7 @@ export default function LoginModal({ open, onClose, mode = 'signin', onSwitchMod
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition"
+                className="w-full bg-teal-600 hover:bg-teal-500 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition"
               >
                 {loading ? 'Signing in...' : 'Sign in'}
               </button>
@@ -220,7 +220,7 @@ export default function LoginModal({ open, onClose, mode = 'signin', onSwitchMod
                   <button
                     type="button"
                     onClick={() => onSwitchMode('trial')}
-                    className="text-blue-400 hover:text-blue-300 transition font-medium"
+                    className="text-teal-400 hover:text-teal-300 transition font-medium"
                   >
                     Start free trial
                   </button>

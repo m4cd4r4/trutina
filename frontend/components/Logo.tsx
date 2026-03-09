@@ -17,7 +17,7 @@ interface LogoProps {
 export function Logo({ variant = 'text', href = '/', height = 32, className = '' }: LogoProps) {
   const inner = variant === 'text' ? (
     <span className={`text-xl font-bold ${className}`}>
-      Tru<span className="text-blue-400">tina</span>
+      Tru<span className="text-teal-400">tina</span>
     </span>
   ) : (
     <Image
