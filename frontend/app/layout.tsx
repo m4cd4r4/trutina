@@ -1,23 +1,25 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Syne, IBM_Plex_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import PageTracker from "@/components/PageTracker";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const syne = Syne({
+  variable: "--font-syne",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const ibmPlexMono = IBM_Plex_Mono({
+  variable: "--font-ibm-plex-mono",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://trutina.com.au'),
   title: {
-    default: 'Trutina — AI Lending Fraud Detection for Australian Lenders',
+    default: 'Trutina — Stop Forged Loan Documents Before Settlement',
     template: '%s | Trutina',
   },
   description: 'Detect AI-generated payslips, forged bank statements, and invalid ABNs in loan applications. Six-layer analysis returns an explainable risk score in under 60 seconds. Built for Australian mortgage, personal, and business lenders.',
@@ -47,7 +49,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${syne.variable} ${ibmPlexMono.variable} antialiased`}
       >
         <script
           type="application/ld+json"

@@ -6,7 +6,7 @@ import { Microscope, Bot, Link2, Calculator, Users, ClipboardList, Check } from 
 import LoginModal from '../components/LoginModal'
 import { Logo } from '../components/Logo'
 
-const ICON_CLASS = 'w-8 h-8 text-blue-400'
+const ICON_CLASS = 'w-8 h-8 text-teal-400'
 
 const FEATURES: { icon: ReactNode; title: string; desc: string }[] = [
   {
@@ -98,7 +98,7 @@ export default function Landing() {
 
   return (
     <div className="min-h-screen text-white"
-      style={{ background: 'radial-gradient(ellipse at 20% 0%, rgba(30,27,75,0.9) 0%, #0a0a1a 50%)' }}>
+      style={{ background: 'radial-gradient(ellipse at 20% 0%, rgba(13,148,136,0.12) 0%, #0a1210 60%)' }}>
 
       <LoginModal open={loginMode !== null} onClose={() => setLoginMode(null)} mode={loginMode ?? 'signin'} onSwitchMode={setLoginMode} />
 
@@ -119,7 +119,7 @@ export default function Landing() {
           </Link>
           <button
             onClick={() => setLoginMode('signin')}
-            className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-2 rounded-lg transition">
+            className="bg-teal-600 hover:bg-teal-500 text-white text-sm font-semibold px-4 py-2 rounded-lg transition">
             Sign in
           </button>
         </div>
@@ -136,18 +136,18 @@ export default function Landing() {
         <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold leading-tight mb-4 sm:mb-6">
           Stop AI-generated mortgage fraud
           <br />
-          <span className="text-blue-400">before it costs billions</span>
+          <span className="text-teal-400">before it costs billions</span>
         </h1>
 
         <p className="text-white/50 text-base sm:text-xl max-w-2xl mx-auto mb-8 sm:mb-10">
-          Trutina analyses loan application documents for AI-fabricated payslips, forged bank statements,
-          and invalid ABNs — returning an explainable risk score in under 60 seconds.
+          Six-layer forensic analysis of every loan document — PDF metadata, payroll maths, live ABN checks,
+          and cross-reference verification — in under 60 seconds.
           <span className="block mt-2 text-white/35 text-sm sm:text-base">Mortgage, personal, and business lending.</span>
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
           <Link href="/demo"
-            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-500 text-white font-semibold px-8 py-3.5 rounded-xl transition text-lg text-center">
+            className="w-full sm:w-auto bg-teal-600 hover:bg-teal-500 text-white font-semibold px-8 py-3.5 rounded-xl transition text-lg text-center">
             See it in action
           </Link>
           <a href="#pricing" className="text-white/50 hover:text-white/70 font-medium px-6 py-3.5 transition">
@@ -162,7 +162,7 @@ export default function Landing() {
             { value: '5', label: 'Detection modules' },
           ].map(s => (
             <div key={s.label} className="text-center">
-              <div className="text-2xl sm:text-3xl font-bold text-blue-400">{s.value}</div>
+              <div className="text-2xl sm:text-3xl font-bold text-teal-400">{s.value}</div>
               <div className="text-white/30 text-xs mt-1">{s.label}</div>
             </div>
           ))}
@@ -214,15 +214,15 @@ export default function Landing() {
       <div id="pricing" className="max-w-6xl mx-auto px-4 sm:px-8 py-12 sm:py-16">
         <h2 className="text-2xl sm:text-3xl font-bold text-center mb-3 sm:mb-4">Pricing</h2>
         <p className="text-white/40 text-center mb-8 sm:mb-12 text-sm sm:text-base">
-          Start free. Scale when you&apos;re ready. Also available: <span className="text-blue-400">$15/case</span> pay-as-you-go API.
+          Start free. Scale when you&apos;re ready. Also available: <span className="text-teal-400">$15/case</span> pay-as-you-go API.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
           {PRICING.map(plan => (
             <div key={plan.name}
-              className={`rounded-2xl border p-6 sm:p-7 flex flex-col ${plan.highlight ? 'border-blue-500/40 bg-blue-500/5' : 'border-white/10'}`}
+              className={`rounded-2xl border p-6 sm:p-7 flex flex-col ${plan.highlight ? 'border-teal-500/40 bg-teal-500/5' : 'border-white/10'}`}
               style={!plan.highlight ? { background: 'rgba(255,255,255,0.04)' } : {}}>
               {plan.highlight && (
-                <div className="text-xs text-blue-400 font-semibold tracking-wider uppercase mb-2">Most Popular</div>
+                <div className="text-xs text-teal-400 font-semibold tracking-wider uppercase mb-2">Most Popular</div>
               )}
               <div className="text-lg font-bold text-white mb-1">{plan.name}</div>
               <div className="flex items-baseline gap-1 mb-1">
@@ -249,7 +249,7 @@ export default function Landing() {
                   onClick={() => { if (typeof window !== 'undefined' && (window as any).BookingWidget) (window as any).BookingWidget.open() }}
                   className={`block w-full text-center font-semibold py-3 rounded-xl transition text-sm cursor-pointer ${
                     plan.highlight
-                      ? 'bg-blue-600 hover:bg-blue-500 text-white'
+                      ? 'bg-teal-600 hover:bg-teal-500 text-white'
                       : 'border border-white/20 hover:border-white/40 text-white/70 hover:text-white'
                   }`}>
                   {plan.cta}
