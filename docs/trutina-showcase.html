@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trutina — Product Showcase</title>
+  <style>
+    :root {
+      --bg: #0a0a1a;
+      --card: #111128;
+      --border: rgba(255,255,255,0.08);
+      --text: #e4e4f0;
+      --muted: rgba(255,255,255,0.45);
+      --accent: #3b82f6;
+      --green: #10b981;
+      --red: #ef4444;
+      --orange: #f97316;
+      --amber: #f59e0b;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    /* Header */
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+    }
+    header .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo { font-size: 24px; font-weight: 700; }
+    .logo span { color: var(--accent); }
+    .header-meta { color: var(--muted); font-size: 13px; }
+
+    /* Hero section */
+    .hero {
+      text-align: center;
+      padding: 80px 0 60px;
+      background: radial-gradient(ellipse at 30% 0%, rgba(30,27,75,0.7) 0%, transparent 60%);
+    }
+    .hero h1 {
+      font-size: 42px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .hero h1 span { color: var(--accent); }
+    .hero p { color: var(--muted); font-size: 18px; max-width: 600px; margin: 0 auto 32px; }
+    .hero .url {
+      display: inline-block;
+      background: rgba(59,130,246,0.1);
+      border: 1px solid rgba(59,130,246,0.3);
+      border-radius: 8px;
+      padding: 8px 20px;
+      color: var(--accent);
+      font-family: monospace;
+      font-size: 15px;
+      text-decoration: none;
+    }
+
+    /* Section */
+    .section {
+      padding: 60px 0;
+      border-top: 1px solid var(--border);
+    }
+    .section-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-subtitle {
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 40px;
+    }
+
+    /* Screenshot card */
+    .screenshot-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+    .screenshot-card .card-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .screenshot-card .card-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .screenshot-card .card-badge {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 4px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+    .badge-approve { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid rgba(16,185,129,0.3); }
+    .badge-reject { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
+    .badge-review { background: rgba(249,115,22,0.15); color: var(--orange); border: 1px solid rgba(249,115,22,0.3); }
+    .badge-info { background: rgba(59,130,246,0.15); color: var(--accent); border: 1px solid rgba(59,130,246,0.3); }
+
+    .screenshot-card .card-desc {
+      padding: 16px 24px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .screenshot-card img {
+      width: 100%;
+      display: block;
+    }
+
+    /* Stats grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+    .stat-value {
+      font-size: 32px;
+      font-weight: 800;
+    }
+    .stat-label { color: var(--muted); font-size: 13px; margin-top: 4px; }
+    .stat-green { color: var(--green); }
+    .stat-red { color: var(--red); }
+    .stat-orange { color: var(--orange); }
+    .stat-blue { color: var(--accent); }
+
+    /* Two-column layout */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    /* Detection modules */
+    .module-list { list-style: none; }
+    .module-list li {
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .module-list li:last-child { border-bottom: none; }
+    .module-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+    .module-name { font-weight: 600; font-size: 14px; }
+    .module-desc { color: var(--muted); font-size: 13px; }
+
+    /* Pricing */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .price-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .price-card.highlight { border-color: rgba(59,130,246,0.4); }
+    .price-name { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+    .price-amount { font-size: 28px; font-weight: 800; }
+    .price-period { color: var(--muted); font-size: 13px; }
+    .price-volume { color: var(--muted); font-size: 12px; margin-top: 4px; }
+
+    /* Mobile screenshot */
+    .mobile-wrapper {
+      display: flex;
+      justify-content: center;
+      padding: 40px 0;
+    }
+    .mobile-frame {
+      width: 320px;
+      border-radius: 24px;
+      border: 2px solid var(--border);
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    .mobile-frame img { width: 100%; display: block; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 0;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+
+    @media (max-width: 768px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .two-col { grid-template-columns: 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <div class="logo">Tru<span>tina</span></div>
+      <div class="header-meta">Product Showcase · March 2026</div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="container">
+      <h1>AI Mortgage Fraud Detection<br><span>for Australian Lenders</span></h1>
+      <p>
+        Trutina analyses loan application documents and returns explainable risk scores,
+        catching AI-generated payslips and bank statements before they cost billions.
+      </p>
+      <a href="https://trutina.com.au" class="url" target="_blank">trutina.com.au</a>
+    </div>
+  </div>
+
+  <!-- Overview stats -->
+  <div class="section">
+    <div class="container">
+      <div class="section-title">At a Glance</div>
+      <div class="section-subtitle">Key product capabilities</div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value stat-blue">5</div>
+          <div class="stat-label">Detection Modules</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value stat-green">~60s</div>
+          <div class="stat-label">Analysis Time</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value stat-orange">0–100</div>
+          <div class="stat-label">Risk Score</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value stat-red">APRA</div>
+          <div class="stat-label">Explainable Reports</div>
+        </div>
+      </div>
+
+      <!-- Detection modules -->
+      <div class="section-title" style="font-size:20px; margin-bottom: 16px;">Detection Engine</div>
+      <div class="two-col">
+        <ul class="module-list">
+          <li>
+            <span class="module-icon">🔬</span>
+            <div><div class="module-name">PDF Forensics</div><div class="module-desc">Creator metadata, font fingerprints, timestamps, image manipulation</div></div>
+          </li>
+          <li>
+            <span class="module-icon">🤖</span>
+            <div><div class="module-name">AI Content Detection</div><div class="module-desc">Claude Sonnet semantic analysis for AI-generation patterns</div></div>
+          </li>
+          <li>
+            <span class="module-icon">🔗</span>
+            <div><div class="module-name">Cross-Reference</div><div class="module-desc">ABN Lookup, ASIC register, BSB directory, ABS wage benchmarks</div></div>
+          </li>
+        </ul>
+        <ul class="module-list">
+          <li>
+            <span class="module-icon">🧮</span>
+            <div><div class="module-name">Consistency Checker</div><div class="module-desc">Gross − tax = net, super at 11.5% SGC, YTD reconciliation</div></div>
+          </li>
+          <li>
+            <span class="module-icon">👥</span>
+            <div><div class="module-name">Broker Risk Profiling</div><div class="module-desc">Submission velocity, fraud rates, shared-employer clustering</div></div>
+          </li>
+          <li>
+            <span class="module-icon">📋</span>
+            <div><div class="module-name">Explainable Reports</div><div class="module-desc">Plain-English narrative for ASIC/APRA compliance</div></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Landing Page -->
+  <div class="section">
+    <div class="container">
+      <div class="section-title">Landing Page</div>
+      <div class="section-subtitle">Public marketing site at trutina.com.au</div>
+
+      <div class="screenshot-card">
+        <div class="card-header">
+          <div class="card-title">Hero & Navigation</div>
+          <span class="card-badge badge-info">PUBLIC</span>
+        </div>
+        <div class="card-desc">
+          Landing page with CBA fraud context, key stats, and "See it in action" CTA linking directly to the public demo.
+          Nav includes Features, Pricing, Live Demo link, and Sign In button (opens modal).
+        </div>
+        <img src="screenshots/01-landing-hero.png" alt="Landing page hero section">
+      </div>
+
+      <div class="two-col">
+        <div class="screenshot-card">
+          <div class="card-header">
+            <div class="card-title">Features Grid</div>
+          </div>
+          <div class="card-desc">Six detection modules presented with icons and concise descriptions. Responsive grid layout.</div>
+          <img src="screenshots/02-landing-features.png" alt="Features section">
+        </div>
+        <div class="screenshot-card">
+          <div class="card-header">
+            <div class="card-title">Pricing</div>
+          </div>
+          <div class="card-desc">Four tiers: Free Trial (5 docs) → Starter $2K → Professional $6K → Enterprise Custom. Plus $15/case API option.</div>
+          <img src="screenshots/03-landing-pricing.png" alt="Pricing section">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Demo Overview -->
+  <div class="section">
+    <div class="container">
+      <div class="section-title">Public Demo</div>
+      <div class="section-subtitle">Five pre-analysed cases — no sign-in required · <a href="https://trutina.com.au/demo" target="_blank">trutina.com.au/demo</a></div>
+
+      <div class="screenshot-card">
+        <div class="card-header">
+          <div class="card-title">Demo Case List</div>
+          <span class="card-badge badge-info">NO AUTH REQUIRED</span>
+        </div>
+        <div class="card-desc">
+          All five sample cases displayed with risk score gauges, severity badges, recommended actions, loan amounts,
+          and flag count summaries. Each case links to a full detail view.
+        </div>
+        <img src="screenshots/04-demo-list.png" alt="Demo case list">
+      </div>
+    </div>
+  </div>
+
+  <!-- Case 1: Clean -->
+  <div class="section">
+    <div class="container">
+      <div class="section-title">Case Studies</div>
+      <div class="section-subtitle">Detailed analysis breakdowns for each demo case</div>
+
+      <div class="screenshot-card">
+        <div class="card-header">
+          <div class="card-title">Case 1: Sarah Mitchell — Legitimate Application</div>
+          <span class="card-badge badge-approve">Score 12 · Approve</span>
+        </div>
+        <div class="card-desc">
+          Clean application that passes all checks. Payslip produced by Xero, ABN active and name-matched,
+          math consistent, bank credits align with payslip. Only minor flags: salary slightly above 75th percentile
+          for the occupation, and standard Xero dual-font usage. Demonstrates that Trutina doesn't generate false positives on legitimate documents.
+        </div>
+        <img src="screenshots/05-case-clean.png" alt="Case: Sarah Mitchell — clean approval">
+      </div>
+
+      <!-- Case 2: AI Fake -->
+      <div class="screenshot-card">
+        <div class="card-header">
+          <div class="card-title">Case 2: James Chen — AI-Generated Payslip</div>
+          <span class="card-badge badge-reject">Score 82 · Reject</span>
+        </div>
+        <div class="card-desc">
+          Caught by multiple modules simultaneously. PDF created in Chrome (not a payroll platform), 5 different fonts
+          (copy-paste assembly), gross minus tax doesn't equal net pay ($300 discrepancy), employer ABN registered to
+          a completely different business, super rate at 7.5% instead of 11.5% SGC, and Claude detects AI-generation
+          patterns including UK payroll terminology. Six flags, three critical.
+        </div>
+        <img src="screenshots/06-case-ai-fake.png" alt="Case: James Chen — AI-generated payslip">
+      </div>
+
+      <!-- Case 3: Bad ABN -->
+      <div class="screenshot-card">
+        <div class="card-header">
+          <div class="card-title">Case 3: Emma Thompson — Cancelled ABN</div>
+          <span class="card-badge badge-review">Score 56 · Manual Review</span>
+        </div>
+        <div class="card-desc">
+          The payslip looks professional (produced by MYOB), but cross-reference checks reveal the employer ABN
+          was cancelled in October 2024 — 15 months before the payslip date. Employment letter references a different
+          ABN than the payslip, and the claimed employment start date is after the ABN cancellation. Document was also
+          modified 2 days before submission.
+        </div>
+        <img src="screenshots/07-case-bad-abn.png" alt="Case: Emma Thompson — cancelled ABN">
+      </div>
+
+      <!-- Case 4: Bank Fraud -->
+      <div class="screenshot-card">
+        <div class="card-header">
+          <div class="card-title">Case 4: David Kowalski — Forged Bank Statement</div>
+          <span class="card-badge badge-review">Score 68 · Manual Review</span>
+        </div>
+        <div class="card-desc">
+          Bank statement closing balance inflated by $16,000 — opening + credits − debits = $42,318 but statement
+          shows $58,318. Salary credit doesn't match payslip net income ($607 discrepancy). Submitted by Premier Lending
+          Solutions, the same broker from the James Chen rejection — now flagged with a 30.4% fraud rate. Inconsistent
+          page DPI suggests the closing balance page was separately produced.
+        </div>
+        <img src="screenshots/08-case-bank-fraud.png" alt="Case: David Kowalski — forged bank statement">
+      </div>
+
+      <!-- Case 5: Broker Cluster -->
+      <div class="screenshot-card">
+        <div class="card-header">
+          <div class="card-title">Case 5: Priya Sharma — Broker Network Pattern</div>
+          <span class="card-badge badge-review">Score 45 · Manual Review</span>
+        </div>
+        <div class="card-desc">
+          Individual payslip passes most checks (produced by KeyPay, math correct, ABN active). But Trutina's network
+          analysis reveals this is the 4th application in 7 days from Fast Track Finance where the applicant claims
+          employment at the same company — Pacific Coast Staffing, registered only 3 months ago. Four unrelated applicants,
+          same small employer, same broker = statistically anomalous. Demonstrates broker behavioural profiling.
+        </div>
+        <img src="screenshots/09-case-broker.png" alt="Case: Priya Sharma — broker cluster">
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile -->
+  <div class="section">
+    <div class="container">
+      <div class="section-title">Mobile Responsive</div>
+      <div class="section-subtitle">Landing page and demo optimised for mobile browsers (marketing reach). App dashboard designed for tablet and desktop (professional use).</div>
+      <div class="mobile-wrapper">
+        <div class="mobile-frame">
+          <img src="screenshots/10-landing-mobile.png" alt="Mobile landing page">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pricing -->
+  <div class="section">
+    <div class="container">
+      <div class="section-title">Pricing Model</div>
+      <div class="section-subtitle">Free trial → paid tiers. ~95% margin (Claude API cost ~$0.20–0.50/case).</div>
+      <div class="pricing-grid">
+        <div class="price-card">
+          <div class="price-name">Free Trial</div>
+          <div class="price-amount">Free</div>
+          <div class="price-volume">5 documents · No credit card</div>
+        </div>
+        <div class="price-card">
+          <div class="price-name">Starter</div>
+          <div class="price-amount">$2,000<span class="price-period">/mo</span></div>
+          <div class="price-volume">200 cases/month · Credit unions</div>
+        </div>
+        <div class="price-card highlight">
+          <div class="price-name">Professional</div>
+          <div class="price-amount">$6,000<span class="price-period">/mo</span></div>
+          <div class="price-volume">1,000 cases/month · Regional banks</div>
+        </div>
+        <div class="price-card">
+          <div class="price-name">Enterprise</div>
+          <div class="price-amount">Custom</div>
+          <div class="price-volume">Unlimited · Big 4 banks</div>
+        </div>
+      </div>
+      <p style="color: var(--muted); font-size: 13px; margin-top: 16px; text-align: center;">
+        Also available: $15/case pay-as-you-go API for one-time integrations
+      </p>
+    </div>
+  </div>
+
+  <!-- Architecture -->
+  <div class="section">
+    <div class="container">
+      <div class="section-title">Architecture</div>
+      <div class="section-subtitle">Monorepo: Next.js 16 frontend (Vercel) + FastAPI backend (VPS)</div>
+      <div style="background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 32px; font-family: monospace; font-size: 13px; line-height: 2; color: var(--muted); overflow-x: auto;">
+<pre style="margin:0;">
+[Vercel] Next.js 16 Frontend
+  Landing page · Auth gate · Case dashboard · Risk reports
+        │
+        ▼  (HTTPS proxy via Next.js API routes — hides VPS IP)
+[VPS 45.77.233.102:3004] FastAPI Backend
+  /api/v1/cases · /documents · /analyse · /brokers · /webhooks/ingest
+        │
+   ┌────┼────┬──────────┐
+   Celery   Redis    PostgreSQL
+   Worker  (queue)  (cases, flags, broker profiles, audit log)
+        │
+   ┌────┴────┐
+   Claude    External APIs
+   Sonnet    (ABN Lookup, BSB directory, ABS wage data)
+</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>Trutina by Solaisoft Pty Ltd · <a href="https://trutina.com.au" target="_blank">trutina.com.au</a> · hello@trutina.com.au</p>
+      <p style="margin-top: 8px;">All sample data shown is synthetic — no real applicant information is used.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -24,3 +24,18 @@ uploads/
 # OS
 .DS_Store
 Thumbs.db
+
+# Generated screenshots / product media (stale after rethemes)
+docs/screenshots/
+booking-*.png
+logo-gen/
+
+# Audit / report outputs
+PRODUCT_AUDIT_REPORT.md
+
+# Playwright
+frontend/playwright-report/
+
+# Dev artifacts
+docs/theme-mockups.html
+frontend/public/logo/*.bak
