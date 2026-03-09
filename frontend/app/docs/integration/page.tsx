@@ -180,7 +180,7 @@ export default function IntegrationGuide() {
         {/* Nav */}
         <nav className="border-b border-white/5 no-print">
           <div className="flex items-center justify-between px-4 sm:px-8 py-4 max-w-7xl mx-auto">
-          <Logo variant="combo" height={40} />
+          <Logo className="text-xl" />
           <div className="flex items-center gap-4 sm:gap-6">
             <Link href="/docs" className="text-white/50 hover:text-white/80 text-sm transition">
               Docs

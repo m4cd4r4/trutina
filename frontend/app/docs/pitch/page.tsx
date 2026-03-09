@@ -495,8 +495,18 @@ function NextStepsSlide() {
             className="inline-flex items-center gap-2 bg-teal-600 hover:bg-teal-500 text-white font-semibold px-8 py-3.5 rounded-xl transition text-lg">
             hello@trutina.com.au
           </a>
-          <div className="text-white/30 text-sm">
+          <div className="text-white/30 text-sm mb-6">
             trutina.com.au
+          </div>
+          <div className="flex items-center justify-center gap-4">
+            <Link href="/docs"
+              className="inline-flex items-center gap-2 text-white/50 hover:text-white/80 border border-white/10 hover:border-white/20 px-5 py-2.5 rounded-xl transition text-sm font-medium">
+              <ArrowRight className="w-4 h-4 rotate-180" /> Back to Docs
+            </Link>
+            <Link href="/demo"
+              className="inline-flex items-center gap-2 text-teal-400 hover:text-teal-300 border border-teal-500/20 hover:border-teal-500/40 px-5 py-2.5 rounded-xl transition text-sm font-medium">
+              Try the Demo <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
         </div>
       </div>
