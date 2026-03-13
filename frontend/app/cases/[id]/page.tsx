@@ -37,13 +37,13 @@ export default function CasePage() {
   }, [id])
 
   if (loading) return (
-    <div className="min-h-screen bg-[#0a0a1a] flex items-center justify-center text-white/30">
+    <div className="min-h-screen bg-[#0a1210] flex items-center justify-center text-white/30">
       Loading case…
     </div>
   )
 
   if (!caseData) return (
-    <div className="min-h-screen bg-[#0a0a1a] flex items-center justify-center text-red-400">
+    <div className="min-h-screen bg-[#0a1210] flex items-center justify-center text-red-400">
       Case not found
     </div>
   )
@@ -64,7 +64,7 @@ export default function CasePage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a1a] text-white p-6">
+    <div className="min-h-screen bg-[#0a1210] text-white p-6">
       <div className="max-w-5xl mx-auto">
         {/* Breadcrumb */}
         <div className="flex items-center gap-3 mb-6 text-sm">

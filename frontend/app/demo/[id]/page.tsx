@@ -26,6 +26,15 @@ const SEVERITY_STYLES: Record<RiskLevel, string> = {
   low: 'border-l-emerald-500 bg-emerald-500/5',
 }
 
+const CATEGORY_COLORS: Record<FlagCategory, string> = {
+  pdf_forensics: 'text-teal-400',
+  ai_content: 'text-amber-400',
+  cross_reference: 'text-teal-400',
+  consistency: 'text-amber-400',
+  broker_risk: 'text-teal-400',
+  identity: 'text-amber-400',
+}
+
 function groupFlags(flags: FraudFlag[]): Record<FlagCategory, FraudFlag[]> {
   const groups: Partial<Record<FlagCategory, FraudFlag[]>> = {}
   for (const f of flags) {
@@ -45,12 +54,12 @@ export default function DemoCaseDetail({ params }: { params: Promise<{ id: strin
 
   return (
     <div className="min-h-screen text-white"
-      style={{ background: 'radial-gradient(ellipse at 20% 0%, rgba(30,27,75,0.9) 0%, #0a0a1a 50%)' }}>
+      style={{ background: 'radial-gradient(ellipse at 20% 0%, rgba(13,148,136,0.12) 0%, #0a1210 60%)' }}>
 
       {/* Nav */}
       <nav className="border-b border-white/5">
         <div className="flex items-center justify-between px-6 md:px-8 py-4 max-w-7xl mx-auto">
-        <Logo className="text-xl" />
+        <Logo variant="wordmark" height={28} />
         <div className="flex items-center gap-4">
           <span className="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full px-3 py-1 font-medium">
             Live Demo
@@ -79,7 +88,7 @@ export default function DemoCaseDetail({ params }: { params: Promise<{ id: strin
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
               <div className="bg-white/5 rounded-lg p-3">
                 <div className="text-white/30 text-xs mb-1">Loan Amount</div>
-                <div className="text-white font-semibold">${c.loan_amount?.toLocaleString()}</div>
+                <div className="text-amber-300/80 font-semibold font-mono">${c.loan_amount?.toLocaleString()}</div>
               </div>
               <div className="bg-white/5 rounded-lg p-3">
                 <div className="text-white/30 text-xs mb-1">Documents</div>
@@ -129,7 +138,7 @@ export default function DemoCaseDetail({ params }: { params: Promise<{ id: strin
           {(Object.entries(grouped) as [FlagCategory, FraudFlag[]][]).map(([category, flags]) => (
             <div key={category}>
               <div className="flex items-center gap-2 mb-3">
-                <CategoryIcon category={category} className="w-5 h-5 text-teal-400" />
+                <CategoryIcon category={category} className={`w-5 h-5 ${CATEGORY_COLORS[category] || 'text-teal-400'}`} />
                 <span className="text-white/60 text-sm font-medium">{getCategoryLabel(category)}</span>
                 <span className="text-white/20 text-xs">({flags.length})</span>
               </div>

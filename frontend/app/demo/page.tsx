@@ -23,12 +23,12 @@ const ACTION_LABEL = {
 export default function DemoPage() {
   return (
     <div className="min-h-screen text-white"
-      style={{ background: 'radial-gradient(ellipse at 20% 0%, rgba(30,27,75,0.9) 0%, #0a0a1a 50%)' }}>
+      style={{ background: 'radial-gradient(ellipse at 20% 0%, rgba(13,148,136,0.12) 0%, #0a1210 60%)' }}>
 
       {/* Nav */}
       <nav className="border-b border-white/5">
         <div className="flex items-center justify-between px-6 md:px-8 py-4 max-w-7xl mx-auto">
-        <Logo className="text-xl" />
+        <Logo variant="wordmark" height={28} />
         <div className="flex items-center gap-4">
           <span className="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full px-3 py-1 font-medium">
             Live Demo
@@ -82,7 +82,7 @@ export default function DemoPage() {
 
                 {/* Stats */}
                 <div className="flex md:flex-col items-center gap-4 md:gap-1 md:text-right shrink-0">
-                  <div className="text-white/50 text-sm">
+                  <div className="text-amber-300/70 text-sm font-mono">
                     ${c.loan_amount?.toLocaleString()}
                   </div>
                   <div className="text-white/30 text-xs">
@@ -125,7 +125,7 @@ export default function DemoPage() {
 
         {/* CTA */}
         <div className="text-center mt-16 rounded-2xl border border-teal-500/20 p-10"
-          style={{ background: 'rgba(59,130,246,0.05)' }}>
+          style={{ background: 'rgba(13,148,136,0.06)' }}>
           <h2 className="text-2xl font-bold mb-3">Ready to try with your own documents?</h2>
           <p className="text-white/50 mb-6 max-w-lg mx-auto">
             Start a free trial — upload up to 5 documents with no credit card required.

@@ -61,8 +61,8 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0a0a1a]"
-      style={{ background: 'radial-gradient(ellipse at 20% 50%, rgba(30,27,75,0.8) 0%, #0a0a1a 60%)' }}>
+    <div className="min-h-screen flex items-center justify-center bg-[#0a1210]"
+      style={{ background: 'radial-gradient(ellipse at 20% 50%, rgba(13,148,136,0.10) 0%, #0a1210 60%)' }}>
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <Logo href="" className="text-3xl justify-center" />

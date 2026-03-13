@@ -71,11 +71,11 @@ const DOCS = [
 export default function DocsHub() {
   return (
     <div className="min-h-screen text-white"
-      style={{ background: 'radial-gradient(ellipse at 20% 0%, rgba(30,27,75,0.9) 0%, #0a0a1a 50%)' }}>
+      style={{ background: 'radial-gradient(ellipse at 20% 0%, rgba(13,148,136,0.12) 0%, #0a1210 60%)' }}>
 
       <nav className="border-b border-white/5">
         <div className="flex items-center justify-between px-4 sm:px-8 py-4 max-w-7xl mx-auto">
-        <Logo className="text-xl" />
+        <Logo variant="wordmark" height={28} />
         <div className="flex items-center gap-4 sm:gap-6">
           <Link href="/demo" className="text-emerald-300 hover:text-emerald-200 text-sm font-medium transition">
             Live Demo

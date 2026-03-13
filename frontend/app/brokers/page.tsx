@@ -22,7 +22,7 @@ export default function BrokersPage() {
   }))
 
   return (
-    <div className="min-h-screen bg-[#0a0a1a] text-white p-6">
+    <div className="min-h-screen bg-[#0a1210] text-white p-6">
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center gap-3 mb-6">
           <Link href="/dashboard" className="text-white/40 hover:text-white/70 text-sm">Dashboard</Link>

@@ -62,7 +62,7 @@ export default function Dashboard() {
   ]
 
   return (
-    <div className="min-h-screen bg-[#0a0a1a] text-white p-6">
+    <div className="min-h-screen bg-[#0a1210] text-white p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -137,7 +137,7 @@ export default function Dashboard() {
             style={{ minWidth: '160px' }}
           >
             {STATUS_OPTIONS.map(opt => (
-              <option key={opt.value} value={opt.value} className="bg-[#0a0a1a]">{opt.label}</option>
+              <option key={opt.value} value={opt.value} className="bg-[#0a1210]">{opt.label}</option>
             ))}
           </select>
 
@@ -148,7 +148,7 @@ export default function Dashboard() {
             style={{ minWidth: '160px' }}
           >
             {RISK_OPTIONS.map(opt => (
-              <option key={opt.value} value={opt.value} className="bg-[#0a0a1a]">{opt.label}</option>
+              <option key={opt.value} value={opt.value} className="bg-[#0a1210]">{opt.label}</option>
             ))}
           </select>
 
