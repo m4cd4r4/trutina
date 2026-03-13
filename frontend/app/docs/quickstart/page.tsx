@@ -141,7 +141,7 @@ export default function QuickStartGuide() {
       {/* Nav */}
       <nav className="border-b border-white/5">
         <div className="flex items-center justify-between px-4 sm:px-8 py-4 max-w-7xl mx-auto">
-        <Logo variant="wordmark" height={28} />
+        <Logo height={32} />
         <div className="flex items-center gap-4 sm:gap-6">
           <Link
             href="/docs"

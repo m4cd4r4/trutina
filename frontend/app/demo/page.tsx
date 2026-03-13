@@ -28,7 +28,7 @@ export default function DemoPage() {
       {/* Nav */}
       <nav className="border-b border-white/5">
         <div className="flex items-center justify-between px-6 md:px-8 py-4 max-w-7xl mx-auto">
-        <Logo variant="wordmark" height={28} />
+        <Logo height={32} />
         <div className="flex items-center gap-4">
           <span className="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full px-3 py-1 font-medium">
             Live Demo
