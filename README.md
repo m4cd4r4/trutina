@@ -45,6 +45,41 @@ Composite scoring with category caps and severity multipliers produces a 0-100 r
 - **45-69** High → Manual review
 - **70-100** Critical → Reject
 
+## Detection Pipeline
+
+```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': {'primaryColor': '#0f172a', 'primaryTextColor': '#e2e8f0', 'primaryBorderColor': '#f97316', 'lineColor': '#f97316'}}}%%
+flowchart TD
+    classDef fe     fill:#0f1f3d,stroke:#60a5fa,color:#93c5fd,font-weight:bold
+    classDef be     fill:#0a2520,stroke:#34d399,color:#6ee7b7
+    classDef detect fill:#1c1400,stroke:#f97316,color:#fdba74,font-weight:bold
+    classDef low    fill:#0f2d2a,stroke:#22c55e,color:#86efac
+    classDef med    fill:#1c1400,stroke:#f59e0b,color:#fcd34d
+    classDef high   fill:#2d1200,stroke:#f97316,color:#fdba74
+    classDef crit   fill:#2d0f0f,stroke:#ef4444,color:#fca5a5,font-weight:bold
+
+    Upload(["📄 Loan Documents\nPayslip · Bank Statement"]):::fe
+
+    subgraph ENGINE["🔍 Detection Engine — Celery Workers (async)"]
+        D1["PDF Forensics\nproducer · timestamps · font mixing"]:::detect
+        D2["AI Content Detection\nClaude Sonnet — document authenticity"]:::detect
+        D3["Consistency Checker\nGross–Tax=Net · YTD · super rate"]:::detect
+        D4["Cross-Reference\nABN Lookup · BSB directory · ABS wages"]:::detect
+        D5["Broker Risk Profiler\nvelocity spikes · network · history"]:::detect
+    end
+
+    Score["Composite Score  0–100\ncategory caps + severity multipliers"]:::be
+
+    Low["0–19  Low\nApprove ✅"]:::low
+    Med["20–44  Medium\nManual Review"]:::med
+    High["45–69  High\nManual Review ⚠️"]:::high
+    Crit["70–100  Critical\nReject ❌"]:::crit
+
+    Upload --> ENGINE
+    D1 & D2 & D3 & D4 & D5 --> Score
+    Score --> Low & Med & High & Crit
+```
+
 ## Stack
 
 **Frontend:** Next.js 16, TypeScript, Tailwind CSS 4, Recharts, Lucide icons
