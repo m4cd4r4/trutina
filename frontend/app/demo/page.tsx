@@ -23,7 +23,7 @@ const ACTION_LABEL = {
 export default function DemoPage() {
   return (
     <div className="min-h-screen text-white"
-      style={{ background: 'radial-gradient(ellipse at 20% 0%, rgba(13,148,136,0.05) 0%, #0a1210 45%)' }}>
+      style={{ background: '#0a1210' }}>
 
       {/* Nav */}
       <nav className="border-b border-white/5">

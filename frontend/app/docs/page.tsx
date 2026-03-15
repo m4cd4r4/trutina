@@ -71,7 +71,7 @@ const DOCS = [
 export default function DocsHub() {
   return (
     <div className="min-h-screen text-white"
-      style={{ background: 'radial-gradient(ellipse at 20% 0%, rgba(13,148,136,0.05) 0%, #0a1210 45%)' }}>
+      style={{ background: '#0a1210' }}>
 
       <nav className="border-b border-white/5">
         <div className="flex items-center justify-between px-4 sm:px-8 py-4 max-w-7xl mx-auto">
