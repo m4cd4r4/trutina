@@ -102,7 +102,7 @@ export default function Landing() {
 
   return (
     <div className="min-h-screen text-white"
-      style={{ background: 'radial-gradient(ellipse at 20% 0%, rgba(13,148,136,0.12) 0%, #0a1210 60%)' }}>
+      style={{ background: 'radial-gradient(ellipse at 20% 0%, rgba(13,148,136,0.05) 0%, #0a1210 45%)' }}>
 
       <LoginModal open={loginMode !== null} onClose={() => setLoginMode(null)} mode={loginMode ?? 'signin'} onSwitchMode={setLoginMode} />
 
