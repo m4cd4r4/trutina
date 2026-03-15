@@ -562,7 +562,7 @@ export default function PitchDeck() {
 
   return (
     <div className="h-screen overflow-hidden text-white select-none"
-      style={{ background: 'radial-gradient(ellipse at 20% 0%, rgba(13,148,136,0.12) 0%, #0a1210 60%)' }}>
+      style={{ background: 'radial-gradient(ellipse at 20% 0%, rgba(13,148,136,0.05) 0%, #0a1210 45%)' }}>
 
       {/* Top bar */}
       <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 sm:px-6 py-3">
