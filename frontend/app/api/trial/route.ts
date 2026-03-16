@@ -24,12 +24,12 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Failed to create trial account' }, { status: 500 })
   }
 
-  const { access_code, is_new } = await provisionRes.json()
+  const { access_code } = await provisionRes.json()
 
   // Send emails in parallel
   await Promise.all([
     sendTrialNotification({ name, email, company }),
-    sendTrialWelcome({ name, email, accessCode: access_code, isNew: is_new }),
+    sendTrialWelcome({ name, email, accessCode: access_code, isNew: true }),
   ])
 
   return NextResponse.json({ ok: true })

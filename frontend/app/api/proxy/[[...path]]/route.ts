@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { CSRF_COOKIE, TENANT_COOKIE } from '@/lib/auth'
+import { AUTH_COOKIE, CSRF_COOKIE, validateSessionToken } from '@/lib/auth'
 
 const BACKEND = process.env.BACKEND_URL || 'http://localhost:3004'
 const API_KEY = process.env.SHIELDAPI_KEY || ''
@@ -19,7 +19,18 @@ async function proxy(req: NextRequest, { params }: { params: Promise<{ path?: st
     }
   }
 
-  const tenantId = req.cookies.get(TENANT_COOKIE)?.value || ''
+  // Validate session and extract tenant ID from encrypted token
+  const sessionToken = req.cookies.get(AUTH_COOKIE)?.value
+  if (!sessionToken) {
+    return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
+  }
+
+  const session = validateSessionToken(sessionToken)
+  if (!session) {
+    return NextResponse.json({ error: 'Session expired or invalid' }, { status: 401 })
+  }
+
+  const tenantId = session.tenantId
   const init: RequestInit = {
     method: req.method,
     headers: {

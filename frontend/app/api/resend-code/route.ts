@@ -18,21 +18,23 @@ export async function POST(req: Request) {
     })
 
     if (!res.ok) {
-      return NextResponse.json(
-        { error: 'No account found for this email' },
-        { status: 404 },
-      )
+      // Return generic success to prevent email enumeration
+      return NextResponse.json({ ok: true })
     }
 
     const { access_code, name } = await res.json()
 
-    await sendTrialWelcome({
-      name,
-      email,
-      accessCode: access_code,
-      isNew: false,
-    })
+    // Only send email if backend returned the code (account exists)
+    if (access_code && name) {
+      await sendTrialWelcome({
+        name,
+        email,
+        accessCode: access_code,
+        isNew: false,
+      })
+    }
 
+    // Always return success to prevent email enumeration
     return NextResponse.json({ ok: true })
   } catch (err) {
     console.error('[RESEND] Failed:', err)
