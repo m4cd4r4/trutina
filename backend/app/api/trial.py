@@ -28,7 +28,6 @@ class ProvisionRequest(BaseModel):
 class ProvisionResponse(BaseModel):
     access_code: str
     email: str
-    is_new: bool
 
 
 class ValidateRequest(BaseModel):
@@ -57,7 +56,6 @@ async def provision_trial(request: Request, body: ProvisionRequest, db: AsyncSes
         return ProvisionResponse(
             access_code=existing.access_code,
             email=existing.email,
-            is_new=False,
         )
 
     expires_at = datetime.now(tz=timezone.utc) + timedelta(days=settings.trial_expiry_days)
@@ -74,7 +72,6 @@ async def provision_trial(request: Request, body: ProvisionRequest, db: AsyncSes
     return ProvisionResponse(
         access_code=account.access_code,
         email=account.email,
-        is_new=True,
     )
 
 
@@ -84,12 +81,15 @@ class ResendRequest(BaseModel):
 
 class ResendResponse(BaseModel):
     message: str
+    access_code: str | None = None
+    name: str | None = None
 
 
 @router.post("/resend", response_model=ResendResponse)
 @limiter.limit("3/minute")
 async def resend_access_code(request: Request, body: ResendRequest, db: AsyncSession = Depends(get_db)):
     email_lower = body.email.lower().strip()
+    message = "If an account exists for this email, the access code will be sent shortly."
 
     result = await db.execute(
         select(TrialAccount).where(TrialAccount.email == email_lower)
@@ -97,11 +97,11 @@ async def resend_access_code(request: Request, body: ResendRequest, db: AsyncSes
     account = result.scalar_one_or_none()
 
     if not account or not account.is_active:
-        # Return same response whether account exists or not (prevent enumeration)
         logger.info("RESEND_ATTEMPT email=%s found=%s", email_lower, account is not None)
+        # Return same HTTP status and message to prevent email enumeration
+        return ResendResponse(message=message)
 
-    # Always return same message to prevent email enumeration
-    return ResendResponse(message="If an account exists for this email, the access code will be sent shortly.")
+    return ResendResponse(message=message, access_code=account.access_code, name=account.name)
 
 
 @router.post("/validate", response_model=ValidateResponse)
@@ -119,10 +119,10 @@ async def validate_access_code(request: Request, body: ValidateRequest, db: Asyn
         logger.warning("VALIDATE_FAILURE ip=%s code_prefix=%s", client_ip, code[:4] if len(code) >= 4 else "???")
         raise HTTPException(status_code=401, detail="Invalid access code")
 
-    # Check expiry
+    # Check expiry - same error message as invalid to prevent code enumeration
     if account.expires_at and account.expires_at < datetime.now(tz=timezone.utc):
         logger.info("VALIDATE_EXPIRED ip=%s email=%s", client_ip, account.email)
-        raise HTTPException(status_code=401, detail="Access code has expired. Please request a new trial.")
+        raise HTTPException(status_code=401, detail="Invalid access code")
 
     account.last_login_at = datetime.now(tz=timezone.utc)
     await db.commit()
