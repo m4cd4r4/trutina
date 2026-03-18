@@ -2,19 +2,19 @@
 
 import { useState, useEffect, type ReactNode } from 'react'
 import Link from 'next/link'
-import { Microscope, Bot, Link2, Calculator, Users, ClipboardList, Check, AlertTriangle, CheckCircle2, XCircle } from 'lucide-react'
+import { Microscope, Bot, Link2, Calculator, Users, ClipboardList, Check, AlertTriangle, CheckCircle2, XCircle, Shield, Lock, Globe } from 'lucide-react'
 import LoginModal from '../components/LoginModal'
 import { Logo } from '../components/Logo'
 
 /* ── Hero features: prominent 2-up ──────────────────────────── */
 const HERO_FEATURES: { icon: ReactNode; title: string; desc: string }[] = [
   {
-    icon: <Microscope className="w-9 h-9 text-teal-400" />,
+    icon: <Microscope className="w-6 h-6" />,
     title: 'PDF Forensics',
     desc: 'Analyses creator metadata, font fingerprints, modification timestamps, and embedded image manipulation — hallmarks of AI-fabricated documents.',
   },
   {
-    icon: <Bot className="w-9 h-9 text-amber-400" />,
+    icon: <Bot className="w-6 h-6" />,
     title: 'AI Content Detection',
     desc: 'Claude Sonnet semantically reads each document for AI-generation patterns, terminology anomalies, and field inconsistencies specific to Australian payroll.',
   },
@@ -23,22 +23,22 @@ const HERO_FEATURES: { icon: ReactNode; title: string; desc: string }[] = [
 /* ── Supporting features: compact 4-up ──────────────────────── */
 const SUPPORTING_FEATURES: { icon: ReactNode; title: string; desc: string }[] = [
   {
-    icon: <Link2 className="w-5 h-5 text-teal-400" />,
+    icon: <Link2 className="w-4 h-4" />,
     title: 'Cross-Reference Verification',
     desc: 'Live ABN Lookup, ASIC register, BSB directory, and ABS wage benchmarks.',
   },
   {
-    icon: <Calculator className="w-5 h-5 text-amber-400" />,
+    icon: <Calculator className="w-4 h-4" />,
     title: 'Math & Date Consistency',
     desc: 'Gross − tax = net, super at 11.5% SGC, YTD consistency checks.',
   },
   {
-    icon: <Users className="w-5 h-5 text-teal-400" />,
+    icon: <Users className="w-4 h-4" />,
     title: 'Broker Risk Profiling',
     desc: 'Submission velocity, fraud rates, shared-employer clustering.',
   },
   {
-    icon: <ClipboardList className="w-5 h-5 text-amber-400" />,
+    icon: <ClipboardList className="w-4 h-4" />,
     title: 'Explainable for APRA',
     desc: 'Plain-English narrative with specific evidence for every score.',
   },
@@ -101,23 +101,36 @@ export default function Landing() {
   }, [])
 
   return (
-    <div className="min-h-screen text-white"
-      style={{ background: '#0a1210' }}>
-
+    <div
+      className="min-h-screen"
+      style={{
+        background: '#F7F5F0',
+        color: '#1C1917',
+        colorScheme: 'light',
+      }}
+    >
       <LoginModal open={loginMode !== null} onClose={() => setLoginMode(null)} mode={loginMode ?? 'signin'} onSwitchMode={setLoginMode} />
 
       {/* ── Nav ──────────────────────────────────────────────── */}
-      <nav className="border-b border-white/5">
-        <div className="flex items-center justify-between px-4 sm:px-8 py-4 max-w-7xl mx-auto">
-          <Logo height={32} />
-          <div className="flex items-center gap-3 sm:gap-6">
-            <a href="#features" className="hidden sm:inline text-white/50 hover:text-white/80 text-sm transition">Features</a>
-            <a href="#pricing" className="hidden sm:inline text-white/50 hover:text-white/80 text-sm transition">Pricing</a>
-            <Link href="/docs" className="hidden sm:inline text-white/50 hover:text-white/80 text-sm transition">Docs</Link>
-            <Link href="/demo" className="text-amber-300 hover:text-amber-200 text-sm font-medium transition">Live Demo</Link>
+      <nav style={{ borderBottom: '1px solid #E2DDD6' }}>
+        <div className="flex items-center justify-between px-6 sm:px-10 py-4 max-w-7xl mx-auto">
+          <Logo height={28} />
+          <div className="flex items-center gap-4 sm:gap-7">
+            <a href="#features" className="hidden sm:inline text-sm transition" style={{ color: '#9C9089' }}>Features</a>
+            <a href="#pricing" className="hidden sm:inline text-sm transition" style={{ color: '#9C9089' }}>Pricing</a>
+            <Link href="/docs" className="hidden sm:inline text-sm transition" style={{ color: '#9C9089' }}>Docs</Link>
+            <Link
+              href="/demo"
+              className="text-sm font-semibold transition"
+              style={{ color: '#DC1C1C' }}
+            >
+              Live Demo
+            </Link>
             <button
               onClick={() => setLoginMode('signin')}
-              className="border border-white/20 hover:border-white/40 text-white/70 hover:text-white text-sm font-semibold px-4 py-2 rounded-lg transition">
+              className="text-sm font-semibold px-4 py-2 rounded-lg transition"
+              style={{ border: '1px solid #D6D0C8', color: '#44403C', background: 'white' }}
+            >
               Sign in
             </button>
           </div>
@@ -125,240 +138,441 @@ export default function Landing() {
       </nav>
 
       {/* ── Hero ─────────────────────────────────────────────── */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-8 pt-16 sm:pt-24 pb-12 sm:pb-16 text-center">
-        <div className="inline-flex items-center gap-2 bg-red-500/10 border border-red-500/20 rounded-full px-3 sm:px-4 py-1.5 text-red-300 text-xs font-medium mb-6 sm:mb-8">
-          <span className="w-1.5 h-1.5 bg-red-400 rounded-full" />
-          CBA self-reported ~A$1B in AI-document fraud — Feb 2026
+      <section className="max-w-7xl mx-auto px-6 sm:px-10 pt-14 sm:pt-20 pb-10 sm:pb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-10 lg:gap-16 items-start">
+
+          {/* Left: copy */}
+          <div>
+            <div
+              className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold mb-7"
+              style={{ background: '#FEE2E2', color: '#991B1B', border: '1px solid #FECACA' }}
+            >
+              <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#DC2626' }} />
+              CBA self-reported ~A$1B in AI-document fraud — Feb 2026
+            </div>
+
+            <h1
+              className="text-4xl sm:text-5xl lg:text-[3.5rem] xl:text-6xl font-extrabold leading-[1.05] mb-5"
+              style={{ color: '#1C1917', letterSpacing: '-0.02em' }}
+            >
+              Stop AI-generated<br />
+              mortgage fraud<br />
+              <span style={{ color: '#DC1C1C' }}>before settlement.</span>
+            </h1>
+
+            <p
+              className="text-base sm:text-lg leading-relaxed mb-8 max-w-lg"
+              style={{ color: '#78716C' }}
+            >
+              Six-layer forensic analysis of every loan document — PDF metadata,
+              payroll maths, live ABN checks, and cross-reference verification —
+              in under 60 seconds.
+            </p>
+
+            <div className="flex flex-col sm:flex-row items-start gap-3">
+              <Link
+                href="/demo"
+                className="inline-block font-bold px-7 py-3.5 rounded-xl text-base transition text-center"
+                style={{ background: '#1C1917', color: 'white' }}
+              >
+                See it in action
+              </Link>
+              <a
+                href="#pricing"
+                className="inline-block font-medium px-7 py-3.5 rounded-xl text-base transition text-center"
+                style={{ color: '#78716C', border: '1px solid #D6D0C8', background: 'white' }}
+              >
+                View pricing
+              </a>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-5 mt-8" style={{ color: '#9C9089' }}>
+              <span className="flex items-center gap-1.5 text-xs">
+                <Shield className="w-3.5 h-3.5" style={{ color: '#059669' }} />
+                SOC 2 Type II
+              </span>
+              <span className="flex items-center gap-1.5 text-xs">
+                <Lock className="w-3.5 h-3.5" style={{ color: '#059669' }} />
+                Documents never used for training
+              </span>
+              <span className="flex items-center gap-1.5 text-xs">
+                <Globe className="w-3.5 h-3.5" style={{ color: '#059669' }} />
+                Australian-hosted
+              </span>
+            </div>
+          </div>
+
+          {/* Right: live case card */}
+          <div className="lg:mt-4">
+            <div
+              className="rounded-2xl overflow-hidden"
+              style={{
+                background: '#ffffff',
+                border: '1px solid #E2DDD6',
+                boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05), 0 20px 50px -12px rgba(0,0,0,0.08)',
+              }}
+            >
+              {/* Window chrome */}
+              <div
+                className="flex items-center gap-2 px-4 py-2.5"
+                style={{ borderBottom: '1px solid #F0EDE8', background: '#FAFAF7' }}
+              >
+                <div className="flex gap-1.5">
+                  <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#FECACA' }} />
+                  <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#FDE68A' }} />
+                  <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#A7F3D0' }} />
+                </div>
+                <span className="font-mono text-xs ml-2" style={{ color: '#C4BAB0' }}>
+                  trutina.com.au/cases/2024-0847
+                </span>
+              </div>
+
+              <div className="p-6">
+                <div className="flex items-start justify-between mb-5">
+                  <div>
+                    <div className="font-mono text-xs mb-1" style={{ color: '#B8AFA7' }}>Case #2024-0847</div>
+                    <div className="font-bold text-lg" style={{ color: '#1C1917' }}>Home Loan — J. Mitchell</div>
+                    <div className="text-sm mt-0.5" style={{ color: '#A09690' }}>via Pacific Finance Brokers</div>
+                  </div>
+                  <div className="text-right">
+                    <div
+                      className="text-4xl font-extrabold font-mono"
+                      style={{ color: '#DC1C1C', letterSpacing: '-0.02em' }}
+                    >
+                      78
+                    </div>
+                    <div
+                      className="text-xs font-bold uppercase tracking-wider mt-0.5"
+                      style={{ color: '#DC1C1C', opacity: 0.7 }}
+                    >
+                      High Risk
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div
+                    className="flex items-start gap-3 p-3 rounded-xl"
+                    style={{ background: '#FEF2F2', border: '1px solid #FECACA' }}
+                  >
+                    <XCircle className="w-4 h-4 mt-0.5 shrink-0" style={{ color: '#DC1C1C' }} />
+                    <div>
+                      <span className="text-sm font-semibold" style={{ color: '#1C1917' }}>PDF created with Google Docs</span>
+                      <span className="text-xs ml-2 hidden sm:inline" style={{ color: '#A09690' }}>— payslip claims &quot;Woolworths Group Payroll&quot;</span>
+                    </div>
+                  </div>
+                  <div
+                    className="flex items-start gap-3 p-3 rounded-xl"
+                    style={{ background: '#FFFBEB', border: '1px solid #FDE68A' }}
+                  >
+                    <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" style={{ color: '#B45309' }} />
+                    <div>
+                      <span className="text-sm font-semibold" style={{ color: '#1C1917' }}>ABN mismatch</span>
+                      <span className="text-xs ml-2 hidden sm:inline" style={{ color: '#A09690' }}>— 51 824 753 999 registered to different entity</span>
+                    </div>
+                  </div>
+                  <div
+                    className="flex items-start gap-3 p-3 rounded-xl"
+                    style={{ background: '#FFFBEB', border: '1px solid #FDE68A' }}
+                  >
+                    <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" style={{ color: '#B45309' }} />
+                    <div>
+                      <span className="text-sm font-semibold" style={{ color: '#1C1917' }}>YTD inconsistent</span>
+                      <span className="text-xs ml-2 hidden sm:inline" style={{ color: '#A09690' }}>— $87k claimed but only 14 pay periods elapsed</span>
+                    </div>
+                  </div>
+                  <div
+                    className="flex items-start gap-3 p-3 rounded-xl"
+                    style={{ background: '#F0FDF4', border: '1px solid #A7F3D0' }}
+                  >
+                    <CheckCircle2 className="w-4 h-4 mt-0.5 shrink-0" style={{ color: '#059669' }} />
+                    <div>
+                      <span className="text-sm font-semibold" style={{ color: '#1C1917' }}>BSB validated</span>
+                      <span className="text-xs ml-2 hidden sm:inline" style={{ color: '#A09690' }}>— 062-000 confirmed CBA Sydney</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-4 pt-4" style={{ borderTop: '1px solid #F0EDE8' }}>
+                  <Link
+                    href="/demo"
+                    className="text-sm font-semibold transition"
+                    style={{ color: '#DC1C1C' }}
+                  >
+                    Explore five demo cases &rarr;
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Threat context — editorial table ─────────────────── */}
+      <section
+        className="py-10 sm:py-14"
+        style={{ borderTop: '1px solid #E2DDD6', borderBottom: '1px solid #E2DDD6' }}
+      >
+        <div className="max-w-7xl mx-auto px-6 sm:px-10">
+          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 lg:gap-16 items-start">
+            <div>
+              <div
+                className="text-xs font-bold uppercase tracking-widest mb-2"
+                style={{ color: '#DC1C1C' }}
+              >
+                Industry exposure
+              </div>
+              <p className="text-sm leading-relaxed" style={{ color: '#78716C' }}>
+                In February 2026, Commonwealth Bank self-reported ~A$1 billion in suspected fraudulent mortgage
+                applications. Fake payslips and bank statements generated with AI tools, submitted through broker channels.
+                Westpac and ANZ have since flagged similar issues.
+              </p>
+            </div>
+            <div>
+              <table className="w-full text-sm">
+                <thead>
+                  <tr style={{ borderBottom: '2px solid #1C1917' }}>
+                    <th className="text-left pb-3 font-bold" style={{ color: '#1C1917' }}>Institution</th>
+                    <th className="text-left pb-3 font-bold" style={{ color: '#1C1917' }}>Exposure</th>
+                    <th className="text-left pb-3 font-bold hidden sm:table-cell" style={{ color: '#1C1917' }}>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    { bank: 'Commonwealth Bank', amount: '~A$1,000,000,000', status: 'Self-reported Feb 2026' },
+                    { bank: 'NAB', amount: '~A$105,000,000', status: '"Penthouse Syndicate" charged' },
+                    { bank: 'Westpac / ANZ', amount: 'Undisclosed', status: 'Flagged internally' },
+                  ].map((b, i) => (
+                    <tr key={b.bank} style={{ borderBottom: '1px solid #E2DDD6' }}>
+                      <td className="py-3.5 font-semibold" style={{ color: '#1C1917' }}>{b.bank}</td>
+                      <td
+                        className="py-3.5 font-mono font-bold"
+                        style={{ color: b.amount === 'Undisclosed' ? '#9C9089' : '#DC1C1C' }}
+                      >
+                        {b.amount}
+                      </td>
+                      <td className="py-3.5 hidden sm:table-cell" style={{ color: '#9C9089' }}>{b.status}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Features ─────────────────────────────────────────── */}
+      <section id="features" className="max-w-7xl mx-auto px-6 sm:px-10 py-14 sm:py-20">
+        <div className="mb-10 sm:mb-14">
+          <div
+            className="text-xs font-bold uppercase tracking-widest mb-3"
+            style={{ color: '#9C9089' }}
+          >
+            Six-layer detection engine
+          </div>
+          <h2
+            className="text-2xl sm:text-3xl font-extrabold"
+            style={{ color: '#1C1917', letterSpacing: '-0.02em' }}
+          >
+            Two forensic engines.<br />Four verification layers.
+          </h2>
         </div>
 
-        <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold leading-tight mb-4 sm:mb-6">
-          Stop AI-generated mortgage fraud
-          <br />
-          <span className="text-teal-400">before it costs billions</span>
-        </h1>
-
-        <p className="text-white/50 text-base sm:text-xl max-w-2xl mx-auto mb-8 sm:mb-10">
-          Six-layer forensic analysis of every loan document — PDF metadata, payroll maths, live ABN checks,
-          and cross-reference verification — in under 60 seconds.
-          <span className="block mt-2 text-white/35 text-sm sm:text-base">Mortgage, personal, and business lending.</span>
-        </p>
-
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-          <Link href="/demo"
-            className="w-full sm:w-auto bg-teal-600 hover:bg-teal-500 text-white font-semibold px-8 py-3.5 rounded-xl transition text-lg text-center">
-            See it in action
-          </Link>
-          <a href="#pricing" className="text-white/50 hover:text-white/70 font-medium px-6 py-3.5 transition">
-            View pricing
-          </a>
+        {/* Hero features */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+          {HERO_FEATURES.map((f, i) => (
+            <div
+              key={f.title}
+              className="p-7 rounded-2xl"
+              style={{ background: i === 0 ? '#1C1917' : 'white', border: '1px solid #E2DDD6' }}
+            >
+              <div
+                className="w-10 h-10 rounded-xl flex items-center justify-center mb-5"
+                style={{
+                  background: i === 0 ? 'rgba(255,255,255,0.1)' : '#FEF2F2',
+                  color: i === 0 ? 'white' : '#DC1C1C',
+                }}
+              >
+                {f.icon}
+              </div>
+              <h3
+                className="font-bold text-lg mb-2"
+                style={{ color: i === 0 ? 'white' : '#1C1917' }}
+              >
+                {f.title}
+              </h3>
+              <p
+                className="text-sm leading-relaxed"
+                style={{ color: i === 0 ? 'rgba(255,255,255,0.55)' : '#78716C' }}
+              >
+                {f.desc}
+              </p>
+            </div>
+          ))}
         </div>
 
-        <div className="grid grid-cols-3 gap-4 sm:gap-6 mt-12 sm:mt-16 max-w-lg mx-auto">
-          {[
-            { value: '~60s', label: 'Analysis time', color: 'text-teal-400' },
-            { value: '$0', label: 'ABN lookup cost', color: 'text-amber-400' },
-            { value: '5', label: 'Detection modules', color: 'text-teal-400' },
-          ].map(s => (
-            <div key={s.label} className="text-center">
-              <div className={`text-2xl sm:text-3xl font-bold ${s.color}`}>{s.value}</div>
-              <div className="text-white/30 text-xs mt-1">{s.label}</div>
+        {/* Supporting features */}
+        <div
+          className="rounded-2xl overflow-hidden"
+          style={{ border: '1px solid #E2DDD6' }}
+        >
+          {SUPPORTING_FEATURES.map((f, i) => (
+            <div
+              key={f.title}
+              className="flex items-start gap-4 px-6 py-5"
+              style={{
+                borderBottom: i < SUPPORTING_FEATURES.length - 1 ? '1px solid #F0EDE8' : undefined,
+                background: 'white',
+              }}
+            >
+              <div
+                className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
+                style={{ background: '#F7F5F0', color: '#44403C' }}
+              >
+                {f.icon}
+              </div>
+              <div>
+                <h3 className="font-semibold text-sm mb-0.5" style={{ color: '#1C1917' }}>{f.title}</h3>
+                <p className="text-sm" style={{ color: '#9C9089' }}>{f.desc}</p>
+              </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ── Product preview — what a risk report looks like ─── */}
-      <section className="max-w-3xl mx-auto px-4 sm:px-8 pb-8">
-        <div className="rounded-2xl border border-white/10 overflow-hidden" style={{ background: 'rgba(255,255,255,0.03)' }}>
-          <div className="flex items-center gap-2 px-4 py-2.5 border-b border-white/5" style={{ background: 'rgba(255,255,255,0.02)' }}>
-            <div className="flex gap-1.5">
-              <div className="w-2.5 h-2.5 rounded-full bg-red-400/60" />
-              <div className="w-2.5 h-2.5 rounded-full bg-amber-400/60" />
-              <div className="w-2.5 h-2.5 rounded-full bg-emerald-400/60" />
+      {/* ── Pricing ──────────────────────────────────────────── */}
+      <section
+        id="pricing"
+        className="py-14 sm:py-20"
+        style={{ borderTop: '1px solid #E2DDD6' }}
+      >
+        <div className="max-w-7xl mx-auto px-6 sm:px-10">
+          <div className="mb-10 sm:mb-14">
+            <div
+              className="text-xs font-bold uppercase tracking-widest mb-3"
+              style={{ color: '#9C9089' }}
+            >
+              Pricing
             </div>
-            <span className="text-white/30 text-xs font-mono ml-2">trutina.com.au/cases/2024-0847</span>
+            <h2
+              className="text-2xl sm:text-3xl font-extrabold mb-2"
+              style={{ color: '#1C1917', letterSpacing: '-0.02em' }}
+            >
+              Start free. Scale when ready.
+            </h2>
+            <p className="text-sm" style={{ color: '#9C9089' }}>
+              Also available: <span style={{ color: '#B45309', fontWeight: 600 }}>$15/case</span> pay-as-you-go API.
+            </p>
           </div>
 
-          <div className="p-5 sm:p-8">
-            <div className="flex items-start justify-between mb-5">
-              <div>
-                <div className="text-white/40 text-xs font-mono mb-1">Case #2024-0847</div>
-                <div className="text-white font-semibold text-lg">Home Loan — J. Mitchell</div>
-                <div className="text-white/30 text-sm mt-0.5">via Pacific Finance Brokers</div>
-              </div>
-              <div className="text-right">
-                <div className="text-3xl font-bold text-red-400 font-mono">78</div>
-                <div className="text-red-300/60 text-xs font-semibold uppercase tracking-wider">High Risk</div>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-start gap-3 p-3 rounded-lg bg-red-500/10 border border-red-500/20">
-                <XCircle className="w-4 h-4 text-red-400 mt-0.5 shrink-0" />
-                <div>
-                  <span className="text-sm text-white/80 font-medium">PDF created with Google Docs</span>
-                  <span className="text-xs text-white/30 ml-2 hidden sm:inline">— payslip claims &quot;Woolworths Group Payroll&quot;</span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {PRICING.map(plan => (
+              <div
+                key={plan.name}
+                className="rounded-2xl p-6 flex flex-col"
+                style={{
+                  background: plan.highlight ? '#1C1917' : 'white',
+                  border: plan.highlight ? 'none' : '1px solid #E2DDD6',
+                }}
+              >
+                {plan.highlight && (
+                  <div
+                    className="text-xs font-bold tracking-wider uppercase mb-3"
+                    style={{ color: '#DC1C1C' }}
+                  >
+                    Most Popular
+                  </div>
+                )}
+                <div
+                  className="text-base font-bold mb-2"
+                  style={{ color: plan.highlight ? 'white' : '#1C1917' }}
+                >
+                  {plan.name}
                 </div>
-              </div>
-              <div className="flex items-start gap-3 p-3 rounded-lg bg-amber-500/10 border border-amber-500/20">
-                <AlertTriangle className="w-4 h-4 text-amber-400 mt-0.5 shrink-0" />
-                <div>
-                  <span className="text-sm text-white/80 font-medium">ABN mismatch</span>
-                  <span className="text-xs text-white/30 ml-2 hidden sm:inline">— 51 824 753 999 registered to different entity</span>
+                <div className="flex items-baseline gap-1 mb-1">
+                  <span
+                    className="font-extrabold"
+                    style={{
+                      fontSize: '2rem',
+                      color: plan.highlight ? 'white' : '#1C1917',
+                      letterSpacing: '-0.03em',
+                    }}
+                  >
+                    {plan.price}
+                  </span>
+                  <span
+                    className="text-sm"
+                    style={{ color: plan.highlight ? 'rgba(255,255,255,0.4)' : '#9C9089' }}
+                  >
+                    {plan.period}
+                  </span>
                 </div>
-              </div>
-              <div className="flex items-start gap-3 p-3 rounded-lg bg-amber-500/10 border border-amber-500/20">
-                <AlertTriangle className="w-4 h-4 text-amber-400 mt-0.5 shrink-0" />
-                <div>
-                  <span className="text-sm text-white/80 font-medium">YTD inconsistent</span>
-                  <span className="text-xs text-white/30 ml-2 hidden sm:inline">— $87k claimed but only 14 pay periods elapsed</span>
+                <div
+                  className="text-xs mb-0.5"
+                  style={{ color: plan.highlight ? 'rgba(255,255,255,0.4)' : '#9C9089' }}
+                >
+                  {plan.volume}
                 </div>
-              </div>
-              <div className="flex items-start gap-3 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
-                <div>
-                  <span className="text-sm text-white/80 font-medium">BSB validated</span>
-                  <span className="text-xs text-white/30 ml-2 hidden sm:inline">— 062-000 confirmed CBA Sydney</span>
+                <div
+                  className="text-xs mb-5"
+                  style={{ color: plan.highlight ? 'rgba(255,255,255,0.3)' : '#B8AFA7' }}
+                >
+                  {plan.target}
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <p className="text-center mt-4">
-          <Link href="/demo" className="text-teal-400 hover:text-teal-300 text-sm font-medium transition">
-            Explore five demo cases &rarr;
-          </Link>
-        </p>
-      </section>
-
-      {/* ── Threat context ───────────────────────────────────── */}
-      <section className="max-w-4xl mx-auto px-4 sm:px-8 py-8 sm:py-12">
-        <div className="rounded-2xl border border-orange-500/20 p-5 sm:p-8"
-          style={{ background: 'rgba(249,115,22,0.05)' }}>
-          <h2 className="text-orange-300 font-semibold text-lg mb-3">The threat is real and industry-wide</h2>
-          <p className="text-white/60 leading-relaxed mb-4 text-sm sm:text-base">
-            In February 2026, Commonwealth Bank self-reported ~A$1 billion in suspected fraudulent mortgage
-            applications - fake payslips and bank statements generated with AI tools, submitted through broker
-            channels. Westpac and ANZ have since flagged similar issues.
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 text-sm">
-            {[
-              { bank: 'CBA', amount: '~$1B', status: 'Self-reported Feb 2026' },
-              { bank: 'NAB', amount: '~$105M', status: '"Penthouse Syndicate" charged' },
-              { bank: 'Westpac / ANZ', amount: 'Undisclosed', status: 'Flagged internally' },
-            ].map(b => (
-              <div key={b.bank} className="bg-white/5 rounded-xl p-3">
-                <div className="text-white font-semibold">{b.bank}</div>
-                <div className="text-orange-300 font-mono">{b.amount}</div>
-                <div className="text-white/30 text-xs mt-1">{b.status}</div>
+                <ul className="space-y-2 mb-6 flex-1">
+                  {plan.features.map(f => (
+                    <li
+                      key={f}
+                      className="flex items-start gap-2 text-sm"
+                      style={{ color: plan.highlight ? 'rgba(255,255,255,0.65)' : '#78716C' }}
+                    >
+                      <Check
+                        className="w-4 h-4 shrink-0 mt-0.5"
+                        style={{ color: plan.highlight ? '#6EE7B7' : '#059669' }}
+                      />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                {plan.ctaAction === 'trial' ? (
+                  <button
+                    onClick={() => setLoginMode('trial')}
+                    className="block w-full text-center font-semibold py-3 rounded-xl text-sm transition"
+                    style={{ border: '1px solid #D6D0C8', color: '#44403C', background: '#F7F5F0' }}
+                  >
+                    {plan.cta}
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      if (typeof window !== 'undefined' && (window as any).BookingWidget)
+                        (window as any).BookingWidget.open()
+                    }}
+                    className="block w-full text-center font-semibold py-3 rounded-xl text-sm transition cursor-pointer"
+                    style={
+                      plan.highlight
+                        ? { background: '#DC1C1C', color: 'white' }
+                        : { border: '1px solid #D6D0C8', color: '#44403C', background: '#F7F5F0' }
+                    }
+                  >
+                    {plan.cta}
+                  </button>
+                )}
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── Features ─────────────────────────────────────────── */}
-      <section id="features" className="max-w-5xl mx-auto px-4 sm:px-8 py-12 sm:py-16">
-        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12">Six-layer detection engine</h2>
-
-        {/* Hero features: the two core engines */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-6">
-          {HERO_FEATURES.map(f => (
-            <div key={f.title}
-              className="rounded-xl border border-white/10 p-6 sm:p-8"
-              style={{ background: 'rgba(255,255,255,0.04)' }}>
-              <div className="mb-4">{f.icon}</div>
-              <h3 className="font-bold text-white text-lg mb-2">{f.title}</h3>
-              <p className="text-white/50 text-sm leading-relaxed">{f.desc}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Supporting features: compact grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-          {SUPPORTING_FEATURES.map(f => (
-            <div key={f.title} className="rounded-lg border border-white/5 p-4" style={{ background: 'rgba(255,255,255,0.02)' }}>
-              <div className="flex items-center gap-2 mb-2">
-                {f.icon}
-                <h3 className="font-semibold text-white text-sm">{f.title}</h3>
-              </div>
-              <p className="text-white/35 text-xs leading-relaxed">{f.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── Trust bar ────────────────────────────────────────── */}
-      <section className="max-w-3xl mx-auto px-4 sm:px-8 py-6">
-        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 rounded-xl border border-white/5 px-6 py-4" style={{ background: 'rgba(255,255,255,0.02)' }}>
-          <span className="flex items-center gap-2 text-white/40 text-sm">
-            <svg className="w-4 h-4 text-emerald-400/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
-            SOC 2 Type II certified
-          </span>
-          <span className="flex items-center gap-2 text-white/40 text-sm">
-            <svg className="w-4 h-4 text-emerald-400/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
-            Documents never used for training
-          </span>
-          <span className="flex items-center gap-2 text-white/40 text-sm">
-            <svg className="w-4 h-4 text-amber-400/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            Australian-hosted
-          </span>
-        </div>
-      </section>
-
-      {/* ── Pricing ──────────────────────────────────────────── */}
-      <section id="pricing" className="max-w-6xl mx-auto px-4 sm:px-8 py-12 sm:py-16">
-        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-3 sm:mb-4">Pricing</h2>
-        <p className="text-white/40 text-center mb-8 sm:mb-12 text-sm sm:text-base">
-          Start free. Scale when you&apos;re ready. Also available: <span className="text-amber-400">$15/case</span> pay-as-you-go API.
-        </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-          {PRICING.map(plan => (
-            <div key={plan.name}
-              className={`rounded-2xl border p-6 sm:p-7 flex flex-col ${plan.highlight ? 'border-teal-500/40 ring-1 ring-teal-500/20' : 'border-white/10'}`}
-              style={{ background: plan.highlight ? 'rgba(13,148,136,0.08)' : 'rgba(255,255,255,0.04)' }}>
-              {plan.highlight && (
-                <div className="text-xs text-amber-400 font-semibold tracking-wider uppercase mb-2">Most Popular</div>
-              )}
-              <div className="text-lg font-bold text-white mb-1">{plan.name}</div>
-              <div className="flex items-baseline gap-1 mb-1">
-                <span className="text-3xl sm:text-4xl font-bold text-white">{plan.price}</span>
-                <span className="text-white/40 text-sm">{plan.period}</span>
-              </div>
-              <div className="text-white/40 text-xs mb-1">{plan.volume}</div>
-              <div className="text-white/30 text-xs mb-5">{plan.target}</div>
-              <ul className="space-y-2 mb-6 flex-1">
-                {plan.features.map(f => (
-                  <li key={f} className="flex items-start gap-2 text-sm text-white/60">
-                    <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" /> {f}
-                  </li>
-                ))}
-              </ul>
-              {plan.ctaAction === 'trial' ? (
-                <button
-                  onClick={() => setLoginMode('trial')}
-                  className="block w-full text-center font-semibold py-3 rounded-xl transition text-sm border border-white/20 hover:border-white/40 text-white/70 hover:text-white">
-                  {plan.cta}
-                </button>
-              ) : (
-                <button
-                  onClick={() => { if (typeof window !== 'undefined' && (window as any).BookingWidget) (window as any).BookingWidget.open() }}
-                  className={`block w-full text-center font-semibold py-3 rounded-xl transition text-sm cursor-pointer ${
-                    plan.highlight
-                      ? 'bg-teal-600 hover:bg-teal-500 text-white'
-                      : 'border border-white/20 hover:border-white/40 text-white/70 hover:text-white'
-                  }`}>
-                  {plan.cta}
-                </button>
-              )}
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* ── Footer ───────────────────────────────────────────── */}
-      <footer className="border-t border-white/5 px-4 sm:px-8 py-6 text-center text-white/25 text-xs">
-        Trutina &middot; hello@trutina.com.au &middot; Document fraud detection for Australian lenders
+      <footer
+        className="px-6 sm:px-10 py-6 text-xs"
+        style={{ borderTop: '1px solid #E2DDD6', color: '#C4BAB0' }}
+      >
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+          <span>Trutina &middot; Document fraud detection for Australian lenders</span>
+          <span>hello@trutina.com.au</span>
+        </div>
       </footer>
     </div>
   )
