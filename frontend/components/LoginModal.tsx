@@ -111,7 +111,7 @@ export default function LoginModal({ open, onClose, mode = 'signin', onSwitchMod
         </button>
 
         <div style={{ textAlign: 'center', marginBottom: 18 }}>
-          <Logo variant="wordmark" height={26} href="" />
+          <Logo variant="wordmark" height={40} href="" />
           <p style={{ color: 'var(--ink-60)', marginTop: 8, fontSize: 13 }}>
             {mode === 'trial' ? 'Start your 30-day trial' : 'Sign in to continue'}
           </p>

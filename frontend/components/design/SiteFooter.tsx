@@ -7,7 +7,7 @@ export default function SiteFooter() {
       <div className="page">
         <div className="row1">
           <div>
-            <Logo variant="wordmark" height={32} href="" />
+            <Logo variant="wordmark" height={48} href="" />
             <div className="t-caption" style={{ maxWidth: 320, color: 'var(--ink-60)', marginTop: 14 }}>
               Trutina. Mortgage fraud detection for Australian lenders. APRA CPG 234 aligned.
             </div>

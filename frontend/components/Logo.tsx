@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-type Variant = 'mark' | 'wordmark'
+type Variant = 'mark' | 'wordmark' | 'combo'
 
 interface LogoProps {
   variant?: Variant
@@ -10,15 +10,21 @@ interface LogoProps {
   className?: string
 }
 
-// Aspect ratios of the calibration-tick SVGs in /public/logo/.
+// The canonical Trutina logo, recoloured onto the cool-paper + ink-100
+// palette by scripts/recolour-via-nano-banana.py (Gemini 3 Pro Image
+// Preview). Preserves the T + balance pans + documents + divider + serif
+// Trutina wordmark with the original outline-to-solid fade treatment.
+// Aspect ratios match the source artwork.
 const ASPECT: Record<Variant, number> = {
-  mark: 80 / 80,        // 1:1 square frame
-  wordmark: 360 / 72,   // ~5:1
+  mark: 1024 / 1024,     // 1:1 square (T + scales, no wordmark)
+  wordmark: 1408 / 768,  // ~1.83:1 (T + scales + divider + Trutina)
+  combo: 1408 / 768,
 }
 
 const FILE: Record<Variant, string> = {
-  mark: '/logo/mark-calibration.svg',
-  wordmark: '/logo/wordmark-calibration.svg',
+  mark: '/logo/recoloured/mark-ink.png',
+  wordmark: '/logo/recoloured/logo-ink.png',
+  combo: '/logo/recoloured/logo-ink.png',
 }
 
 export function Logo({ variant = 'wordmark', href = '/', height = 28, className = '' }: LogoProps) {
