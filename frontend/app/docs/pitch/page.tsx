@@ -29,7 +29,7 @@ function TitleSlide() {
           Industry crisis &mdash; Feb 2026
         </div>
 
-        <Logo variant="text" href="" className="text-4xl sm:text-5xl" />
+        <Logo variant="wordmark" href="" className="text-4xl sm:text-5xl" />
 
         <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold leading-tight mb-6">
           Stop AI-Generated Mortgage Fraud
@@ -566,7 +566,7 @@ export default function PitchDeck() {
 
       {/* Top bar */}
       <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 sm:px-6 py-3">
-        <Logo variant="text" className="text-lg" />
+        <Logo variant="wordmark" className="text-lg" />
         <div className="flex items-center gap-3 sm:gap-4">
           <span className="text-white/30 text-xs font-mono">
             {current + 1}/{total}

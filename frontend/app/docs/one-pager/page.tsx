@@ -124,7 +124,7 @@ export default function OnePager() {
 
           {/* Header */}
           <div className="text-center mb-8 sm:mb-10">
-            <Logo variant="text" href="" className="text-2xl sm:text-3xl" />
+            <Logo variant="wordmark" href="" className="text-2xl sm:text-3xl" />
             <h1 className="text-lg sm:text-xl font-semibold text-white/80 print-muted mb-2">
               AI Lending Fraud Detection for Australian Lenders
             </h1>
