@@ -633,7 +633,7 @@ hr { border: 0; border-top: var(--rule-width) solid var(--rule); margin: var(--s
 
 .page { position: relative; max-width: 1280px; margin: 0 auto; padding: 0 32px 0 132px; }
 .page::before { content: ""; position: absolute; left: 110px; top: 0; bottom: 0; width: 1px; background: var(--ink-15); }
-.line-numbers { position: absolute; left: 36px; top: 0; bottom: 0; width: 64px; font-family: var(--font-mono); font-size: 9.5px; color: var(--ink-25); letter-spacing: 0.04em; text-align: right; pointer-events: none; }
+.line-numbers { position: absolute; left: 36px; top: 0; bottom: 0; width: 64px; font-family: var(--font-mono); font-size: 9.5px; color: var(--ink-25); letter-spacing: 0.04em; text-align: right; pointer-events: none; overflow: hidden; }
 @media (max-width: 1024px) {
   .page { padding: 0 24px; }
   .page::before, .line-numbers { display: none; }
