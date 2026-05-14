@@ -8,9 +8,14 @@ import { FIXTURE_BROKERS } from '@/lib/styleguide-fixtures'
 export default function StyleguideBroker() {
   return (
     <AppShell crumbs={[{ href: '/dashboard', label: 'Queue' }, { label: 'Brokers' }]} navCounts={{ brokers: FIXTURE_BROKERS.length }}>
-      <div className="content-header">
-        <h1>Brokers</h1>
-        <span className="sub">{FIXTURE_BROKERS.length} brokers active in the last 90 days</span>
+      <div className="toolbar">
+        <div className="tb-left">
+          <span className="tb-title">Brokers</span>
+          <span className="tb-count">{FIXTURE_BROKERS.length} brokers . last 90 days</span>
+        </div>
+        <div className="tb-right">
+          <button type="button" className="btn btn-secondary btn-sm">Export view</button>
+        </div>
       </div>
       <table className="q-table">
         <thead>

@@ -370,6 +370,43 @@ hr { border: 0; border-top: var(--rule-width) solid var(--rule); margin: var(--s
 .content-header .sub { font-size: 12.5px; color: var(--ink-60); }
 .content-header .meta { margin-left: auto; font-family: var(--font-mono); font-size: 11px; color: var(--ink-40); }
 
+/* SaaS toolbar — used on workflow surfaces (queue, brokers, cases list).
+ * Replaces the editorial .content-header on pages that are processed, not
+ * read. Keep .content-header for narrative surfaces (audit packet preview,
+ * case-detail, demo specimens). */
+.toolbar {
+  display: flex; align-items: center; gap: 16px;
+  height: 56px;
+  padding: 0;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 8px;
+}
+.toolbar .tb-left { display: flex; align-items: baseline; gap: 12px; min-width: 0; flex: 1; }
+.toolbar .tb-title { font-family: var(--font-sans); font-weight: 600; font-size: 15px; color: var(--ink-100); letter-spacing: -0.002em; }
+.toolbar .tb-count { font-family: var(--font-mono); font-size: 12px; color: var(--ink-40); }
+.toolbar .tb-right { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.toolbar .tb-divider { width: 1px; height: 20px; background: var(--rule); margin: 0 4px; }
+.toolbar-caption { font-family: var(--font-sans); font-size: 11.5px; color: var(--ink-40); margin-bottom: 14px; letter-spacing: 0.01em; }
+
+/* Score magnitude bar — inline column affordance for the queue. */
+.score-cell { display: inline-flex; align-items: center; gap: 8px; }
+.score-bar { display: inline-block; width: 56px; height: 4px; background: var(--paper-2); position: relative; }
+.score-bar i { display: block; position: absolute; left: 0; top: 0; bottom: 0; background: var(--ink-100); }
+.score-bar.tier-crit i { background: var(--risk-crit); }
+.score-bar.tier-high i { background: var(--risk-high); }
+.score-bar.tier-med i  { background: var(--risk-med); }
+.score-bar.tier-low i  { background: var(--risk-low); }
+
+/* Row-hover action set — fades in on row hover for SaaS scan behaviour. */
+.q-table .row-actions { opacity: 0; display: inline-flex; gap: 4px; transition: opacity var(--dur-fast) var(--ease); }
+.q-table tbody tr:hover .row-actions { opacity: 1; }
+.q-table .row-actions a, .q-table .row-actions button {
+  font-family: var(--font-sans); font-size: 11px; color: var(--ink-60);
+  background: var(--paper-0); border: 1px solid var(--ink-15);
+  padding: 2px 8px; border-radius: var(--radius-1); cursor: pointer; text-decoration: none;
+}
+.q-table .row-actions a:hover, .q-table .row-actions button:hover { border-color: var(--ink-80); color: var(--ink-100); }
+
 /* Queue table */
 .q-table { width: 100%; border-collapse: collapse; font-family: var(--font-sans); font-size: 13px; }
 .q-table thead th {
@@ -553,7 +590,15 @@ hr { border: 0; border-top: var(--rule-width) solid var(--rule); margin: var(--s
  * ===================================================================== */
 
 .site-header { position: sticky; top: 0; z-index: 10; background: rgba(240, 241, 237, 0.92); backdrop-filter: blur(2px); border-bottom: 1px solid var(--rule); }
-.site-header .inner { max-width: 1280px; margin: 0 auto; padding: 14px 32px 14px 132px; display: flex; align-items: center; gap: 28px; }
+.site-header .inner { max-width: 1280px; margin: 0 auto; padding: 14px 32px 14px 132px; display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
+@media (max-width: 1024px) {
+  .site-header .inner { padding: 14px 24px; gap: 16px; }
+  .site-header .filed { display: none; }
+}
+@media (max-width: 720px) {
+  .site-header nav { gap: 14px; font-size: 12px; }
+  .site-header .auth { gap: 8px; }
+}
 .site-header .brand { display: flex; align-items: center; text-decoration: none; }
 .site-header nav { display: flex; align-items: center; gap: 22px; margin-left: 16px; }
 .site-header nav a { color: var(--ink-80); text-decoration: none; font-size: 13px; cursor: pointer; }
@@ -567,6 +612,10 @@ hr { border: 0; border-top: var(--rule-width) solid var(--rule); margin: var(--s
 .page { position: relative; max-width: 1280px; margin: 0 auto; padding: 0 32px 0 132px; }
 .page::before { content: ""; position: absolute; left: 110px; top: 0; bottom: 0; width: 1px; background: var(--ink-15); }
 .line-numbers { position: absolute; left: 36px; top: 0; bottom: 0; width: 64px; font-family: var(--font-mono); font-size: 9.5px; color: var(--ink-25); letter-spacing: 0.04em; text-align: right; pointer-events: none; }
+@media (max-width: 1024px) {
+  .page { padding: 0 24px; }
+  .page::before, .line-numbers { display: none; }
+}
 .line-numbers span { display: block; padding-right: 6px; line-height: 24px; }
 
 .mk-section { padding: 72px 0; border-bottom: 1px solid var(--rule); position: relative; }

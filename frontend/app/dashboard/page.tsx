@@ -72,10 +72,19 @@ export default function QueuePage() {
       crumbs={[{ href: '/dashboard', label: 'Today' }, { label: 'Queue' }]}
       navCounts={navCounts}
     >
-      <div className="content-header">
-        <h1>Overnight intake</h1>
-        <span className="sub">{cases.length} cases since midnight</span>
-        <span className="meta">{new Date().toLocaleString('en-AU', { timeZone: 'Australia/Sydney' })} AEST</span>
+      <div className="toolbar">
+        <div className="tb-left">
+          <span className="tb-title">Queue</span>
+          <span className="tb-count">{cases.length} cases . {tierCount('crit')} critical . {tierCount('high')} high</span>
+        </div>
+        <div className="tb-right">
+          <button type="button" className="btn btn-secondary btn-sm">Export view</button>
+          <div className="tb-divider" />
+          <Link href="/cases/new" className="btn btn-primary btn-sm">+ New case</Link>
+        </div>
+      </div>
+      <div className="toolbar-caption">
+        Auto-refresh every 5 min. Last updated {new Date().toLocaleString('en-AU', { hour: '2-digit', minute: '2-digit', hour12: false })} AEST.
       </div>
 
       <div className="filter-bar">
@@ -85,8 +94,6 @@ export default function QueuePage() {
         <FilterChip active={tierFilter === 'high'} onClick={() => setTierFilter('high')} label="High"         count={tierCount('high')} dot="high" />
         <FilterChip active={tierFilter === 'med'}  onClick={() => setTierFilter('med')}  label="Medium"       count={tierCount('med')}  dot="med" />
         <FilterChip active={tierFilter === 'low'}  onClick={() => setTierFilter('low')}  label="Cleared"      count={tierCount('low')}  dot="low" />
-        <span style={{ flex: 1 }} />
-        <Link href="/cases/new" className="btn btn-secondary btn-sm">+ New case</Link>
       </div>
 
       <div style={{ overflowX: 'auto' }}>
@@ -98,9 +105,9 @@ export default function QueuePage() {
               <th style={{ width: '20%' }}>Applicant</th>
               <th onClick={() => onSort('submitted')} className={sortKey === 'submitted' ? 'sorted' : ''} style={{ width: '14%' }}>Submitted <span className="sort">{sortIcon('submitted') || '▾'}</span></th>
               <th style={{ width: '10%', textAlign: 'right' }}>Loan</th>
-              <th onClick={() => onSort('score')} className={sortKey === 'score' ? 'sorted' : ''} style={{ width: '8%', textAlign: 'right' }}>Score <span className="sort">{sortIcon('score') || '▾'}</span></th>
+              <th onClick={() => onSort('score')} className={sortKey === 'score' ? 'sorted' : ''} style={{ width: '14%' }}>Score <span className="sort">{sortIcon('score') || '▾'}</span></th>
               <th onClick={() => onSort('tier')} className={sortKey === 'tier' ? 'sorted' : ''} style={{ width: '9%' }}>Tier <span className="sort">{sortIcon('tier') || '▾'}</span></th>
-              <th style={{ width: '9%' }}>Flags</th>
+              <th style={{ width: '11%' }}>Flags / actions</th>
             </tr>
           </thead>
           <tbody>
@@ -155,14 +162,28 @@ function CaseRow({ c }: { c: Case }) {
       </td>
       <td className="mono derived">{submittedDate} . {submittedTime}</td>
       <td className="mono right">{c.loan_amount != null ? `$${Math.round(c.loan_amount / 1000)}k` : <span className="derived">—</span>}</td>
-      <td className="mono right" style={{ fontWeight: t === 'crit' ? 600 : 400, color: t === 'crit' ? 'var(--risk-crit)' : t === 'high' ? 'var(--risk-high)' : 'var(--ink-100)' }}>
-        {c.risk_score ?? <span className="derived">—</span>}
+      <td>
+        <div className="score-cell">
+          <span className="mono" style={{ minWidth: 22, textAlign: 'right', fontWeight: t === 'crit' ? 600 : 400, color: t === 'crit' ? 'var(--risk-crit)' : t === 'high' ? 'var(--risk-high)' : 'var(--ink-100)' }}>
+            {c.risk_score ?? '—'}
+          </span>
+          {c.risk_score != null ? (
+            <span className={`score-bar tier-${t}`} aria-hidden="true">
+              <i style={{ width: `${c.risk_score}%` }} />
+            </span>
+          ) : null}
+        </div>
       </td>
       <td><RiskBadge tier={t} /></td>
-      <td className="mono" style={{ color: totalFlags > 0 ? 'var(--ink-100)' : 'var(--ink-40)' }}>
-        {totalFlags > 0
-          ? `${c.flag_counts.critical}c/${c.flag_counts.high}h/${c.flag_counts.medium}m`
-          : 'no flags'}
+      <td>
+        <span className="mono" style={{ color: totalFlags > 0 ? 'var(--ink-100)' : 'var(--ink-40)', fontSize: 11 }}>
+          {totalFlags > 0
+            ? `${c.flag_counts.critical}c/${c.flag_counts.high}h/${c.flag_counts.medium}m`
+            : 'no flags'}
+        </span>
+        <span className="row-actions" style={{ marginLeft: 8 }}>
+          <Link href={`/cases/${c.id}`}>Open</Link>
+        </span>
       </td>
     </tr>
   )

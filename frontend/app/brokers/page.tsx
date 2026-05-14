@@ -20,9 +20,14 @@ export default function BrokersPage() {
       crumbs={[{ href: '/dashboard', label: 'Queue' }, { label: 'Brokers' }]}
       navCounts={{ brokers: brokers.length }}
     >
-      <div className="content-header">
-        <h1>Brokers</h1>
-        <span className="sub">{brokers.length} broker{brokers.length === 1 ? '' : 's'} active in the last 90 days</span>
+      <div className="toolbar">
+        <div className="tb-left">
+          <span className="tb-title">Brokers</span>
+          <span className="tb-count">{brokers.length} broker{brokers.length === 1 ? '' : 's'} . last 90 days</span>
+        </div>
+        <div className="tb-right">
+          <button type="button" className="btn btn-secondary btn-sm">Export view</button>
+        </div>
       </div>
 
       <div style={{ overflowX: 'auto' }}>

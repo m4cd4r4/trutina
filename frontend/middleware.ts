@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 const AUTH_COOKIE = 'trutina_auth'
 
 // Public pages and API routes that never require authentication
-const PUBLIC_ROUTES = ['/', '/login', '/demo', '/docs']
+const PUBLIC_ROUTES = ['/', '/login', '/demo', '/docs', '/styleguide']
 const PUBLIC_API_PREFIXES = ['/api/auth', '/api/trial', '/api/resend-code']
 
 export function middleware(req: NextRequest) {
