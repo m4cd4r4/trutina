@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { Logo } from '@/components/Logo'
 
 interface SiteHeaderProps {
-  active?: 'index' | 'methods' | 'demo' | 'integration' | 'pricing' | null
+  active?: 'index' | 'methods' | 'demo' | 'integration' | 'docs' | 'pricing' | null
   onSignIn?: () => void
 }
 
@@ -12,6 +12,7 @@ const NAV: { key: NonNullable<SiteHeaderProps['active']>; label: string; href: s
   { key: 'methods',     label: 'Methods',     href: '/#methods' },
   { key: 'demo',        label: 'Specimens',   href: '/demo' },
   { key: 'integration', label: 'Integration', href: '/#integration' },
+  { key: 'docs',        label: 'Docs',        href: '/docs' },
   { key: 'pricing',     label: 'Pricing',     href: '/#pricing' },
 ]
 
@@ -20,7 +21,7 @@ export default function SiteHeader({ active = 'index', onSignIn }: SiteHeaderPro
     <header className="site-header">
       <div className="inner">
         <Link href="/" className="brand">
-          <Logo variant="wordmark" height={28} href="" />
+          <Logo variant="wordmark" height={44} href="" />
         </Link>
         <nav>
           {NAV.map(n => (

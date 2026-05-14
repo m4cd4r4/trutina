@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Logo } from '@/components/Logo'
+import SiteHeader from '@/components/design/SiteHeader'
+import SiteFooter from '@/components/design/SiteFooter'
 
 export const metadata: Metadata = {
   title: 'Security & Privacy Whitepaper',
@@ -47,16 +48,7 @@ export default function SecurityWhitepaper() {
         style={{  }}>
 
         {/* Nav */}
-        <nav className="border-b border-white/5 no-print">
-          <div className="flex items-center justify-between px-4 sm:px-8 py-4 max-w-7xl mx-auto">
-          <Logo height={32} />
-          <div className="flex items-center gap-4 sm:gap-6">
-            <Link href="/docs" className="text-white/50 hover:text-white/80 text-sm transition">
-              Docs
-            </Link>
-          </div>
-          </div>
-        </nav>
+        <SiteHeader active="docs" />
 
         <div className="max-w-4xl mx-auto px-4 sm:px-8 py-8 sm:py-12">
 
@@ -441,6 +433,7 @@ export default function SecurityWhitepaper() {
           </div>
 
         </div>
+      <SiteFooter />
       </div>
     </>
   )
