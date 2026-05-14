@@ -262,13 +262,7 @@ const SEVERITIES = [
 
 export default function RiskScoresGuide() {
   return (
-    <div
-      className="min-h-screen text-white"
-      style={{
-        background:
-          '#0a1210',
-      }}
-    >
+    <div className="min-h-screen docs-page">
       {/* Nav */}
       <nav className="border-b border-white/5">
         <div className="flex items-center justify-between px-4 sm:px-8 py-4 max-w-7xl mx-auto">

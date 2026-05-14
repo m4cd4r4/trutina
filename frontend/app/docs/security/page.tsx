@@ -32,7 +32,7 @@ export default function SecurityWhitepaper() {
             color: #111 !important;
             border-color: #ddd !important;
           }
-          .print-page .print-blue { color: #0d9488 !important; }
+          .print-page .print-blue { color: #1F4FA3 !important; }
           .print-page .print-muted { color: #555 !important; }
           .print-page .print-light { color: #888 !important; }
           .print-page .print-card {
@@ -43,8 +43,8 @@ export default function SecurityWhitepaper() {
         }
       `}} />
 
-      <div className="min-h-screen text-white print-page"
-        style={{ background: '#0a1210' }}>
+      <div className="min-h-screen docs-page print-page"
+        style={{  }}>
 
         {/* Nav */}
         <nav className="border-b border-white/5 no-print">

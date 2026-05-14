@@ -174,8 +174,8 @@ export default function IntegrationGuide() {
       `}</style>
 
       <div
-        className="min-h-screen text-white"
-        style={{ background: '#0a1210' }}
+        className="min-h-screen docs-page"
+        style={{  }}
       >
         {/* Nav */}
         <nav className="border-b border-white/5 no-print">

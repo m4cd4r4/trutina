@@ -561,8 +561,7 @@ export default function PitchDeck() {
   const CurrentSlide = SLIDES[current]
 
   return (
-    <div className="h-screen overflow-hidden text-white select-none"
-      style={{ background: '#0a1210' }}>
+    <div className="docs-page h-screen overflow-hidden select-none">
 
       {/* Top bar */}
       <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 sm:px-6 py-3">
