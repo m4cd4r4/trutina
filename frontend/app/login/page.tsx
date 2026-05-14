@@ -100,9 +100,9 @@ export default function LoginPage() {
               >
                 Forgot your code?
               </button>
-              <Link href="/?trial=1" style={{ color: 'var(--accent)' }}>
-                Start a trial
-              </Link>
+              <a href="mailto:hello@trutina.com.au?subject=Trutina%20engagement" style={{ color: 'var(--accent)' }}>
+                Email about engagement
+              </a>
             </div>
           </form>
         ) : (

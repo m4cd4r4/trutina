@@ -8,16 +8,16 @@ import SiteFooter from '@/components/design/SiteFooter'
 import HeroSpecimenPreview from '@/components/design/HeroSpecimenPreview'
 import { CalibrationTickRule } from '@/components/design/atoms'
 
-/* Marketing index. Sections in order, matching ui_kits/marketing/site.jsx:
- *   1. Hero
- *   2. Measurements
- *   3. Modules table
- *   4. Demo specimen link
- *   5. Integration
- *   6. Pricing
- *   7. Footnotes
- * Trust strip retained as layout but rendered with a single honest line
- * pending sourced metrics (see docs/design/SCHEMA-MAPPING.md §3).
+/* Portfolio landing. Trutina was launched as a commercial product in
+ * February 2026 and received zero commercial inbound across three
+ * months. Backend wasn't reachable from the public marketing site for
+ * most of that period - the trial CTA hit a 503. Rather than
+ * relaunch the funnel, the asset has been repositioned as a portfolio
+ * piece: methods paper + worked specimens + audit packet design,
+ * available for genuine engagements on request.
+ *
+ * Sections: hero / measurements / modules / demo link / methods / refs.
+ * Pricing section cut. Trial CTAs replaced with email-for-engagement.
  */
 
 const MODULES = [
@@ -28,37 +28,26 @@ const MODULES = [
   { id: 'NC', name: 'Network clustering',    range: 'NC-001 to NC-005', rules: 5,  ex: 'Font subset hash appears in 4 cases across one broker in 60 days.' },
 ]
 
-const PRICING = [
-  { name: 'Standard',  price: '$3.40', unit: '/ case', for: 'Credit unions and non-bank lenders under 4,000 applications / month.',
-    features: ['All five detection modules', 'Audit-ready PDF export per case', 'P95 verdict under 60s', 'SAML SSO, SCIM provisioning', 'Webhook into your LOS', 'Email support, 2 business hour SLA'],
-    cta: 'Start a 30-day trial', highlight: false },
-  { name: 'Regulated', price: '$2.10', unit: '/ case', for: 'ADIs and APRA-supervised lenders. Includes the matter-defence kit.',
-    features: ['Everything in Standard', 'P95 verdict under 30s', 'APRA CPG 234 alignment package', 'Customer-managed KMS keys', 'Quarterly model and rule change log', 'Named forensic analyst, 09:00 to 17:00 AEST', 'Independent right of audit'],
-    cta: 'Talk to risk operations', highlight: true },
-  { name: 'Network',   price: 'From $48k', unit: '/ year', for: 'Aggregators and broker networks policing submission quality.',
-    features: ['Broker-profile and network views', 'Producer-signature clustering across networks', 'Submission-quality reporting per broker', 'API access for downstream lenders', 'Quarterly anonymised industry report', 'Named forensic analyst'],
-    cta: 'Discuss network coverage', highlight: false },
-]
-
 export default function Landing() {
-  const [loginMode, setLoginMode] = useState<'signin' | 'trial' | null>(null)
+  const [loginOpen, setLoginOpen] = useState(false)
   useEffect(() => {
+    // Legacy ?trial=1 deep link: route to email instead of the
+    // (now removed) trial signup modal.
     const params = new URLSearchParams(window.location.search)
-    if (params.get('trial') === '1') setLoginMode('trial')
+    if (params.get('trial') === '1') {
+      window.location.href = 'mailto:hello@trutina.com.au?subject=Trutina%20engagement%20enquiry'
+    }
   }, [])
 
-  // Generate 280 line numbers for the lab-notebook margin.
   const lineCount = 280
 
   return (
     <>
       <LoginModal
-        open={loginMode !== null}
-        onClose={() => setLoginMode(null)}
-        mode={loginMode ?? 'signin'}
-        onSwitchMode={setLoginMode}
+        open={loginOpen}
+        onClose={() => setLoginOpen(false)}
       />
-      <SiteHeader active="index" onSignIn={() => setLoginMode('signin')} />
+      <SiteHeader active="index" onSignIn={() => setLoginOpen(true)} />
 
       <main className="page" style={{ paddingTop: 0, paddingBottom: 0 }}>
         <div className="line-numbers" aria-hidden="true">
@@ -67,9 +56,7 @@ export default function Landing() {
           ))}
         </div>
 
-        {/* Hero — two columns: copy left, specimen preview right.
-         * Mirrors the case-detail layout so the visitor sees the product
-         * shape before they click through. */}
+        {/* Hero — portfolio framing */}
         <section id="hero" className="mk-section hero">
           <div className="hero-grid">
             <div className="hero-copy">
@@ -78,29 +65,30 @@ export default function Landing() {
                 <span>
                   <b>2026-02 Commonwealth Bank:</b> self-reported ~A$1B in suspected fraudulent mortgage applications.
                   Fake payslips and bank statements submitted through broker channels. Westpac and ANZ flagged similar internally.<sup><a className="cite-link" href="#refs">[1]</a></sup>
-                  {' '}This is what they looked at.
+                  {' '}This system was designed to detect them.
                 </span>
               </div>
 
               <h1>
-                Mortgage fraud,<br />
-                priced by the <em>evidence</em>.
+                Forensic mortgage<br />
+                fraud detection.
               </h1>
 
               <p className="lede">
-                Trutina measures four properties of every payslip, employer letter, and bank statement in a mortgage application. When a number is off by $47.20 or an ABN was cancelled on 2024-08-12, the system says so, cites the rule, and shows you the file. Trust is per-flag, earned via evidence. Not asserted in a hero.
+                Trutina is a five-module rule engine built to detect AI-generated payslips, forged bank statements, and invalid ABNs in Australian mortgage applications. Forty-six rules, each cited. Every flag drills to a SHA-256 evidence ledger retained seven years per APRA CPG 234. Methods paper and worked specimens below. Source available on request.
               </p>
 
               <div className="actions">
-                <Link href="/demo" className="btn btn-primary">Open a Clean and a Critical specimen</Link>
+                <Link href="/demo" className="btn btn-primary">Open the worked specimens</Link>
                 <a href="/methods-paper.pdf" target="_blank" rel="noopener" className="btn btn-secondary">
                   Methods paper (PDF, single page)
                 </a>
               </div>
 
               <p className="t-caption" style={{ marginTop: 14, color: 'var(--ink-40)' }}>
-                Already a customer? <button type="button" className="btn-text" style={{ padding: 0, fontSize: 12, color: 'var(--accent)' }} onClick={() => setLoginMode('signin')}>Sign in</button>
-                {' .  '}Evaluating? Forward this page or email <a className="mono" href="mailto:hello@trutina.com.au" style={{ color: 'var(--accent)' }}>hello@trutina.com.au</a> for a private demo.
+                Independent project by <a href="https://github.com/m4cd4r4" target="_blank" rel="noopener" style={{ color: 'var(--accent)' }}>Macdara</a>{' '}from Perth.{' '}
+                For engagements:{' '}
+                <a className="mono" href="mailto:hello@trutina.com.au?subject=Trutina%20engagement%20enquiry" style={{ color: 'var(--accent)' }}>hello@trutina.com.au</a>
               </p>
             </div>
 
@@ -111,8 +99,7 @@ export default function Landing() {
 
           <CalibrationTickRule />
 
-          {/* What-you-get strip. Replaces the unsourced metrics strip. Surfaces what
-           * the product is, in terms a procurement-evaluating Head of Risk can verify. */}
+          {/* What-you-get strip. Same structure, portfolio framing in the captions. */}
           <div className="trust-strip" style={{ gridTemplateColumns: 'repeat(5, 1fr)' }}>
             <div className="cell">
               <span className="k">Detection modules</span>
@@ -130,21 +117,21 @@ export default function Landing() {
               <span className="src">+ APP 11 . Privacy Act 1988</span>
             </div>
             <div className="cell">
-              <span className="k">Data residency</span>
-              <span className="v" style={{ fontSize: 16 }}>AU only</span>
-              <span className="src">no data leaves the jurisdiction</span>
+              <span className="k">Worked specimens</span>
+              <span className="v">5</span>
+              <span className="src">clean / AI-fake / cancelled ABN / forged statement / broker pattern</span>
             </div>
             <div className="cell">
-              <span className="k">Methodology</span>
-              <span className="v" style={{ fontSize: 16 }}>Open</span>
-              <span className="src">rules published . evidence ledger documented</span>
+              <span className="k">Status</span>
+              <span className="v" style={{ fontSize: 16 }}>Portfolio</span>
+              <span className="src">commercial path available on request</span>
             </div>
           </div>
         </section>
 
         {/* Measurements */}
         <section id="measurements" className="mk-section">
-          <div className="sec-label"><span style={{ fontWeight: 600, color: 'var(--ink-80)' }}>01</span><span>What we measure on a payslip</span></div>
+          <div className="sec-label"><span style={{ fontWeight: 600, color: 'var(--ink-80)' }}>01</span><span>What the system measures</span></div>
           <h2>Producer, identity, arithmetic.</h2>
           <p className="standfirst">
             A payslip is a PDF. It has metadata, a layout, and an arithmetic structure. Trutina reads the PDF as a forensic file before it reads it as a document. Three of the four properties below cost the borrower nothing to produce honestly. The fourth, arithmetic, cannot be faked without leaving a trace.
@@ -191,7 +178,7 @@ export default function Landing() {
             </div>
           </div>
 
-          <h4 style={{ marginTop: 56, marginBottom: 0 }}>What we do not measure</h4>
+          <h4 style={{ marginTop: 56, marginBottom: 0 }}>What the system does not measure</h4>
           <div className="never-list">
             <div className="item">The borrower&apos;s character.</div>
             <div className="item">Spending category from transaction descriptions.</div>
@@ -239,32 +226,32 @@ export default function Landing() {
 
         {/* Demo link */}
         <section id="demo" className="mk-section">
-          <div className="sec-label"><span style={{ fontWeight: 600, color: 'var(--ink-80)' }}>03</span><span>Specimens</span></div>
-          <h2>This is what Critical looks like on a real Australian payslip.</h2>
+          <div className="sec-label"><span style={{ fontWeight: 600, color: 'var(--ink-80)' }}>03</span><span>Worked specimens</span></div>
+          <h2>Five redacted Australian cases.</h2>
           <p className="standfirst">
-            Five redacted cases. Clean applications next to fabricated ones, both submitted through Australian broker channels. Click any finding to see the rule it cites. Open the full case file in the read-only demo workspace.
+            Clean applications next to fabricated ones, all five submitted through Australian broker channels. Each specimen shows the source PDFs, the named rules that fired, and the audit packet that would be produced. No live system to upload to: the engine and the rules are the artefact.
           </p>
           <div style={{ display: 'flex', gap: 14, alignItems: 'center', marginTop: 28 }}>
-            <Link href="/demo" className="btn btn-primary">Open the demo workspace</Link>
+            <Link href="/demo" className="btn btn-primary">Open the specimens</Link>
             <span className="t-caption">No sign-in. Read-only. Synthetic data.</span>
           </div>
         </section>
 
-        {/* Integration */}
-        <section id="integration" className="mk-section">
-          <div className="sec-label"><span style={{ fontWeight: 600, color: 'var(--ink-80)' }}>04</span><span>Integration</span></div>
-          <h2>One endpoint, one webhook, one sprint.</h2>
+        {/* Methods + integration sketch */}
+        <section id="methods-paper" className="mk-section">
+          <div className="sec-label"><span style={{ fontWeight: 600, color: 'var(--ink-80)' }}>04</span><span>Methods and integration</span></div>
+          <h2>How a working deployment would receive a case.</h2>
           <p className="standfirst">
-            Trutina is a workflow on top of your LOS, not a replacement for it. Post a case bundle, receive a verdict and an evidence packet, decide. Data residency is Australia. Encryption at rest is AES-256.
+            The design contemplates an LOS integration: POST a case bundle, receive a verdict and an evidence packet, decide. Data residency Australia, encryption AES-256, evidence ledger retained seven years. This portfolio site does not run the engine against uploaded files. The shape of the integration is below.
           </p>
 
           <div className="split-2">
             <div className="spec-list">
-              <div className="item"><span className="k">Hosting</span><span>AWS ap-southeast-2 (Sydney). Multi-AZ. No data leaves AU jurisdiction.</span></div>
+              <div className="item"><span className="k">Hosting design</span><span>AWS ap-southeast-2 (Sydney). Multi-AZ. No data leaves AU jurisdiction.</span></div>
               <div className="item"><span className="k">Encryption</span><span>AES-256 at rest. TLS 1.3 in transit. Keys in AWS KMS, customer-managed CMK optional.</span></div>
               <div className="item"><span className="k">Identity</span><span>SAML 2.0, OIDC, SCIM. MFA enforced.</span></div>
               <div className="item"><span className="k">Audit log</span><span>Every reviewer action, every export, every config change. WORM 7 years.<sup><a className="cite-link" href="#refs">[3]</a></sup></span></div>
-              <div className="item"><span className="k">Connectors</span><span>nCino . Sandstone . LendApp . Lendi . AFG . Connective. SFTP if you must.</span></div>
+              <div className="item"><span className="k">Connectors</span><span>nCino . Sandstone . LendApp . Lendi . AFG . Connective. SFTP if required.</span></div>
               <div className="item"><span className="k">Latency target</span><span>P95 verdict under 60s end-to-end from POST to webhook.</span></div>
             </div>
 
@@ -287,36 +274,25 @@ export default function Landing() {
                 <div>{`}`}</div>
                 <div>&nbsp;</div>
                 <div><span className="c"># 200 OK</span></div>
-                <div>{`{`} <span className="k">&quot;case_id&quot;</span>: <span className="s">&quot;TRU-2026-04812&quot;</span>, <span className="k">&quot;score&quot;</span>: <span className="n">78</span>, <span className="k">&quot;tier&quot;</span>: <span className="s">&quot;critical&quot;</span> {`}`}</div>
+                <div>{`{`} <span className="k">&quot;case_id&quot;</span>: <span className="s">&quot;TRU-2026-04812&quot;</span>, <span className="k">&quot;score&quot;</span>: <span className="s">78</span>, <span className="k">&quot;tier&quot;</span>: <span className="s">&quot;critical&quot;</span> {`}`}</div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Pricing */}
-        <section id="pricing" className="mk-section">
-          <div className="sec-label"><span style={{ fontWeight: 600, color: 'var(--ink-80)' }}>05</span><span>Pricing</span></div>
-          <h2>Per-case. No seat tax. No model surcharge.</h2>
+        {/* Engagements */}
+        <section id="engagements" className="mk-section">
+          <div className="sec-label"><span style={{ fontWeight: 600, color: 'var(--ink-80)' }}>05</span><span>Engagements</span></div>
+          <h2>Available for genuine enquiries.</h2>
           <p className="standfirst">
-            Three tiers, priced by case volume. All tiers include every detection module and every evidence type. The difference is the response-time guarantee, the integration depth, and whether your team gets a dedicated forensic analyst on call.
+            The Trutina engine, the rule library, and the audit packet design are available for assessment by Australian lenders, aggregators, and credit-risk teams. Source and methods paper available on request. Bespoke engagements rather than a SaaS subscription.
           </p>
-
-          <div className="tier-grid">
-            {PRICING.map(p => (
-              <div key={p.name} className={`tier-card${p.highlight ? ' feature' : ''}`}>
-                <div className="name">{p.name}</div>
-                <div className="price">{p.price} <span className="unit">{p.unit}</span></div>
-                <div className="for">{p.for}</div>
-                <ul>{p.features.map(f => <li key={f}>{f}</li>)}</ul>
-                <button
-                  type="button"
-                  className={`btn ${p.highlight ? 'btn-primary' : 'btn-secondary'} cta`}
-                  onClick={() => p.name === 'Standard' ? setLoginMode('trial') : (typeof window !== 'undefined' && (window as unknown as { BookingWidget?: { open: () => void } }).BookingWidget?.open())}
-                >
-                  {p.cta}
-                </button>
-              </div>
-            ))}
+          <div style={{ display: 'flex', gap: 14, alignItems: 'baseline', marginTop: 28, flexWrap: 'wrap' }}>
+            <a href="mailto:hello@trutina.com.au?subject=Trutina%20engagement%20enquiry" className="btn btn-primary">Email me about an engagement</a>
+            <a href="/methods-paper.pdf" target="_blank" rel="noopener" className="btn-text">Methods paper (PDF)</a>
+            <span className="t-caption" style={{ color: 'var(--ink-40)' }}>
+              Built in Perth by <a href="https://github.com/m4cd4r4" target="_blank" rel="noopener" style={{ color: 'var(--accent)' }}>Macdara</a>. Independent project.
+            </span>
           </div>
         </section>
 
