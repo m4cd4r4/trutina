@@ -9,41 +9,38 @@ export default function SiteFooter() {
           <div>
             <Logo variant="wordmark" height={48} href="" />
             <div className="t-caption" style={{ maxWidth: 320, color: 'var(--ink-60)', marginTop: 14 }}>
-              Trutina. Mortgage fraud detection for Australian lenders. APRA CPG 234 aligned.
+              Trutina is an independent project by Macdara from Perth. A five-module rule engine for mortgage fraud, modelled on APRA CPG 234.
             </div>
           </div>
           <div>
-            <h5>Product</h5>
+            <h5>Artefact</h5>
             <ul>
               <li><Link href="/#methods">Methods</Link></li>
               <li><Link href="/demo">Specimens</Link></li>
-              <li><Link href="/#integration">Integration</Link></li>
-              <li><Link href="/#pricing">Pricing</Link></li>
+              <li><Link href="/#integration">Integration shape</Link></li>
               <li><Link href="/docs">Documentation</Link></li>
             </ul>
           </div>
           <div>
-            <h5>Trust</h5>
+            <h5>Provenance</h5>
             <ul>
-              <li><a>Security (SOC 2 Type II)</a></li>
-              <li><a>Data residency (AU)</a></li>
-              <li><a>Privacy policy</a></li>
-              <li><a>Information Security Manual</a></li>
-              <li><a>Sub-processors</a></li>
+              <li><a href="/methods-paper.pdf">Methods paper (PDF)</a></li>
+              <li><a>Source: available on request</a></li>
+              <li><a>Modelled on APRA CPG 234</a></li>
+              <li><a>No data retention (not deployed)</a></li>
             </ul>
           </div>
           <div>
-            <h5>Company</h5>
+            <h5>Engagement</h5>
             <ul>
-              <li><a href="mailto:hello@trutina.com.au">Contact</a></li>
-              <li><a>About</a></li>
-              <li><a>Methods paper</a></li>
-              <li><a>Press</a></li>
+              <li><a href="mailto:hello@trutina.com.au?subject=Trutina%20engagement">Email Macdara</a></li>
+              <li><Link href="/#engagements">Engagement shapes</Link></li>
+              <li><a href="https://trutina.com.au">trutina.com.au</a></li>
             </ul>
           </div>
         </div>
         <div className="legal">
-          <span>(c) 2026 Trutina . Document fraud detection for Australian lenders</span>
+          <span>Built in Perth. Independent project by Macdara. Source available on request.</span>
           <span>hello@trutina.com.au</span>
         </div>
       </div>

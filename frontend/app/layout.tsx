@@ -32,10 +32,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL('https://trutina.com.au'),
   title: {
-    default: 'Trutina — Mortgage fraud detection, priced by the evidence',
+    default: 'Trutina — Forensic mortgage fraud detection (portfolio)',
     template: '%s | Trutina',
   },
-  description: 'Trutina measures four properties of every payslip, employer letter, and bank statement in a mortgage application. When a number is off by $47.20 or an ABN was cancelled on 2024-08-12, the system cites the rule and shows you the file.',
+  description: 'A five-module rule engine for detecting AI-generated payslips, forged bank statements, and invalid ABNs in Australian mortgage applications. Forty-six rules, each cited. Methods paper and worked specimens. Independent project by Macdara from Perth. Source available on request.',
   icons: {
     icon: '/favicon.ico',
     apple: '/logo/apple-touch-icon.png',
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     type: 'website',
     siteName: 'Trutina',
     locale: 'en_AU',
-    images: [{ url: '/og-image.png', width: 1200, height: 627, alt: 'Trutina — Mortgage fraud detection for Australian lenders' }],
+    images: [{ url: '/og-image.png', width: 1200, height: 627, alt: 'Trutina — Forensic mortgage fraud detection (portfolio piece by Macdara from Perth)' }],
   },
   twitter: {
     card: 'summary_large_image',
@@ -72,40 +72,28 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               '@context': 'https://schema.org',
-              '@type': 'SoftwareApplication',
+              '@type': 'CreativeWork',
               name: 'Trutina',
-              applicationCategory: 'FinanceApplication',
-              operatingSystem: 'Web',
-              description: 'Forensic mortgage-fraud detection for Australian lenders. Producer metadata, identity coherence, income arithmetic, employer verification, and network clustering rules over every loan document.',
+              headline: 'Forensic mortgage fraud detection (portfolio)',
+              description: 'A five-module rule engine for detecting AI-generated payslips, forged bank statements, and invalid ABNs in Australian mortgage applications. Modelled on APRA CPG 234. Forty-six rules, each cited. Independent portfolio project; source available on request.',
               url: 'https://trutina.com.au',
-              offers: {
-                '@type': 'AggregateOffer',
-                priceCurrency: 'AUD',
-                lowPrice: '0',
-                highPrice: '6000',
-                offerCount: '4',
-              },
-              provider: {
-                '@type': 'Organization',
-                name: 'Trutina',
-                url: 'https://trutina.com.au',
-              },
+              inLanguage: 'en-AU',
+              keywords: 'mortgage fraud, document forensics, APRA CPG 234, payslip authentication, ABN verification, Australian lending',
               author: {
                 '@type': 'Person',
                 name: 'Macdara Ó Murchú',
                 url: 'https://github.com/m4cd4r4',
-                worksFor: {
-                  '@type': 'Organization',
-                  name: 'Solaisoft',
-                  legalName: 'Solaisoft Pty Ltd',
-                  url: 'https://solaisoft.com',
+                address: {
+                  '@type': 'PostalAddress',
+                  addressLocality: 'Perth',
+                  addressRegion: 'WA',
+                  addressCountry: 'AU',
                 },
               },
-              publisher: {
-                '@type': 'Organization',
-                name: 'Solaisoft',
-                legalName: 'Solaisoft Pty Ltd',
-                url: 'https://solaisoft.com',
+              creator: {
+                '@type': 'Person',
+                name: 'Macdara Ó Murchú',
+                url: 'https://github.com/m4cd4r4',
               },
             }),
           }}

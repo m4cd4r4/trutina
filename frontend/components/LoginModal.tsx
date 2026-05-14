@@ -4,34 +4,15 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Logo } from '@/components/Logo'
 
-const PERSONAL_DOMAINS = new Set([
-  'gmail.com', 'googlemail.com', 'yahoo.com', 'yahoo.com.au',
-  'hotmail.com', 'hotmail.com.au', 'outlook.com', 'live.com', 'live.com.au',
-  'icloud.com', 'me.com', 'mac.com', 'aol.com', 'protonmail.com',
-  'proton.me', 'mail.com', 'zoho.com', 'ymail.com', 'msn.com',
-  'fastmail.com', 'tutanota.com', 'gmx.com', 'inbox.com',
-])
-
-function isWorkEmail(email: string): boolean {
-  const domain = email.split('@')[1]?.toLowerCase()
-  return !!domain && !PERSONAL_DOMAINS.has(domain)
-}
-
 interface LoginModalProps {
   open: boolean
   onClose: () => void
-  mode?: 'signin' | 'trial'
-  onSwitchMode?: (mode: 'signin' | 'trial') => void
 }
 
-export default function LoginModal({ open, onClose, mode = 'signin', onSwitchMode }: LoginModalProps) {
+export default function LoginModal({ open, onClose }: LoginModalProps) {
   const [password, setPassword] = useState('')
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [company, setCompany] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const [submitted, setSubmitted] = useState(false)
   const router = useRouter()
 
   if (!open) return null
@@ -51,32 +32,6 @@ export default function LoginModal({ open, onClose, mode = 'signin', onSwitchMod
         return
       }
       router.push('/dashboard')
-    } catch {
-      setError('Connection error')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  async function handleTrial(e: React.FormEvent) {
-    e.preventDefault()
-    setError('')
-    if (!isWorkEmail(email)) {
-      setError('Please use your work email. Personal addresses (Gmail, Hotmail, etc.) are not accepted.')
-      return
-    }
-    setLoading(true)
-    try {
-      const res = await fetch('/api/trial', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, company }),
-      })
-      if (!res.ok) {
-        setError('Something went wrong. Please try again.')
-        return
-      }
-      setSubmitted(true)
     } catch {
       setError('Connection error')
     } finally {
@@ -113,82 +68,30 @@ export default function LoginModal({ open, onClose, mode = 'signin', onSwitchMod
         <div style={{ textAlign: 'center', marginBottom: 18 }}>
           <Logo variant="wordmark" height={40} href="" />
           <p style={{ color: 'var(--ink-60)', marginTop: 8, fontSize: 13 }}>
-            {mode === 'trial' ? 'Start your 30-day trial' : 'Sign in to continue'}
+            Sign in to continue
           </p>
         </div>
 
-        {mode === 'trial' && submitted ? (
-          <div style={{ textAlign: 'center', padding: '16px 0' }}>
-            <p style={{ color: 'var(--ink-100)', fontWeight: 600, marginBottom: 6 }}>You&apos;re on the list.</p>
-            <p style={{ color: 'var(--ink-60)', fontSize: 13 }}>
-              Login credentials will be sent to <span style={{ color: 'var(--ink-100)' }}>{email}</span> shortly.
-            </p>
-          </div>
-        ) : mode === 'trial' ? (
-          <form onSubmit={handleTrial}>
-            <FormField label="Name">
-              <input
-                type="text" value={name} onChange={(e) => setName(e.target.value)}
-                required autoFocus placeholder="Your name"
-                style={INPUT_STYLE}
-              />
-            </FormField>
-            <FormField label="Work email">
-              <input
-                type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-                required placeholder="you@company.com.au"
-                style={INPUT_STYLE}
-              />
-            </FormField>
-            <FormField label="Organisation">
-              <input
-                type="text" value={company} onChange={(e) => setCompany(e.target.value)}
-                placeholder="Your organisation"
-                style={INPUT_STYLE}
-              />
-            </FormField>
+        <form onSubmit={handleSignIn}>
+          <FormField label="Password">
+            <input
+              type="password" value={password} onChange={(e) => setPassword(e.target.value)}
+              autoFocus placeholder="Enter password"
+              style={INPUT_STYLE}
+            />
+          </FormField>
 
-            {error && <p style={{ color: 'var(--risk-crit)', fontSize: 13, marginTop: 8 }}>{error}</p>}
+          {error && <p style={{ color: 'var(--risk-crit)', fontSize: 13, marginTop: 8 }}>{error}</p>}
 
-            <button type="submit" disabled={loading} className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', marginTop: 14, padding: '10px 14px' }}>
-              {loading ? 'Submitting…' : 'Start trial'}
-            </button>
+          <button type="submit" disabled={loading} className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', marginTop: 14, padding: '10px 14px' }}>
+            {loading ? 'Signing in…' : 'Sign in'}
+          </button>
 
-            <p style={{ color: 'var(--ink-40)', fontSize: 11, textAlign: 'center', marginTop: 10 }}>
-              No credit card. 5 documents included.
-            </p>
-
-            {onSwitchMode && (
-              <p style={{ textAlign: 'center', fontSize: 12.5, color: 'var(--ink-60)', marginTop: 8 }}>
-                Already have an account?{' '}
-                <button type="button" onClick={() => onSwitchMode('signin')} style={LINK_BTN}>Sign in</button>
-              </p>
-            )}
-          </form>
-        ) : (
-          <form onSubmit={handleSignIn}>
-            <FormField label="Password">
-              <input
-                type="password" value={password} onChange={(e) => setPassword(e.target.value)}
-                autoFocus placeholder="Enter password"
-                style={INPUT_STYLE}
-              />
-            </FormField>
-
-            {error && <p style={{ color: 'var(--risk-crit)', fontSize: 13, marginTop: 8 }}>{error}</p>}
-
-            <button type="submit" disabled={loading} className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', marginTop: 14, padding: '10px 14px' }}>
-              {loading ? 'Signing in…' : 'Sign in'}
-            </button>
-
-            {onSwitchMode && (
-              <p style={{ textAlign: 'center', fontSize: 12.5, color: 'var(--ink-60)', marginTop: 12 }}>
-                Don&apos;t have an account?{' '}
-                <button type="button" onClick={() => onSwitchMode('trial')} style={LINK_BTN}>Start a trial</button>
-              </p>
-            )}
-          </form>
-        )}
+          <p style={{ textAlign: 'center', fontSize: 12.5, color: 'var(--ink-60)', marginTop: 12 }}>
+            For engagement enquiries,{' '}
+            <a href="mailto:hello@trutina.com.au?subject=Trutina%20engagement" style={LINK}>email Macdara</a>.
+          </p>
+        </form>
       </div>
     </div>
   )
@@ -215,8 +118,7 @@ const INPUT_STYLE: React.CSSProperties = {
   outline: 'none',
 }
 
-const LINK_BTN: React.CSSProperties = {
-  background: 'none', border: 0, padding: 0,
-  color: 'var(--accent)', cursor: 'pointer',
-  textDecoration: 'underline', fontFamily: 'inherit', fontSize: 'inherit',
+const LINK: React.CSSProperties = {
+  color: 'var(--accent)',
+  textDecoration: 'underline',
 }
