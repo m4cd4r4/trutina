@@ -12,7 +12,7 @@ export default function StyleguideAudit() {
   const t = tierToken(c.risk_level)
 
   return (
-    <AppShell crumbs={[{ href: '/dashboard', label: 'Queue' }, { href: `/cases/${c.id}`, label: c.reference }, { label: 'Audit packet' }]}>
+    <AppShell crumbs={[{ href: '/dashboard', label: 'Inbox' }, { href: `/cases/${c.id}`, label: c.reference }, { label: 'Audit packet' }]}>
       <div className="content-header no-print">
         <h1>Evidence packet preview</h1>
         <span className="sub">{c.reference}.evidence-packet.pdf</span>
@@ -25,7 +25,7 @@ export default function StyleguideAudit() {
             {Array.from({ length: 18 }, (_, i) => <span key={i}>{(i + 1) * 5}</span>)}
           </div>
           <header className="print-head">
-            <Logo variant="wordmark" height={22} href="" />
+            <Logo variant="wordmark" height={32} href="" />
             <div className="mono" style={{ fontSize: 11, color: 'var(--ink-60)' }}>Evidence packet . {c.reference} . page 1 . prepared 2026-04-09 09:18:04 AEST</div>
           </header>
 

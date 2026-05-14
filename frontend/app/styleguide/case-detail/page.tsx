@@ -21,7 +21,7 @@ export default function StyleguideCaseDetail() {
 
   return (
     <AppShell crumbs={[
-      { href: '/dashboard', label: 'Queue' },
+      { href: '/dashboard', label: 'Inbox' },
       { label: c.reference },
     ]}>
       <header className={`case-header${t === 'crit' ? ' is-crit' : ''}`}>
@@ -50,14 +50,26 @@ export default function StyleguideCaseDetail() {
         </div>
         <div className="actions" style={{ marginTop: 18 }}>
           <button type="button" className="btn btn-primary">Confirm and reject</button>
-          <button type="button" className="btn btn-secondary">Export packet (PDF)</button>
           <button type="button" className="btn btn-secondary">Request originals</button>
-          <button type="button" className="btn btn-danger">Escalate to APRA</button>
+          <button type="button" className="btn btn-secondary">Export packet (PDF)</button>
+          <button type="button" className="btn btn-ghost" style={{ marginLeft: 'auto', color: 'var(--risk-crit)' }}>Escalate to APRA</button>
         </div>
         <div style={{ position: 'absolute', right: 28, top: 18, pointerEvents: 'none' }}>
           <RejectStamp tier="crit" sub={`${c.reference} . 2026-04-09`}>REJECT</RejectStamp>
         </div>
       </header>
+
+      {/* Sticky status strip */}
+      <div className="case-status">
+        <div className="item"><span className="k">Status</span><span className="v">awaiting reviewer</span></div>
+        <div className="item"><span className="k">Assigned</span><span className="v">M. Okafor</span></div>
+        <div className="item"><span className="k">Age</span><span className="v mono warn">23h</span></div>
+        <div className="item"><span className="k">Last activity</span><span className="v mono">4m ago</span></div>
+        <div className="actions-overflow">
+          <button type="button" className="btn btn-ghost btn-sm">Reassign</button>
+          <button type="button" className="btn btn-ghost btn-sm">Watch</button>
+        </div>
+      </div>
 
       <div style={{ margin: '32px 0 8px' }}>
         <div className="t-section" style={{ marginBottom: 22 }}>Score on scale</div>

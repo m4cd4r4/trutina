@@ -17,7 +17,7 @@ export default function BrokersPage() {
 
   return (
     <AppShell
-      crumbs={[{ href: '/dashboard', label: 'Queue' }, { label: 'Brokers' }]}
+      crumbs={[{ href: '/dashboard', label: 'Inbox' }, { label: 'Brokers' }]}
       navCounts={{ brokers: brokers.length }}
     >
       <div className="toolbar">

@@ -40,14 +40,14 @@ export default function CaseDetailPage() {
 
   if (loading) {
     return (
-      <AppShell crumbs={[{ href: '/dashboard', label: 'Queue' }, { label: 'Loading…' }]}>
+      <AppShell crumbs={[{ href: '/dashboard', label: 'Inbox' }, { label: 'Loading…' }]}>
         <div style={{ padding: 64, textAlign: 'center', color: 'var(--ink-40)' }}>Loading case…</div>
       </AppShell>
     )
   }
   if (!caseData) {
     return (
-      <AppShell crumbs={[{ href: '/dashboard', label: 'Queue' }, { label: 'Not found' }]}>
+      <AppShell crumbs={[{ href: '/dashboard', label: 'Inbox' }, { label: 'Not found' }]}>
         <div style={{ padding: 64, textAlign: 'center', color: 'var(--risk-crit)' }}>Case not found.</div>
       </AppShell>
     )
@@ -70,7 +70,7 @@ export default function CaseDetailPage() {
 
   return (
     <AppShell crumbs={[
-      { href: '/dashboard', label: 'Queue' },
+      { href: '/dashboard', label: 'Inbox' },
       { href: '/cases', label: 'Cases' },
       { label: caseData.reference },
     ]}>
@@ -107,20 +107,30 @@ export default function CaseDetailPage() {
           </div>
         </div>
 
+        {/* Action hierarchy: exactly ONE primary CTA per tier. The next
+         * action that was previously also-filled (Escalate to APRA on
+         * crit; Export PDF on med/high) drops to ghost-secondary so the
+         * reviewer's eye lands on one move at a time. */}
         <div className="actions" style={{ marginTop: 18 }}>
           {isAnalysed && t === 'crit' && (
             <button type="button" className="btn btn-primary">Confirm and reject</button>
+          )}
+          {isAnalysed && (t === 'high' || t === 'med') && (
+            <button type="button" className="btn btn-primary">Send to manual review</button>
+          )}
+          {isAnalysed && t === 'low' && (
+            <button type="button" className="btn btn-primary">Approve</button>
+          )}
+          {isAnalysed && t !== 'low' && (
+            <button type="button" className="btn btn-secondary">Request originals</button>
           )}
           {isAnalysed && (
             <button type="button" className="btn btn-secondary" onClick={() => exportCasePDF(caseData)}>
               Export packet (PDF)
             </button>
           )}
-          {isAnalysed && t !== 'low' && (
-            <button type="button" className="btn btn-secondary">Request originals</button>
-          )}
           {isAnalysed && t === 'crit' && (
-            <button type="button" className="btn btn-danger">Escalate to APRA</button>
+            <button type="button" className="btn btn-ghost" style={{ marginLeft: 'auto', color: 'var(--risk-crit)' }}>Escalate to APRA</button>
           )}
         </div>
 
@@ -136,6 +146,31 @@ export default function CaseDetailPage() {
           </div>
         ) : null}
       </header>
+
+      {/* Sticky workflow status strip — fills the SaaS gap the editorial
+       * case-header doesn't cover (assignee, age, last activity, SLA). */}
+      <div className="case-status">
+        <div className="item">
+          <span className="k">Status</span>
+          <span className="v">{caseData.status.replace('_', ' ')}</span>
+        </div>
+        <div className="item">
+          <span className="k">Assigned</span>
+          <span className="v">M. Okafor</span>
+        </div>
+        <div className="item">
+          <span className="k">Age</span>
+          <span className={`v mono${ageHoursLabel(caseData.submitted_at).warn ? ' warn' : ''}`}>{ageHoursLabel(caseData.submitted_at).label}</span>
+        </div>
+        <div className="item">
+          <span className="k">Last activity</span>
+          <span className="v mono">{lastActivityLabel(caseData.analysed_at ?? caseData.submitted_at)}</span>
+        </div>
+        <div className="actions-overflow">
+          <button type="button" className="btn btn-ghost btn-sm">Reassign</button>
+          <button type="button" className="btn btn-ghost btn-sm">Watch</button>
+        </div>
+      </div>
 
       {/* Calibration gauge */}
       <div style={{ margin: '32px 0 8px' }}>
@@ -257,4 +292,24 @@ function FlagRow({
       {isExpanded ? <EvidenceStub caseRef={caseData.reference} flag={flag} ev={ev} /> : null}
     </div>
   )
+}
+
+// Age and last-activity helpers for the sticky status strip. The "warn"
+// flag fires at 36h+ so cases approaching the implicit 48h review SLA
+// surface in oxblood.
+function ageHoursLabel(submittedAt: string): { label: string; warn: boolean } {
+  const ms = Date.now() - new Date(submittedAt).getTime()
+  const h = Math.floor(ms / 3_600_000)
+  if (h < 1) return { label: `${Math.max(1, Math.floor(ms / 60_000))}m`, warn: false }
+  if (h < 24) return { label: `${h}h`, warn: h >= 18 }
+  const d = Math.floor(h / 24)
+  return { label: `${d}d ${h % 24}h`, warn: true }
+}
+
+function lastActivityLabel(at: string): string {
+  const ms = Date.now() - new Date(at).getTime()
+  if (ms < 60_000) return 'just now'
+  if (ms < 3_600_000) return `${Math.floor(ms / 60_000)}m ago`
+  if (ms < 86_400_000) return `${Math.floor(ms / 3_600_000)}h ago`
+  return `${Math.floor(ms / 86_400_000)}d ago`
 }

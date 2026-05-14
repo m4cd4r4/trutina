@@ -30,14 +30,14 @@ export default function AuditExportPage() {
 
   if (loading) {
     return (
-      <AppShell crumbs={[{ href: '/dashboard', label: 'Queue' }, { label: 'Audit packet' }]}>
+      <AppShell crumbs={[{ href: '/dashboard', label: 'Inbox' }, { label: 'Audit packet' }]}>
         <div style={{ padding: 64, textAlign: 'center', color: 'var(--ink-40)' }}>Loading evidence packet…</div>
       </AppShell>
     )
   }
   if (!caseData) {
     return (
-      <AppShell crumbs={[{ href: '/dashboard', label: 'Queue' }, { label: 'Not found' }]}>
+      <AppShell crumbs={[{ href: '/dashboard', label: 'Inbox' }, { label: 'Not found' }]}>
         <div style={{ padding: 64, textAlign: 'center', color: 'var(--risk-crit)' }}>Case not found.</div>
       </AppShell>
     )
@@ -49,7 +49,7 @@ export default function AuditExportPage() {
 
   return (
     <AppShell crumbs={[
-      { href: '/dashboard', label: 'Queue' },
+      { href: '/dashboard', label: 'Inbox' },
       { href: `/cases/${caseData.id}`, label: caseData.reference },
       { label: 'Audit packet' },
     ]}>
@@ -72,7 +72,7 @@ export default function AuditExportPage() {
           </div>
 
           <header className="print-head">
-            <Logo variant="wordmark" height={22} href="" />
+            <Logo variant="wordmark" height={32} href="" />
             <div className="mono" style={{ fontSize: 11, color: 'var(--ink-60)', letterSpacing: '0.04em' }}>
               Evidence packet . {caseData.reference} . page 1 . prepared {new Date().toISOString().slice(0, 19).replace('T', ' ')} AEST
             </div>
@@ -133,7 +133,7 @@ export default function AuditExportPage() {
             {Array.from({ length: 18 }, (_, i) => <span key={i}>{(i + 1) * 5}</span>)}
           </div>
           <header className="print-head">
-            <Logo variant="wordmark" height={22} href="" />
+            <Logo variant="wordmark" height={32} href="" />
             <div className="mono" style={{ fontSize: 11, color: 'var(--ink-60)' }}>
               Evidence packet . {caseData.reference} . page 2 . module breakdown
             </div>

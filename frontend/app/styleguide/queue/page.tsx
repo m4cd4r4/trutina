@@ -15,8 +15,8 @@ export default function StyleguideQueue() {
   }
   return (
     <AppShell
-      crumbs={[{ href: '/dashboard', label: 'Today' }, { label: 'Queue' }]}
-      navCounts={{ queue: counts.crit + counts.high + counts.med, cases: cases.length, crit: counts.crit }}
+      crumbs={[{ label: 'Inbox' }]}
+      navCounts={{ inbox: counts.crit + counts.high + counts.med, assigned: 3, watching: 8, brokers: 6, crit: counts.crit }}
     >
       <div className="toolbar">
         <div className="tb-left">
@@ -81,6 +81,8 @@ export default function StyleguideQueue() {
                   <span className="mono" style={{ fontSize: 11 }}>{c.flag_counts.critical}c/{c.flag_counts.high}h</span>
                   <span className="row-actions" style={{ marginLeft: 8 }}>
                     <button type="button">Open</button>
+                    <button type="button">Assign</button>
+                    <button type="button">Dismiss</button>
                   </span>
                 </td>
               </tr>

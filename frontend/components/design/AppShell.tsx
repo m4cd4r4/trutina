@@ -8,7 +8,7 @@ import { Logo } from '@/components/Logo'
 interface NavLink {
   href: string
   label: string
-  section: 'today' | 'population' | 'regulatory' | 'demo'
+  section: 'work' | 'reference' | 'regulatory'
   count?: number
   pip?: boolean
 }
@@ -22,8 +22,9 @@ interface AppShellProps {
   crumbs: Crumb[]
   children: ReactNode
   navCounts?: {
-    queue?: number
-    cases?: number
+    inbox?: number
+    assigned?: number
+    watching?: number
     brokers?: number
     crit?: number
   }
@@ -31,26 +32,30 @@ interface AppShellProps {
 
 export default function AppShell({ crumbs, children, navCounts = {} }: AppShellProps) {
   const pathname = usePathname() ?? ''
+  // Workflow-keyed nav (Inbox / Assigned to me / Watching) takes the top of the
+  // sidebar where action lives; population + regulatory reference views sit
+  // below. Replaces the prior taxonomic Today / Population / Regulatory / Demo
+  // grouping which read as a table of contents rather than a workflow surface.
   const links: NavLink[] = [
-    { href: '/dashboard', label: 'Queue',          section: 'today',      count: navCounts.queue,   pip: (navCounts.crit ?? 0) > 0 },
-    { href: '/cases',     label: 'All cases',      section: 'today',      count: navCounts.cases },
-    { href: '/brokers',   label: 'Brokers',        section: 'population', count: navCounts.brokers },
-    { href: '/audit',     label: 'Audit exports',  section: 'regulatory' },
-    { href: '/demo',      label: 'Specimens',      section: 'demo' },
+    { href: '/dashboard',           label: 'Inbox',           section: 'work',       count: navCounts.inbox,    pip: (navCounts.crit ?? 0) > 0 },
+    { href: '/dashboard?mine=1',    label: 'Assigned to me',  section: 'work',       count: navCounts.assigned },
+    { href: '/dashboard?watch=1',   label: 'Watching',        section: 'work',       count: navCounts.watching },
+    { href: '/brokers',             label: 'Brokers',         section: 'reference',  count: navCounts.brokers },
+    { href: '/demo',                label: 'Specimens',       section: 'reference' },
+    { href: '/audit',               label: 'Audit exports',   section: 'regulatory' },
   ]
 
   const sections: { id: NavLink['section']; title: string }[] = [
-    { id: 'today',      title: 'Today' },
-    { id: 'population', title: 'Population' },
+    { id: 'work',       title: 'Work' },
+    { id: 'reference',  title: 'Reference' },
     { id: 'regulatory', title: 'Regulatory' },
-    { id: 'demo',       title: 'Demo' },
   ]
 
   return (
     <div className="app-shell">
       <aside className="sidebar">
         <div className="sidebar-brand">
-          <Logo variant="mark" height={32} href="/dashboard" />
+          <Logo variant="mark" height={48} href="/dashboard" />
         </div>
         {sections.map(sec => {
           const items = links.filter(l => l.section === sec.id)

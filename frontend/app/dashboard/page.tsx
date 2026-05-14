@@ -62,14 +62,13 @@ export default function QueuePage() {
   const sortIcon = (k: typeof sortKey) => sortKey !== k ? '' : (sortDir === 'desc' ? '▾' : '▴')
 
   const navCounts = {
-    queue: cases.filter(c => tierToken(c.risk_level) !== 'low').length,
-    cases: cases.length,
+    inbox: cases.filter(c => tierToken(c.risk_level) !== 'low').length,
     crit: tierCount('crit'),
   }
 
   return (
     <AppShell
-      crumbs={[{ href: '/dashboard', label: 'Today' }, { label: 'Queue' }]}
+      crumbs={[{ label: 'Inbox' }]}
       navCounts={navCounts}
     >
       <div className="toolbar">
@@ -102,12 +101,12 @@ export default function QueuePage() {
             <tr>
               <th onClick={() => onSort('reference')} className={sortKey === 'reference' ? 'sorted' : ''} style={{ width: '14%' }}>Case <span className="sort">{sortIcon('reference') || '▾'}</span></th>
               <th onClick={() => onSort('broker')} className={sortKey === 'broker' ? 'sorted' : ''} style={{ width: '16%' }}>Broker <span className="sort">{sortIcon('broker') || '▾'}</span></th>
-              <th style={{ width: '20%' }}>Applicant</th>
-              <th onClick={() => onSort('submitted')} className={sortKey === 'submitted' ? 'sorted' : ''} style={{ width: '14%' }}>Submitted <span className="sort">{sortIcon('submitted') || '▾'}</span></th>
-              <th style={{ width: '10%', textAlign: 'right' }}>Loan</th>
-              <th onClick={() => onSort('score')} className={sortKey === 'score' ? 'sorted' : ''} style={{ width: '14%' }}>Score <span className="sort">{sortIcon('score') || '▾'}</span></th>
-              <th onClick={() => onSort('tier')} className={sortKey === 'tier' ? 'sorted' : ''} style={{ width: '9%' }}>Tier <span className="sort">{sortIcon('tier') || '▾'}</span></th>
-              <th style={{ width: '11%' }}>Flags / actions</th>
+              <th style={{ width: '16%' }}>Applicant</th>
+              <th onClick={() => onSort('submitted')} className={sortKey === 'submitted' ? 'sorted' : ''} style={{ width: '11%' }}>Submitted <span className="sort">{sortIcon('submitted') || '▾'}</span></th>
+              <th style={{ width: '8%', textAlign: 'right' }}>Loan</th>
+              <th onClick={() => onSort('score')} className={sortKey === 'score' ? 'sorted' : ''} style={{ width: '12%' }}>Score <span className="sort">{sortIcon('score') || '▾'}</span></th>
+              <th onClick={() => onSort('tier')} className={sortKey === 'tier' ? 'sorted' : ''} style={{ width: '8%' }}>Tier <span className="sort">{sortIcon('tier') || '▾'}</span></th>
+              <th style={{ width: '15%' }}>Flags / actions</th>
             </tr>
           </thead>
           <tbody>
@@ -183,6 +182,8 @@ function CaseRow({ c }: { c: Case }) {
         </span>
         <span className="row-actions" style={{ marginLeft: 8 }}>
           <Link href={`/cases/${c.id}`}>Open</Link>
+          <button type="button">Assign</button>
+          <button type="button">Dismiss</button>
         </span>
       </td>
     </tr>
