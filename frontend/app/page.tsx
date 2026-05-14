@@ -5,6 +5,7 @@ import Link from 'next/link'
 import LoginModal from '@/components/LoginModal'
 import SiteHeader from '@/components/design/SiteHeader'
 import SiteFooter from '@/components/design/SiteFooter'
+import HeroSpecimenPreview from '@/components/design/HeroSpecimenPreview'
 import { CalibrationTickRule } from '@/components/design/atoms'
 
 /* Marketing index. Sections in order, matching ui_kits/marketing/site.jsx:
@@ -66,36 +67,77 @@ export default function Landing() {
           ))}
         </div>
 
-        {/* Hero */}
+        {/* Hero — two columns: copy left, specimen preview right.
+         * Mirrors the case-detail layout so the visitor sees the product
+         * shape before they click through. */}
         <section id="hero" className="mk-section hero">
-          <div className="disclosure">
-            <span className="pip" />
-            <span>
-              <b>2026-02 Commonwealth Bank:</b> self-reported ~A$1B in suspected fraudulent mortgage applications.
-              Fake payslips and bank statements submitted through broker channels. Westpac and ANZ flagged similar internally.<sup><a className="cite-link" href="#refs">[1]</a></sup>
-              {' '}This is what they looked at.
-            </span>
-          </div>
+          <div className="hero-grid">
+            <div className="hero-copy">
+              <div className="disclosure">
+                <span className="pip" />
+                <span>
+                  <b>2026-02 Commonwealth Bank:</b> self-reported ~A$1B in suspected fraudulent mortgage applications.
+                  Fake payslips and bank statements submitted through broker channels. Westpac and ANZ flagged similar internally.<sup><a className="cite-link" href="#refs">[1]</a></sup>
+                  {' '}This is what they looked at.
+                </span>
+              </div>
 
-          <h1>
-            Mortgage fraud,<br />
-            priced by the <em>evidence</em>.
-          </h1>
+              <h1>
+                Mortgage fraud,<br />
+                priced by the <em>evidence</em>.
+              </h1>
 
-          <p className="lede">
-            Trutina measures four properties of every payslip, employer letter, and bank statement in a mortgage application. When a number is off by $47.20 or an ABN was cancelled on 2024-08-12, the system says so, cites the rule, and shows you the file. Trust is per-flag, earned via evidence. Not asserted in a hero.
-          </p>
+              <p className="lede">
+                Trutina measures four properties of every payslip, employer letter, and bank statement in a mortgage application. When a number is off by $47.20 or an ABN was cancelled on 2024-08-12, the system says so, cites the rule, and shows you the file. Trust is per-flag, earned via evidence. Not asserted in a hero.
+              </p>
 
-          <div className="actions">
-            <Link href="/demo" className="btn btn-primary">Open a Clean and a Critical specimen</Link>
-            <button type="button" className="btn-text" onClick={() => setLoginMode('trial')}>Start a 30-day trial</button>
+              <div className="actions">
+                <Link href="/demo" className="btn btn-primary">Open a Clean and a Critical specimen</Link>
+                <a href="/methods-paper.pdf" target="_blank" rel="noopener" className="btn btn-secondary">
+                  Methods paper (PDF, single page)
+                </a>
+              </div>
+
+              <p className="t-caption" style={{ marginTop: 14, color: 'var(--ink-40)' }}>
+                Already a customer? <button type="button" className="btn-text" style={{ padding: 0, fontSize: 12, color: 'var(--accent)' }} onClick={() => setLoginMode('signin')}>Sign in</button>
+                {' .  '}Evaluating? Forward this page or email <a className="mono" href="mailto:hello@trutina.com.au" style={{ color: 'var(--accent)' }}>hello@trutina.com.au</a> for a private demo.
+              </p>
+            </div>
+
+            <div className="hero-preview">
+              <HeroSpecimenPreview />
+            </div>
           </div>
 
           <CalibrationTickRule />
 
-          <div className="trust-strip">
-            <div className="pending">
-              Calibration metrics (measured fraud rate, false-positive rate, time-to-verdict, reviewer time saved) are published in the methods paper. Updated quarterly. Available on request.
+          {/* What-you-get strip. Replaces the unsourced metrics strip. Surfaces what
+           * the product is, in terms a procurement-evaluating Head of Risk can verify. */}
+          <div className="trust-strip" style={{ gridTemplateColumns: 'repeat(5, 1fr)' }}>
+            <div className="cell">
+              <span className="k">Detection modules</span>
+              <span className="v">5</span>
+              <span className="src">producer / identity / arithmetic / employer / network</span>
+            </div>
+            <div className="cell">
+              <span className="k">Cited rules</span>
+              <span className="v">46</span>
+              <span className="src">each with id, test definition, worked example</span>
+            </div>
+            <div className="cell">
+              <span className="k">Regulatory alignment</span>
+              <span className="v" style={{ fontSize: 16 }}>APRA CPG 234</span>
+              <span className="src">+ APP 11 . Privacy Act 1988</span>
+            </div>
+            <div className="cell">
+              <span className="k">Data residency</span>
+              <span className="v" style={{ fontSize: 16 }}>AU only</span>
+              <span className="src">no data leaves the jurisdiction</span>
+            </div>
+            <div className="cell">
+              <span className="k">Methodology</span>
+              <span className="v" style={{ fontSize: 16 }}>Open</span>
+              <span className="src">rules published . evidence ledger documented</span>
             </div>
           </div>
         </section>

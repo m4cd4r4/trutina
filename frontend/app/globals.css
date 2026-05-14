@@ -647,6 +647,26 @@ hr { border: 0; border-top: var(--rule-width) solid var(--rule); margin: var(--s
 .mk-section h2 { font-family: var(--font-serif); font-weight: 500; font-size: 40px; line-height: 1.1; color: var(--ink-100); margin: 0 0 16px; max-width: 22ch; letter-spacing: -0.008em; text-wrap: balance; }
 .mk-section .standfirst { font-family: var(--font-serif); font-size: 17px; line-height: 1.55; color: var(--ink-80); max-width: 56ch; font-variation-settings: "opsz" 16; }
 
+/* Hero 2-column grid: copy left, specimen preview right.
+ * Collapses to single column at <1100px so the preview wraps below the copy. */
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 48px;
+  align-items: start;
+}
+.hero-copy { min-width: 0; }
+.hero-preview {
+  min-width: 0;
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 32px;
+}
+@media (max-width: 1100px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 32px; }
+  .hero-preview { justify-content: flex-start; padding-top: 0; }
+}
+
 /* Hero — WONK 25 only here. */
 .hero h1 {
   font-family: var(--font-serif); font-weight: 400;
