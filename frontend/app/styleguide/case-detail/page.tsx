@@ -54,7 +54,7 @@ export default function StyleguideCaseDetail() {
           <button type="button" className="btn btn-secondary">Export packet (PDF)</button>
           <button type="button" className="btn btn-ghost" style={{ marginLeft: 'auto', color: 'var(--risk-crit)' }}>Escalate to APRA</button>
         </div>
-        <div style={{ position: 'absolute', right: 28, top: 18, pointerEvents: 'none' }}>
+        <div style={{ position: 'absolute', right: -8, top: -28, transform: 'rotate(-4deg) scale(0.85)', transformOrigin: 'top right', pointerEvents: 'none' }}>
           <RejectStamp tier="crit" sub={`${c.reference} . 2026-04-09`}>REJECT</RejectStamp>
         </div>
       </header>

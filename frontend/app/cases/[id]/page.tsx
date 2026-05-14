@@ -135,10 +135,14 @@ export default function CaseDetailPage() {
         </div>
 
         {t === 'crit' ? (
+          // Stamp sits in the top-right margin above the score-stack so it
+          // reads as a document annotation, not an overprint that obscures
+          // the 82/100 numeral.
           <div style={{
-            position: 'absolute', right: 28, top: 18,
+            position: 'absolute', right: -8, top: -28,
             opacity: stampVisible ? 1 : 0,
-            transform: stampVisible ? 'rotate(-4deg) scale(1)' : 'rotate(-4deg) scale(0.92)',
+            transform: stampVisible ? 'rotate(-4deg) scale(0.85)' : 'rotate(-4deg) scale(0.78)',
+            transformOrigin: 'top right',
             transition: 'opacity 280ms var(--ease), transform 280ms var(--ease)',
             pointerEvents: 'none',
           }}>
