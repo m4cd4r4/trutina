@@ -35,6 +35,6 @@ export const config = {
      * - _next/static, _next/image (Next.js internals)
      * - favicon.ico, images, fonts
      */
-    '/((?!_next/static|_next/image|favicon\\.ico|.*\\.(?:png|jpg|jpeg|gif|svg|webp|ico|woff2?|ttf|eot)).*)',
+    '/((?!_next/static|_next/image|favicon\\.ico|.*\\.(?:png|jpg|jpeg|gif|svg|webp|ico|woff2?|ttf|eot|pdf)).*)',
   ],
 }
