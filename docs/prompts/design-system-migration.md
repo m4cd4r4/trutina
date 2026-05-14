@@ -60,7 +60,12 @@ Frontend visual layer only:
 - Email infrastructure
 - Tour copy in `frontend/app/demo/` (style only, not content)
 - Security fixes from `PRODUCT_AUDIT_REPORT.md` S1-S19 (separate branches)
-- The earlier abandoned design branch `design/bolder-landing-light-editorial` (commit 3ec9484). Do not cherry-pick from it; start fresh from master.
+
+## Important: what's already on master
+
+The branch `design/bolder-landing-light-editorial` landed on master as **PR #8** (merge tip `b848809 design: editorial forensics redesign - light theme, left-aligned hero`) between the time this brief was first drafted and the time you're reading it. The rebase step at the top of this brief brings that work in automatically.
+
+Do NOT try to preserve anything from PR #8. The Claude Design system supersedes it wholesale. After rebase, your starting state will already include #8's "editorial forensics light theme" changes — your first real edit is to replace `globals.css` and `page.tsx` again, this time with the canonical Claude Design token layer. The two design directions are not compatible; #8 is a stop on the way to the destination, not the destination itself.
 
 ## What "good" looks like
 
@@ -115,4 +120,4 @@ If you spot problems beyond the visual migration, append them to `docs/CLAUDE-TO
 
 ## Why this brief is structured this way
 
-Three rounds of Claude Design iteration produced a token layer that survived ablation testing across six rendered screens. The next session must not re-litigate token choices, font picks, or risk-tier hues. Read the system, port it, visual-diff against the rendered screenshots. The earlier abandoned branch `design/bolder-landing-light-editorial` is evidence that re-opening the aesthetic question costs commits and ships nothing. This brief is deliberately specific about file paths, the in-scope list, and the screenshot-diff verification step so the next session can execute without re-deciding.
+Three rounds of Claude Design iteration produced a token layer that survived ablation testing across six rendered screens. The next session must not re-litigate token choices, font picks, or risk-tier hues. Read the system, port it, visual-diff against the rendered screenshots. PR #8 (`design/bolder-landing-light-editorial`) is a partial answer to the same problem and is now on master; treat it as scaffolding to overwrite, not as a baseline to preserve. This brief is deliberately specific about file paths, the in-scope list, and the screenshot-diff verification step so the next session can execute without re-deciding.
