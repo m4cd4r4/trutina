@@ -199,19 +199,12 @@ async function test5() {
   }
 }
 
-// ─── Test 6: /api/trial and /api/resend-code accessible without auth ───
+// ─── Test 6: /api/resend-code accessible without auth ───
+// /api/trial was deleted in fix/styleguide-404-and-cleanup (zero UI callers
+// after pivot PR #10). The Forgot-your-code flow keeps /api/resend-code.
 async function test6() {
-  const name = 'Test 6: /api/trial and /api/resend-code work without auth cookie'
+  const name = 'Test 6: /api/resend-code works without auth cookie'
   try {
-    // POST /api/trial without auth - should get 400 (missing fields), not 302 redirect
-    const trialRes = await fetch(`${BASE}/api/trial`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({}),
-      redirect: 'manual',
-    })
-
-    // POST /api/resend-code without auth - should get 400 (missing email), not 302 redirect
     const resendRes = await fetch(`${BASE}/api/resend-code`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -219,19 +212,13 @@ async function test6() {
       redirect: 'manual',
     })
 
-    const trialOk = trialRes.status === 400 || trialRes.status === 500 // 400 = reached handler, 500 = backend down
-    const resendOk = resendRes.status === 400
-    const trialNotRedirect = trialRes.status !== 307 && trialRes.status !== 302
     const resendNotRedirect = resendRes.status !== 307 && resendRes.status !== 302
+    const pass = resendNotRedirect
 
-    const pass = trialNotRedirect && resendNotRedirect
     results.push({
       name,
       pass,
-      detail: [
-        `/api/trial -> ${trialRes.status} (${trialNotRedirect ? 'not redirected, handler reached' : 'REDIRECTED - middleware blocking'})`,
-        `/api/resend-code -> ${resendRes.status} (${resendNotRedirect ? 'not redirected, handler reached' : 'REDIRECTED - middleware blocking'})`,
-      ].join('\n         '),
+      detail: `/api/resend-code -> ${resendRes.status} (${resendNotRedirect ? 'not redirected, handler reached' : 'REDIRECTED - middleware blocking'})`,
     })
   } catch (e) {
     results.push({ name, pass: false, detail: `${e}` })

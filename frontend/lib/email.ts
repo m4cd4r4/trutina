@@ -8,41 +8,6 @@ const FROM = 'Trutina <noreply@trutina.com.au>'
 const ADMIN_EMAIL = 'hello@trutina.com.au'
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://trutina.com.au'
 
-export async function sendTrialNotification(data: {
-  name: string
-  email: string
-  company?: string
-}): Promise<boolean> {
-  if (!resend) {
-    console.log('[EMAIL] Skipped (no RESEND_API_KEY)', data)
-    return true
-  }
-
-  try {
-    await resend.emails.send({
-      from: FROM,
-      to: ADMIN_EMAIL,
-      subject: `New Trutina trial signup: ${data.name}`,
-      html: `
-        <div style="font-family: -apple-system, sans-serif; max-width: 500px; margin: 0 auto;">
-          <h2 style="color: #1e40af;">New Trial Signup</h2>
-          <table style="width: 100%; border-collapse: collapse;">
-            <tr><td style="padding: 8px 0; color: #666;">Name</td><td style="padding: 8px 0; font-weight: 600;">${data.name}</td></tr>
-            <tr><td style="padding: 8px 0; color: #666;">Email</td><td style="padding: 8px 0;"><a href="mailto:${data.email}">${data.email}</a></td></tr>
-            ${data.company ? `<tr><td style="padding: 8px 0; color: #666;">Company</td><td style="padding: 8px 0;">${data.company}</td></tr>` : ''}
-            <tr><td style="padding: 8px 0; color: #666;">Time</td><td style="padding: 8px 0;">${new Date().toLocaleString('en-AU', { timeZone: 'Australia/Perth' })}</td></tr>
-          </table>
-          <p style="margin-top: 20px; color: #999; font-size: 12px;">Sent from trutina.com.au</p>
-        </div>
-      `,
-    })
-    return true
-  } catch (error) {
-    console.error('[EMAIL] Failed to send trial notification:', error)
-    return false
-  }
-}
-
 export async function sendTrialWelcome(data: {
   name: string
   email: string
