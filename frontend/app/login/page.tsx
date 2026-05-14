@@ -2,8 +2,9 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Logo } from '@/components/Logo'
 import Link from 'next/link'
+import { Logo } from '@/components/Logo'
+import { CalibrationTickRule } from '@/components/design/atoms'
 
 export default function LoginPage() {
   const [password, setPassword] = useState('')
@@ -29,7 +30,7 @@ export default function LoginPage() {
         setError('Invalid access code')
         return
       }
-      router.push('/')
+      router.push('/dashboard')
     } catch {
       setError('Connection error')
     } finally {
@@ -61,108 +62,98 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0a1210]"
-      style={{ background: '#0a1210' }}>
-      <div className="w-full max-w-sm">
-        <div className="text-center mb-8">
-          <Logo href="" className="text-3xl justify-center" />
-          <p className="text-white/40 mt-2 text-sm">AI Lending Fraud Detection</p>
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)', padding: 24 }}>
+      <div style={{ width: '100%', maxWidth: 380 }}>
+        <div style={{ textAlign: 'center', marginBottom: 28 }}>
+          <Logo variant="wordmark" height={44} href="/" />
+          <p className="t-caption" style={{ marginTop: 10 }}>Mortgage fraud detection for Australian lenders.</p>
         </div>
 
+        <CalibrationTickRule />
+
         {!showResend ? (
-          <form onSubmit={handleSubmit}
-            className="rounded-2xl border border-white/10 p-8"
-            style={{ background: 'rgba(255,255,255,0.04)', backdropFilter: 'blur(20px)' }}>
-            <h2 className="text-white font-semibold mb-6">Sign in</h2>
+          <form onSubmit={handleSubmit} style={CARD}>
+            <h3 className="t-section" style={{ marginBottom: 16 }}>Sign in</h3>
 
-            <div className="space-y-4">
-              <div>
-                <label className="text-white/60 text-xs uppercase tracking-wider mb-1 block">Access Code</label>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-teal-500/50 focus:bg-white/8 transition"
-                  placeholder="TRUT-XXXX-XXXX"
-                  autoFocus
-                />
-              </div>
+            <FormField label="Access code">
+              <input
+                type="password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                placeholder="TRUT-XXXX-XXXX"
+                autoFocus
+                style={INPUT}
+              />
+            </FormField>
 
-              {error && <p className="text-red-400 text-sm">{error}</p>}
+            {error && <p style={{ color: 'var(--risk-crit)', fontSize: 13, marginTop: 8 }}>{error}</p>}
 
+            <button type="submit" disabled={loading} className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', marginTop: 14, padding: '10px 14px' }}>
+              {loading ? 'Signing in…' : 'Sign in'}
+            </button>
+
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 14, fontSize: 12.5 }}>
               <button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-teal-600 hover:bg-teal-500 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition"
+                type="button"
+                onClick={() => { setShowResend(true); setResendStatus('idle'); setResendError('') }}
+                style={LINK_BTN}
               >
-                {loading ? 'Signing in...' : 'Sign in'}
+                Forgot your code?
               </button>
-
-              <div className="flex items-center justify-between text-sm">
-                <button
-                  type="button"
-                  onClick={() => { setShowResend(true); setResendStatus('idle'); setResendError('') }}
-                  className="text-white/40 hover:text-white/60 transition"
-                >
-                  Forgot your code?
-                </button>
-                <Link href="/?trial=1" className="text-teal-400 hover:text-teal-300 transition font-medium">
-                  Start free trial
-                </Link>
-              </div>
+              <Link href="/?trial=1" style={{ color: 'var(--accent)' }}>
+                Start a trial
+              </Link>
             </div>
           </form>
         ) : (
-          <div className="rounded-2xl border border-white/10 p-8"
-            style={{ background: 'rgba(255,255,255,0.04)', backdropFilter: 'blur(20px)' }}>
-
+          <div style={CARD}>
             {resendStatus === 'sent' ? (
-              <div className="text-center space-y-4">
-                <div className="text-3xl">&#9993;</div>
-                <h2 className="text-white font-semibold">Code sent!</h2>
-                <p className="text-white/50 text-sm">
-                  Check your inbox for an email with your access code.
+              <div style={{ textAlign: 'center' }}>
+                <div className="t-section" style={{ marginBottom: 8 }}>Code sent</div>
+                <p style={{ color: 'var(--ink-60)', fontSize: 13, marginBottom: 16 }}>
+                  Check your inbox. Code typically arrives in 30s.
                 </p>
                 <button
                   onClick={() => { setShowResend(false); setResendStatus('idle') }}
-                  className="w-full bg-teal-600 hover:bg-teal-500 text-white font-semibold py-3 rounded-lg transition"
+                  className="btn btn-secondary"
+                  style={{ width: '100%', justifyContent: 'center' }}
                 >
                   Back to sign in
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleResend} className="space-y-4">
-                <h2 className="text-white font-semibold">Resend access code</h2>
-                <p className="text-white/50 text-sm">
+              <form onSubmit={handleResend}>
+                <h3 className="t-section" style={{ marginBottom: 12 }}>Resend access code</h3>
+                <p style={{ color: 'var(--ink-60)', fontSize: 13, marginBottom: 14, lineHeight: 1.5 }}>
                   Enter the email you signed up with and we&apos;ll resend your access code.
                 </p>
-                <div>
-                  <label className="text-white/60 text-xs uppercase tracking-wider mb-1 block">Email</label>
+                <FormField label="Email">
                   <input
                     type="email"
                     value={resendEmail}
                     onChange={e => setResendEmail(e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-teal-500/50 focus:bg-white/8 transition"
-                    placeholder="you@company.com"
+                    placeholder="you@company.com.au"
                     autoFocus
                     required
+                    style={INPUT}
                   />
-                </div>
+                </FormField>
 
-                {resendError && <p className="text-red-400 text-sm">{resendError}</p>}
+                {resendError && <p style={{ color: 'var(--risk-crit)', fontSize: 13, marginTop: 8 }}>{resendError}</p>}
 
                 <button
                   type="submit"
                   disabled={resendStatus === 'loading'}
-                  className="w-full bg-teal-600 hover:bg-teal-500 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition"
+                  className="btn btn-primary"
+                  style={{ width: '100%', justifyContent: 'center', marginTop: 14, padding: '10px 14px' }}
                 >
-                  {resendStatus === 'loading' ? 'Sending...' : 'Resend my code'}
+                  {resendStatus === 'loading' ? 'Sending…' : 'Resend my code'}
                 </button>
 
                 <button
                   type="button"
                   onClick={() => setShowResend(false)}
-                  className="w-full text-white/40 hover:text-white/60 text-sm py-2 transition"
+                  style={{ ...LINK_BTN, display: 'block', width: '100%', textAlign: 'center', marginTop: 12, fontSize: 12.5 }}
                 >
                   Back to sign in
                 </button>
@@ -170,7 +161,45 @@ export default function LoginPage() {
             )}
           </div>
         )}
+
+        <p className="t-caption" style={{ textAlign: 'center', marginTop: 18, color: 'var(--ink-40)' }}>
+          APRA CPG 234 aligned. AU-hosted. SOC 2 Type II.
+        </p>
       </div>
     </div>
   )
+}
+
+function FormField({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div style={{ marginBottom: 10 }}>
+      <label className="t-section" style={{ display: 'block', marginBottom: 4 }}>{label}</label>
+      {children}
+    </div>
+  )
+}
+
+const CARD: React.CSSProperties = {
+  background: 'var(--bg-print-white)',
+  border: '1px solid var(--ink-25)',
+  padding: '24px 24px 22px',
+  boxShadow: 'var(--shadow-print)',
+}
+
+const INPUT: React.CSSProperties = {
+  width: '100%',
+  background: 'var(--paper-0)',
+  border: '1px solid var(--ink-25)',
+  borderRadius: 'var(--radius-1)',
+  padding: '9px 12px',
+  color: 'var(--ink-100)',
+  fontFamily: 'var(--font-sans)',
+  fontSize: 13,
+  outline: 'none',
+}
+
+const LINK_BTN: React.CSSProperties = {
+  background: 'none', border: 0, padding: 0,
+  color: 'var(--accent)', cursor: 'pointer',
+  textDecoration: 'underline', fontFamily: 'inherit', fontSize: 'inherit',
 }

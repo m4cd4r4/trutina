@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Microscope, Bot, Link2, Calculator, Users, ClipboardList, Check } from 'lucide-react'
 import { Logo } from '@/components/Logo'
+import SiteHeader from '@/components/design/SiteHeader'
+import SiteFooter from '@/components/design/SiteFooter'
 
 export const metadata: Metadata = {
   title: 'Sales One-Pager — AI Lending Fraud Detection',
@@ -81,7 +83,7 @@ export default function OnePager() {
             color: #111 !important;
             border-color: #ddd !important;
           }
-          .print-page .print-blue { color: #0d9488 !important; }
+          .print-page .print-blue { color: #1F4FA3 !important; }
           .print-page .print-muted { color: #555 !important; }
           .print-page .print-light { color: #888 !important; }
           .print-page .print-card {
@@ -90,7 +92,7 @@ export default function OnePager() {
           }
           .print-page .print-highlight {
             background: #eff6ff !important;
-            border: 2px solid #0d9488 !important;
+            border: 2px solid #1F4FA3 !important;
           }
           .print-page .print-alert {
             background: #fef2f2 !important;
@@ -98,33 +100,24 @@ export default function OnePager() {
           }
           .print-page .print-alert * { color: #991b1b !important; }
           .print-page .print-step-num {
-            background: #0d9488 !important;
+            background: #1F4FA3 !important;
             color: white !important;
           }
           .print-page a { text-decoration: none !important; }
         }
       `}} />
 
-      <div className="min-h-screen text-white print-page"
-        style={{ background: '#0a1210' }}>
+      <div className="min-h-screen docs-page print-page"
+        style={{  }}>
 
         {/* Screen nav */}
-        <nav className="border-b border-white/5 no-print">
-          <div className="flex items-center justify-between px-4 sm:px-8 py-4 max-w-7xl mx-auto">
-          <Logo height={32} />
-          <div className="flex items-center gap-4 sm:gap-6">
-            <Link href="/docs" className="text-white/50 hover:text-white/80 text-sm transition">
-              All docs
-            </Link>
-          </div>
-          </div>
-        </nav>
+        <SiteHeader active="docs" />
 
         <div className="max-w-4xl mx-auto px-4 sm:px-8 py-8 sm:py-12">
 
           {/* Header */}
           <div className="text-center mb-8 sm:mb-10">
-            <Logo variant="text" href="" className="text-2xl sm:text-3xl" />
+            <Logo variant="wordmark" href="" className="text-2xl sm:text-3xl" />
             <h1 className="text-lg sm:text-xl font-semibold text-white/80 print-muted mb-2">
               AI Lending Fraud Detection for Australian Lenders
             </h1>
@@ -258,6 +251,7 @@ export default function OnePager() {
           </div>
 
         </div>
+      <SiteFooter />
       </div>
     </>
   )

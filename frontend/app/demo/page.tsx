@@ -1,155 +1,89 @@
 'use client'
 
 import Link from 'next/link'
-import { ChevronRight } from 'lucide-react'
 import { DEMO_CASES } from '@/lib/demo-data'
-import { Logo } from '@/components/Logo'
-import ScoreGauge from '@/components/ui/ScoreGauge'
-import RiskBadge from '@/components/ui/RiskBadge'
-import DemoTour from '@/components/ui/DemoTour'
+import SiteHeader from '@/components/design/SiteHeader'
+import SiteFooter from '@/components/design/SiteFooter'
+import { RiskBadge } from '@/components/design/atoms'
+import { tierToken } from '@/lib/case-modules'
 
-const ACTION_STYLE = {
-  approve: 'text-emerald-300 bg-emerald-500/10 border-emerald-500/20',
-  manual_review: 'text-amber-300 bg-amber-500/10 border-amber-500/20',
-  reject: 'text-red-300 bg-red-500/10 border-red-500/20',
-} as const
-
-const ACTION_LABEL = {
-  approve: 'Approve',
-  manual_review: 'Manual Review',
-  reject: 'Reject',
-} as const
-
-export default function DemoPage() {
+export default function DemoLandingPage() {
   return (
-    <div className="min-h-screen text-white"
-      style={{ background: '#0a1210' }}>
+    <>
+      <SiteHeader active="demo" />
 
-      {/* Nav */}
-      <nav className="border-b border-white/5">
-        <div className="flex items-center justify-between px-6 md:px-8 py-4 max-w-7xl mx-auto">
-        <Logo height={32} />
-        <div className="flex items-center gap-4">
-          <span className="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full px-3 py-1 font-medium">
-            Live Demo
+      <main className="page" style={{ paddingTop: 40, paddingBottom: 0, position: 'relative' }}>
+        <div className="content-header" style={{ borderBottom: '1px solid var(--rule)', paddingBottom: 16, marginBottom: 24 }}>
+          <h1>Specimens</h1>
+          <span className="sub">
+            Five redacted Australian loan applications. Click a case to see the full breakdown.
           </span>
-          <Link href="/" className="text-white/50 hover:text-white/80 text-sm transition">
-            Back to site
-          </Link>
         </div>
-        </div>
-      </nav>
 
-      <div className="max-w-5xl mx-auto px-6 md:px-8 py-12">
-        {/* Header */}
-        <div className="text-center mb-12" data-tour="demo-header">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">See Trutina in action</h1>
-          <p className="text-white/50 max-w-2xl mx-auto">
-            Five pre-analysed loan applications demonstrating how Trutina catches AI-generated documents,
-            invalid ABNs, forged bank statements, and suspicious broker patterns. Click any case to see the full breakdown.
+        <div style={{ padding: '14px 0 18px', fontSize: 14, color: 'var(--ink-80)', maxWidth: 780, fontFamily: 'var(--font-serif)', lineHeight: 1.55 }}>
+          Each panel below shows a case as it arrived through a broker channel, the modules that flagged it, and the score derived from the evidence. There is no overall verdict at the top; the verdict is the sum of the measurements.
+        </div>
+
+        <div style={{ overflowX: 'auto', marginTop: 24 }}>
+          <table className="q-table">
+            <thead>
+              <tr>
+                <th style={{ width: '14%' }}>Case</th>
+                <th>Applicant / headline</th>
+                <th style={{ width: '14%' }}>Broker</th>
+                <th style={{ width: '12%', textAlign: 'right' }}>Loan</th>
+                <th style={{ width: '8%', textAlign: 'right' }}>Score</th>
+                <th style={{ width: '9%' }}>Tier</th>
+                <th style={{ width: '8%' }}>Flags</th>
+              </tr>
+            </thead>
+            <tbody>
+              {DEMO_CASES.map(c => {
+                const t = tierToken(c.risk_level)
+                const rowCls = t === 'crit' ? 'row-crit' : t === 'high' ? 'row-high' : ''
+                const totalFlags = c.flag_counts.critical + c.flag_counts.high + c.flag_counts.medium + c.flag_counts.low
+                return (
+                  <tr key={c.id} className={rowCls}>
+                    <td className="mono">
+                      <Link href={`/demo/${c.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>{c.reference}</Link>
+                    </td>
+                    <td>
+                      <div style={{ fontSize: 13 }}>{c.applicant_name}</div>
+                      <div className="derived" style={{ fontSize: 11.5 }}>{c.headline}</div>
+                    </td>
+                    <td>
+                      <div style={{ fontSize: 12.5 }}>{c.broker?.broker_name ?? <span className="derived">—</span>}</div>
+                    </td>
+                    <td className="mono right">${c.loan_amount?.toLocaleString('en-AU') ?? '—'}</td>
+                    <td className="mono right" style={{ color: t === 'crit' ? 'var(--risk-crit)' : t === 'high' ? 'var(--risk-high)' : 'var(--ink-100)', fontWeight: t === 'crit' ? 600 : 400 }}>
+                      {c.risk_score}
+                    </td>
+                    <td><RiskBadge tier={t} /></td>
+                    <td className="mono" style={{ color: totalFlags > 0 ? 'var(--ink-100)' : 'var(--ink-40)' }}>
+                      {totalFlags > 0
+                        ? `${c.flag_counts.critical}c/${c.flag_counts.high}h`
+                        : 'no flags'}
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+
+        <div style={{ marginTop: 48, padding: 32, background: 'var(--paper-1)', border: '1px solid var(--rule)', textAlign: 'center' }}>
+          <h2 style={{ fontSize: 22, marginBottom: 8 }}>Try with your own documents</h2>
+          <p style={{ color: 'var(--ink-60)', maxWidth: 480, margin: '0 auto 16px' }}>
+            Start a 30-day trial. Upload up to 5 documents. No credit card.
           </p>
-        </div>
-
-        {/* Case grid */}
-        <div className="space-y-4">
-          {DEMO_CASES.map((c, i) => (
-            <Link key={c.id} href={`/demo/${c.id}`}
-              data-tour={`case-card-${i}`}
-              className="block rounded-xl border border-white/10 p-6 hover:border-white/20 transition group"
-              style={{ background: 'rgba(255,255,255,0.03)' }}>
-              <div className="flex flex-col md:flex-row md:items-center gap-6">
-                {/* Score */}
-                <div className="shrink-0 flex justify-center">
-                  <ScoreGauge score={c.risk_score} size={80} />
-                </div>
-
-                {/* Info */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex flex-wrap items-center gap-2 mb-1">
-                    <span className="text-white/30 text-xs font-mono">{c.reference}</span>
-                    <RiskBadge level={c.risk_level} />
-                    {c.recommended_action && (
-                      <span className={`text-xs px-2 py-0.5 rounded border font-medium ${ACTION_STYLE[c.recommended_action]}`}>
-                        {ACTION_LABEL[c.recommended_action]}
-                      </span>
-                    )}
-                  </div>
-                  <div className="text-white font-semibold group-hover:text-teal-300 transition">
-                    {c.applicant_name}
-                  </div>
-                  <div className="text-white/40 text-sm mt-1">{c.headline}</div>
-                </div>
-
-                {/* Stats */}
-                <div className="flex md:flex-col items-center gap-4 md:gap-1 md:text-right shrink-0">
-                  <div className="text-amber-300/70 text-sm font-mono">
-                    ${c.loan_amount?.toLocaleString()}
-                  </div>
-                  <div className="text-white/30 text-xs">
-                    {c.document_count} doc{c.document_count !== 1 && 's'} · {c.flags.length} flag{c.flags.length !== 1 && 's'}
-                  </div>
-                </div>
-
-                {/* Arrow */}
-                <div className="hidden md:flex items-center text-white/20 group-hover:text-white/50 transition">
-                  <ChevronRight className="w-5 h-5" />
-                </div>
-              </div>
-
-              {/* Flag summary chips */}
-              <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-white/5">
-                {c.flag_counts.critical > 0 && (
-                  <span className="text-xs bg-red-500/15 text-red-300 rounded px-2 py-0.5">
-                    {c.flag_counts.critical} critical
-                  </span>
-                )}
-                {c.flag_counts.high > 0 && (
-                  <span className="text-xs bg-orange-500/15 text-orange-300 rounded px-2 py-0.5">
-                    {c.flag_counts.high} high
-                  </span>
-                )}
-                {c.flag_counts.medium > 0 && (
-                  <span className="text-xs bg-amber-500/15 text-amber-300 rounded px-2 py-0.5">
-                    {c.flag_counts.medium} medium
-                  </span>
-                )}
-                {c.flag_counts.low > 0 && (
-                  <span className="text-xs bg-emerald-500/15 text-emerald-300 rounded px-2 py-0.5">
-                    {c.flag_counts.low} low
-                  </span>
-                )}
-              </div>
-            </Link>
-          ))}
-        </div>
-
-        {/* CTA */}
-        <div className="text-center mt-16 rounded-2xl border border-teal-500/20 p-10"
-          style={{ background: 'rgba(13,148,136,0.06)' }}>
-          <h2 className="text-2xl font-bold mb-3">Ready to try with your own documents?</h2>
-          <p className="text-white/50 mb-6 max-w-lg mx-auto">
-            Start a free trial — upload up to 5 documents with no credit card required.
-            See exactly how Trutina would assess your real loan applications.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/#pricing"
-              className="bg-teal-600 hover:bg-teal-500 text-white font-semibold px-8 py-3 rounded-xl transition">
-              Start free trial
-            </Link>
-            <a href="mailto:hello@trutina.com.au"
-              className="group text-white/50 hover:text-white/70 transition text-sm">
-              <span className="group-hover:hidden">Or request a demo call</span>
-              <span className="hidden group-hover:inline tracking-wide">hello@trutina.com.au</span>
-            </a>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap' }}>
+            <Link href="/?trial=1" className="btn btn-primary">Start trial</Link>
+            <a href="mailto:hello@trutina.com.au" className="btn-text">hello@trutina.com.au</a>
           </div>
         </div>
-      </div>
+      </main>
 
-      <footer className="border-t border-white/5 px-8 py-6 text-center text-white/20 text-xs mt-12">
-        Trutina · hello@trutina.com.au · All sample data is synthetic — no real applicant data is shown
-      </footer>
-
-      <DemoTour page="case-list" />
-    </div>
+      <SiteFooter />
+    </>
   )
 }

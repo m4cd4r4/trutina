@@ -3,239 +3,189 @@
 import { useEffect, useState, useMemo } from 'react'
 import Link from 'next/link'
 import { api } from '@/lib/api'
-import type { Case, CaseStatus, RiskLevel } from '@/lib/types'
-import RiskBadge from '@/components/ui/RiskBadge'
-import DemoTour from '@/components/ui/DemoTour'
+import type { Case, RiskLevel } from '@/lib/types'
+import AppShell from '@/components/design/AppShell'
+import { RiskBadge } from '@/components/design/atoms'
+import { tierToken, type TierToken } from '@/lib/case-modules'
 
-const STATUS_OPTIONS: { value: string; label: string }[] = [
-  { value: '', label: 'All Statuses' },
-  { value: 'pending', label: 'Pending' },
-  { value: 'processing', label: 'Processing' },
-  { value: 'complete', label: 'Complete' },
-  { value: 'flagged_for_review', label: 'Flagged for Review' },
-  { value: 'failed', label: 'Failed' },
-]
+type TierFilter = 'all' | 'open' | TierToken
 
-const RISK_OPTIONS: { value: string; label: string }[] = [
-  { value: '', label: 'All Risk Levels' },
-  { value: 'low', label: 'Low' },
-  { value: 'medium', label: 'Medium' },
-  { value: 'high', label: 'High' },
-  { value: 'critical', label: 'Critical' },
-]
+const TIER_RANK: Record<TierToken, number> = { crit: 4, high: 3, med: 2, low: 1 }
 
-export default function Dashboard() {
+export default function QueuePage() {
   const [cases, setCases] = useState<Case[]>([])
   const [loading, setLoading] = useState(true)
-  const [statusFilter, setStatusFilter] = useState('')
-  const [riskFilter, setRiskFilter] = useState('')
-  const [searchQuery, setSearchQuery] = useState('')
-  const [creditsRemaining, setCreditsRemaining] = useState<number | null>(null)
+  const [tierFilter, setTierFilter] = useState<TierFilter>('open')
+  const [sortKey, setSortKey] = useState<'score' | 'tier' | 'submitted' | 'broker' | 'reference'>('score')
+  const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc')
 
   useEffect(() => {
-    const params: { status?: string; risk_level?: string; limit?: number } = { limit: 100 }
-    if (statusFilter) params.status = statusFilter
-    if (riskFilter) params.risk_level = riskFilter
     setLoading(true)
-    api.cases.list(params).then(setCases).finally(() => setLoading(false))
-  }, [statusFilter, riskFilter])
+    api.cases.list({ limit: 100 }).then(setCases).finally(() => setLoading(false))
+  }, [])
 
-  const filteredCases = useMemo(() => {
-    if (!searchQuery.trim()) return cases
-    const q = searchQuery.toLowerCase()
-    return cases.filter(c =>
-      c.applicant_name?.toLowerCase().includes(q) ||
-      c.reference.toLowerCase().includes(q)
-    )
-  }, [cases, searchQuery])
+  const tierCount = (t: TierToken) => cases.filter(c => tierToken(c.risk_level) === t).length
 
-  const total = cases.length
-  const flagged = cases.filter(c => c.risk_level === 'high' || c.risk_level === 'critical').length
-  const processing = cases.filter(c => c.status === 'processing').length
-  const avgScore = cases.filter(c => c.risk_score !== null).reduce((sum, c) => sum + (c.risk_score ?? 0), 0) / (cases.filter(c => c.risk_score !== null).length || 1)
+  const filtered = useMemo(() => {
+    return cases.filter(c => {
+      const t = tierToken(c.risk_level)
+      if (tierFilter === 'all') return true
+      if (tierFilter === 'open') return t !== 'low'
+      return t === tierFilter
+    })
+  }, [cases, tierFilter])
 
-  const stats = [
-    { label: 'Total Cases', value: total },
-    { label: 'High / Critical Risk', value: flagged, highlight: flagged > 0 },
-    { label: 'Processing', value: processing },
-    { label: 'Avg Risk Score', value: isNaN(avgScore) ? '—' : avgScore.toFixed(0) },
-  ]
+  const sorted = useMemo(() => {
+    const arr = [...filtered]
+    arr.sort((a, b) => {
+      let cmp = 0
+      if (sortKey === 'score') {
+        cmp = (a.risk_score ?? -1) - (b.risk_score ?? -1)
+      } else if (sortKey === 'tier') {
+        cmp = TIER_RANK[tierToken(a.risk_level)] - TIER_RANK[tierToken(b.risk_level)]
+      } else if (sortKey === 'submitted') {
+        cmp = new Date(a.submitted_at).getTime() - new Date(b.submitted_at).getTime()
+      } else if (sortKey === 'broker') {
+        cmp = (a.broker?.broker_name ?? '').localeCompare(b.broker?.broker_name ?? '')
+      } else if (sortKey === 'reference') {
+        cmp = a.reference.localeCompare(b.reference)
+      }
+      return sortDir === 'desc' ? -cmp : cmp
+    })
+    return arr
+  }, [filtered, sortKey, sortDir])
+
+  const onSort = (k: typeof sortKey) => {
+    if (sortKey === k) setSortDir(sortDir === 'desc' ? 'asc' : 'desc')
+    else { setSortKey(k); setSortDir('desc') }
+  }
+  const sortIcon = (k: typeof sortKey) => sortKey !== k ? '' : (sortDir === 'desc' ? '▾' : '▴')
+
+  const navCounts = {
+    inbox: cases.filter(c => tierToken(c.risk_level) !== 'low').length,
+    crit: tierCount('crit'),
+  }
 
   return (
-    <div className="min-h-screen bg-[#0a1210] text-white p-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-2xl font-bold">Tru<span className="text-teal-400">tina</span></h1>
-            <p className="text-white/40 text-sm mt-0.5">AI Lending Fraud Detection</p>
-          </div>
-          <Link href="/cases/new" data-tour="dash-new-case"
-            className="bg-teal-600 hover:bg-teal-500 text-white text-sm font-semibold px-4 py-2 rounded-lg transition">
-            + New Case
-          </Link>
+    <AppShell
+      crumbs={[{ label: 'Inbox' }]}
+      navCounts={navCounts}
+    >
+      <div className="toolbar">
+        <div className="tb-left">
+          <span className="tb-title">Queue</span>
+          <span className="tb-count">{cases.length} cases . {tierCount('crit')} critical . {tierCount('high')} high</span>
         </div>
-
-        {/* Stats */}
-        <div data-tour="dash-stats" className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          {stats.map(s => (
-            <div key={s.label}
-              className="rounded-xl border border-white/10 p-4"
-              style={{ background: 'rgba(255,255,255,0.04)' }}>
-              <div className={`text-3xl font-bold ${s.highlight ? 'text-red-400' : 'text-white'}`}>{s.value}</div>
-              <div className="text-white/40 text-xs mt-1">{s.label}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* Credit warning banner */}
-        {creditsRemaining !== null && creditsRemaining <= 1 && (
-          <div className="rounded-xl border border-amber-500/30 p-4 mb-8 flex items-center justify-between"
-            style={{ background: 'rgba(245,158,11,0.08)' }}>
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-400 text-sm">&#9888;</div>
-              <div>
-                <span className="text-amber-300 text-sm font-semibold">
-                  {creditsRemaining === 0 ? 'No credits remaining' : '1 credit remaining'}
-                </span>
-                <span className="text-white/30 text-sm mx-2">&mdash;</span>
-                <span className="text-white/50 text-sm">upgrade to continue analysing documents</span>
-              </div>
-            </div>
-            <a href="mailto:hello@trutina.com.au?subject=Trutina%20%E2%80%94%20Upgrade%20Request"
-              className="text-sm bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-medium px-4 py-1.5 rounded-lg transition whitespace-nowrap border border-amber-500/20">
-              Upgrade &rarr;
-            </a>
-          </div>
-        )}
-
-        {/* Credits banner (normal state) */}
-        {(creditsRemaining === null || creditsRemaining > 1) && (
-          <div data-tour="dash-credits" className="rounded-xl border border-white/10 p-4 mb-8 flex items-center justify-between"
-            style={{ background: 'rgba(255,255,255,0.03)' }}>
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-teal-600/20 flex items-center justify-center text-teal-400 text-sm">&#9889;</div>
-              <div>
-                <span className="text-white/70 text-sm">Free trial</span>
-                <span className="text-white/30 text-sm mx-2">&middot;</span>
-                <span className="text-white/50 text-sm">5 document analyses included</span>
-              </div>
-            </div>
-            <a href="mailto:hello@trutina.com.au?subject=Trutina%20%E2%80%94%20Interested%20in%20more%20credits"
-              className="text-sm text-teal-400 hover:text-teal-300 font-medium transition whitespace-nowrap">
-              Need more? Contact us &rarr;
-            </a>
-          </div>
-        )}
-
-        {/* Filters */}
-        <div data-tour="dash-filters" className="flex flex-wrap items-center gap-3 mb-4">
-          <select
-            value={statusFilter}
-            onChange={e => setStatusFilter(e.target.value)}
-            className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white/80 text-sm focus:outline-none focus:border-teal-500/50 transition appearance-none cursor-pointer"
-            style={{ minWidth: '160px' }}
-          >
-            {STATUS_OPTIONS.map(opt => (
-              <option key={opt.value} value={opt.value} className="bg-[#0a1210]">{opt.label}</option>
-            ))}
-          </select>
-
-          <select
-            value={riskFilter}
-            onChange={e => setRiskFilter(e.target.value)}
-            className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white/80 text-sm focus:outline-none focus:border-teal-500/50 transition appearance-none cursor-pointer"
-            style={{ minWidth: '160px' }}
-          >
-            {RISK_OPTIONS.map(opt => (
-              <option key={opt.value} value={opt.value} className="bg-[#0a1210]">{opt.label}</option>
-            ))}
-          </select>
-
-          <div className="flex-1 min-w-[200px]">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              placeholder="Search by applicant name or reference..."
-              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white placeholder-white/20 text-sm focus:outline-none focus:border-teal-500/50 transition"
-            />
-          </div>
-
-          {(statusFilter || riskFilter || searchQuery) && (
-            <button
-              onClick={() => { setStatusFilter(''); setRiskFilter(''); setSearchQuery('') }}
-              className="text-white/30 hover:text-white/60 text-xs transition"
-            >
-              Clear filters
-            </button>
-          )}
-        </div>
-
-        {/* Cases table */}
-        <div data-tour="dash-cases" className="rounded-xl border border-white/10 overflow-hidden"
-          style={{ background: 'rgba(255,255,255,0.03)' }}>
-          <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
-            <h2 className="font-semibold text-white/80">
-              {statusFilter || riskFilter || searchQuery ? `Filtered Cases (${filteredCases.length})` : 'Recent Cases'}
-            </h2>
-            <Link href="/cases" className="text-teal-400 text-sm hover:text-teal-300">View all</Link>
-          </div>
-
-          {loading ? (
-            <div className="p-8 text-center text-white/30">Loading...</div>
-          ) : filteredCases.length === 0 ? (
-            <div className="p-8 text-center text-white/30">
-              {cases.length === 0
-                ? <>No cases yet. <Link href="/cases/new" className="text-teal-400 hover:underline">Create one.</Link></>
-                : 'No cases match the current filters.'}
-            </div>
-          ) : (
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-white/10">
-                  {['Reference', 'Applicant', 'Loan Amount', 'Broker', 'Risk', 'Status', 'Submitted'].map(h => (
-                    <th key={h} className="text-left text-white/40 font-normal px-6 py-3">{h}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {filteredCases.slice(0, 20).map(c => (
-                  <tr key={c.id} className="border-b border-white/5 hover:bg-white/[0.02] transition">
-                    <td className="px-6 py-3">
-                      <Link href={`/cases/${c.id}`} className="text-teal-400 hover:text-teal-300 font-mono text-xs">
-                        {c.reference}
-                      </Link>
-                    </td>
-                    <td className="px-6 py-3 text-white/80">{c.applicant_name || '—'}</td>
-                    <td className="px-6 py-3 text-white/60">
-                      {c.loan_amount ? `$${c.loan_amount.toLocaleString()}` : '—'}
-                    </td>
-                    <td className="px-6 py-3 text-white/50 text-xs">{c.broker?.broker_name || '—'}</td>
-                    <td className="px-6 py-3">
-                      <div className="flex items-center gap-2">
-                        {c.risk_score !== null && (
-                          <span className="text-white/60 font-mono text-xs w-6 text-right">{c.risk_score}</span>
-                        )}
-                        <RiskBadge level={c.risk_level} />
-                      </div>
-                    </td>
-                    <td className="px-6 py-3">
-                      <span className={`text-xs ${c.status === 'flagged_for_review' ? 'text-orange-400' : c.status === 'failed' ? 'text-red-400' : c.status === 'processing' ? 'text-teal-400' : 'text-white/50'}`}>
-                        {c.status.replace(/_/g, ' ')}
-                      </span>
-                    </td>
-                    <td className="px-6 py-3 text-white/30 text-xs">
-                      {new Date(c.submitted_at).toLocaleDateString('en-AU')}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
+        <div className="tb-right">
+          <button type="button" className="btn btn-secondary btn-sm">Export view</button>
+          <div className="tb-divider" />
+          <Link href="/cases/new" className="btn btn-primary btn-sm">+ New case</Link>
         </div>
       </div>
-      <DemoTour page="dashboard" />
-    </div>
+      <div className="toolbar-caption">
+        Auto-refresh every 5 min. Last updated {new Date().toLocaleString('en-AU', { hour: '2-digit', minute: '2-digit', hour12: false })} AEST.
+      </div>
+
+      <div className="filter-bar">
+        <FilterChip active={tierFilter === 'all'}  onClick={() => setTierFilter('all')}  label="All"          count={cases.length} />
+        <FilterChip active={tierFilter === 'open'} onClick={() => setTierFilter('open')} label="Needs eyes"   count={tierCount('crit') + tierCount('high') + tierCount('med')} />
+        <FilterChip active={tierFilter === 'crit'} onClick={() => setTierFilter('crit')} label="Critical"     count={tierCount('crit')} dot="crit" />
+        <FilterChip active={tierFilter === 'high'} onClick={() => setTierFilter('high')} label="High"         count={tierCount('high')} dot="high" />
+        <FilterChip active={tierFilter === 'med'}  onClick={() => setTierFilter('med')}  label="Medium"       count={tierCount('med')}  dot="med" />
+        <FilterChip active={tierFilter === 'low'}  onClick={() => setTierFilter('low')}  label="Cleared"      count={tierCount('low')}  dot="low" />
+      </div>
+
+      <div style={{ overflowX: 'auto' }}>
+        <table className="q-table">
+          <thead>
+            <tr>
+              <th onClick={() => onSort('reference')} className={sortKey === 'reference' ? 'sorted' : ''} style={{ width: '14%' }}>Case <span className="sort">{sortIcon('reference') || '▾'}</span></th>
+              <th onClick={() => onSort('broker')} className={sortKey === 'broker' ? 'sorted' : ''} style={{ width: '16%' }}>Broker <span className="sort">{sortIcon('broker') || '▾'}</span></th>
+              <th style={{ width: '16%' }}>Applicant</th>
+              <th onClick={() => onSort('submitted')} className={sortKey === 'submitted' ? 'sorted' : ''} style={{ width: '11%' }}>Submitted <span className="sort">{sortIcon('submitted') || '▾'}</span></th>
+              <th style={{ width: '8%', textAlign: 'right' }}>Loan</th>
+              <th onClick={() => onSort('score')} className={sortKey === 'score' ? 'sorted' : ''} style={{ width: '12%' }}>Score <span className="sort">{sortIcon('score') || '▾'}</span></th>
+              <th onClick={() => onSort('tier')} className={sortKey === 'tier' ? 'sorted' : ''} style={{ width: '8%' }}>Tier <span className="sort">{sortIcon('tier') || '▾'}</span></th>
+              <th style={{ width: '15%' }}>Flags / actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {loading ? (
+              <tr><td colSpan={8} style={{ textAlign: 'center', padding: '40px 0', color: 'var(--ink-40)' }}>Loading queue…</td></tr>
+            ) : sorted.length === 0 ? (
+              <tr><td colSpan={8} style={{ textAlign: 'center', padding: '40px 0', color: 'var(--ink-40)' }}>
+                {cases.length === 0
+                  ? <>No cases yet. <Link href="/cases/new" style={{ color: 'var(--accent)' }}>Create one.</Link></>
+                  : 'No cases match the current filters.'}
+              </td></tr>
+            ) : sorted.map(c => (
+              <CaseRow key={c.id} c={c} />
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div style={{ marginTop: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span style={{ fontSize: 12, color: 'var(--ink-60)' }}>{sorted.length} cases shown. Sorted by {sortKey} {sortDir}.</span>
+      </div>
+    </AppShell>
+  )
+}
+
+function FilterChip({ active, onClick, label, count, dot }: { active: boolean; onClick: () => void; label: string; count: number; dot?: TierToken }) {
+  return (
+    <button type="button" className={`filter-pill${active ? ' active' : ''}`} onClick={onClick} style={{ background: 'inherit', font: 'inherit' }}>
+      {dot ? <span style={{ width: 6, height: 6, background: `var(--risk-${dot})`, display: 'inline-block' }} /> : null}
+      {label} <span className="ct">{count}</span>
+    </button>
+  )
+}
+
+function CaseRow({ c }: { c: Case }) {
+  const t = tierToken(c.risk_level)
+  const rowCls = t === 'crit' ? 'row-crit' : t === 'high' ? 'row-high' : ''
+  const submittedTime = new Date(c.submitted_at).toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit', hour12: false })
+  const submittedDate = new Date(c.submitted_at).toLocaleDateString('en-AU', { day: '2-digit', month: 'short' })
+  const totalFlags = c.flag_counts.critical + c.flag_counts.high + c.flag_counts.medium + c.flag_counts.low
+  return (
+    <tr className={rowCls}>
+      <td className="mono">
+        <Link href={`/cases/${c.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>{c.reference}</Link>
+      </td>
+      <td>
+        <div style={{ fontSize: 12.5 }}>{c.broker?.broker_name ?? <span className="derived">—</span>}</div>
+        {c.broker?.broker_abn ? <div className="mono derived" style={{ fontSize: 10.5 }}>{c.broker.broker_abn}</div> : null}
+      </td>
+      <td>
+        <div style={{ fontSize: 12.5 }}>{c.applicant_name ?? <span className="derived">Redacted</span>}</div>
+      </td>
+      <td className="mono derived">{submittedDate} . {submittedTime}</td>
+      <td className="mono right">{c.loan_amount != null ? `$${Math.round(c.loan_amount / 1000)}k` : <span className="derived">—</span>}</td>
+      <td>
+        <div className="score-cell">
+          <span className="mono" style={{ minWidth: 22, textAlign: 'right', fontWeight: t === 'crit' ? 600 : 400, color: t === 'crit' ? 'var(--risk-crit)' : t === 'high' ? 'var(--risk-high)' : 'var(--ink-100)' }}>
+            {c.risk_score ?? '—'}
+          </span>
+          {c.risk_score != null ? (
+            <span className={`score-bar tier-${t}`} aria-hidden="true">
+              <i style={{ width: `${c.risk_score}%` }} />
+            </span>
+          ) : null}
+        </div>
+      </td>
+      <td><RiskBadge tier={t} /></td>
+      <td>
+        <span className="mono" style={{ color: totalFlags > 0 ? 'var(--ink-100)' : 'var(--ink-40)', fontSize: 11 }}>
+          {totalFlags > 0
+            ? `${c.flag_counts.critical}c/${c.flag_counts.high}h/${c.flag_counts.medium}m`
+            : 'no flags'}
+        </span>
+        <span className="row-actions" style={{ marginLeft: 8 }}>
+          <Link href={`/cases/${c.id}`}>Open</Link>
+          <button type="button">Assign</button>
+          <button type="button">Dismiss</button>
+        </span>
+      </td>
+    </tr>
   )
 }

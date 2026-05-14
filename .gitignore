@@ -38,3 +38,9 @@ frontend/playwright-report/
 # Dev artifacts
 docs/theme-mockups.html
 frontend/public/logo/*.bak
+
+# Local design-review snapshots (Playwright captures, not in PR)
+.design-review/
+
+# Local-only snapshot helpers (kept out of PR)
+frontend/scripts/design-review-snapshot.mjs

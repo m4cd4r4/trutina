@@ -1,120 +1,186 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { FileText, Presentation, Calculator, Code, BarChart3, Zap, Shield, Scale } from 'lucide-react'
-import { Logo } from '@/components/Logo'
+import SiteHeader from '@/components/design/SiteHeader'
+import SiteFooter from '@/components/design/SiteFooter'
 
 export const metadata: Metadata = {
-  title: 'Documentation & Resources',
-  description: 'Technical documentation, integration guides, risk score methodology, ROI calculator, and compliance briefs for Trutina AI lending fraud detection.',
+  title: 'Documentation & resources',
+  description: 'Technical documentation, integration guides, risk score methodology, ROI calculator, and compliance briefs for Trutina mortgage fraud detection.',
   alternates: { canonical: '/docs' },
 }
 
-const DOCS = [
+interface DocEntry {
+  href: string
+  icon: React.ReactNode
+  title: string
+  desc: string
+  audience: string
+}
+
+const ICON_PROPS = { className: 'w-5 h-5', style: { color: 'var(--ink-60)' } } as const
+
+const GROUPS: { id: string; title: string; intent: string; entries: DocEntry[] }[] = [
   {
-    href: '/docs/one-pager',
-    icon: <FileText className="w-6 h-6 text-teal-400" />,
-    title: 'Sales One-Pager',
-    desc: 'Leave-behind PDF summarising the fraud problem, what Trutina does, and pricing.',
-    audience: 'Prospects, meeting follow-ups',
+    id: 'sales',
+    title: 'Sales artefacts',
+    intent: 'For prospects, board calls, and procurement reviews.',
+    entries: [
+      {
+        href: '/docs/one-pager',
+        icon: <FileText {...ICON_PROPS} />,
+        title: 'One-pager',
+        desc: 'Leave-behind PDF summarising the fraud problem, what Trutina measures, and pricing.',
+        audience: 'Prospects, meeting follow-ups',
+      },
+      {
+        href: '/docs/pitch',
+        icon: <Presentation {...ICON_PROPS} />,
+        title: 'Pitch deck',
+        desc: 'Eight slides covering the industry problem, the five detection modules, a live demo walkthrough, and pricing.',
+        audience: 'Demo calls, board presentations',
+      },
+      {
+        href: '/docs/roi',
+        icon: <Calculator {...ICON_PROPS} />,
+        title: 'ROI calculator',
+        desc: 'Interactive calculator. Application volume + fraud rate in, annual savings out.',
+        audience: 'Decision-makers, CFOs',
+      },
+    ],
   },
   {
-    href: '/docs/pitch',
-    icon: <Presentation className="w-6 h-6 text-emerald-400" />,
-    title: 'Pitch Deck',
-    desc: '8-slide presentation covering the industry problem, detection engine, live demo walkthrough, and pricing.',
-    audience: 'Demo calls, board presentations',
+    id: 'engineering',
+    title: 'Engineering',
+    intent: 'For LOS integration teams and engineering reviews.',
+    entries: [
+      {
+        href: '/docs/quickstart',
+        icon: <Zap {...ICON_PROPS} />,
+        title: 'Quick-start guide',
+        desc: 'Upload your first document and read the risk report in under five minutes.',
+        audience: 'New customers, trial users',
+      },
+      {
+        href: '/docs/integration',
+        icon: <Code {...ICON_PROPS} />,
+        title: 'API integration guide',
+        desc: 'Webhook API reference. Base64 documents in, risk score out. Code samples in Python, Node.js, and C#.',
+        audience: 'Engineering teams',
+      },
+    ],
   },
   {
-    href: '/docs/roi',
-    icon: <Calculator className="w-6 h-6 text-amber-400" />,
-    title: 'ROI Calculator',
-    desc: 'Interactive calculator showing fraud savings based on your application volume and fraud rate.',
-    audience: 'Decision-makers, CFOs',
-  },
-  {
-    href: '/docs/integration',
-    icon: <Code className="w-6 h-6 text-violet-400" />,
-    title: 'API Integration Guide',
-    desc: 'Technical guide for the webhook API. Base64 docs in, risk score out. Code samples in Python, Node.js, and C#.',
-    audience: 'Engineering teams',
-  },
-  {
-    href: '/docs/risk-scores',
-    icon: <BarChart3 className="w-6 h-6 text-red-400" />,
-    title: 'Risk Score Guide',
-    desc: 'How to read risk scores, flag categories, severity levels, and recommended actions.',
-    audience: 'Credit analysts, compliance officers',
-  },
-  {
-    href: '/docs/quickstart',
-    icon: <Zap className="w-6 h-6 text-yellow-400" />,
-    title: 'Quick-Start Guide',
-    desc: 'Upload your first document and understand the risk report in under 5 minutes.',
-    audience: 'New customers, trial users',
-  },
-  {
-    href: '/docs/security',
-    icon: <Shield className="w-6 h-6 text-cyan-400" />,
-    title: 'Security & Privacy',
-    desc: 'Data processing, encryption, retention policies, and Anthropic\'s no-training guarantee.',
-    audience: 'CISOs, procurement, compliance',
-  },
-  {
-    href: '/docs/compliance',
-    icon: <Scale className="w-6 h-6 text-orange-400" />,
-    title: 'APRA/ASIC Compliance Brief',
-    desc: 'How explainable risk scoring meets APRA CPS 220, CPS 234, and ASIC RG 209 requirements.',
-    audience: 'Compliance officers, regulators',
+    id: 'risk',
+    title: 'Risk and compliance',
+    intent: 'For credit analysts, CISOs, procurement, and regulators.',
+    entries: [
+      {
+        href: '/docs/risk-scores',
+        icon: <BarChart3 {...ICON_PROPS} />,
+        title: 'Risk score guide',
+        desc: 'How to read risk scores, the four severity tiers, and the recommended action for each.',
+        audience: 'Credit analysts, compliance officers',
+      },
+      {
+        href: '/docs/security',
+        icon: <Shield {...ICON_PROPS} />,
+        title: 'Security and privacy',
+        desc: 'Data residency, encryption, retention windows, and the no-training-on-customer-data guarantee.',
+        audience: 'CISOs, procurement, compliance',
+      },
+      {
+        href: '/docs/compliance',
+        icon: <Scale {...ICON_PROPS} />,
+        title: 'APRA / ASIC compliance brief',
+        desc: 'How explainable risk scoring meets APRA CPS 220, CPS 234, and ASIC RG 209 requirements.',
+        audience: 'Compliance officers, regulators',
+      },
+    ],
   },
 ]
 
 export default function DocsHub() {
   return (
-    <div className="min-h-screen text-white"
-      style={{ background: '#0a1210' }}>
+    <div className="min-h-screen docs-page">
+      <SiteHeader active="docs" />
 
-      <nav className="border-b border-white/5">
-        <div className="flex items-center justify-between px-4 sm:px-8 py-4 max-w-7xl mx-auto">
-        <Logo height={32} />
-        <div className="flex items-center gap-4 sm:gap-6">
-          <Link href="/demo" className="text-emerald-300 hover:text-emerald-200 text-sm font-medium transition">
-            Live Demo
-          </Link>
-          <Link href="/" className="text-white/50 hover:text-white/80 text-sm transition">
-            Home
-          </Link>
-        </div>
-        </div>
-      </nav>
+      <main className="page" style={{ paddingTop: 56, paddingBottom: 80 }}>
+        <header style={{ borderBottom: '1px solid var(--rule)', paddingBottom: 28, marginBottom: 40 }}>
+          <div className="t-section" style={{ marginBottom: 10 }}>Documentation</div>
+          <h1 style={{ fontSize: 44, lineHeight: 1.08, marginBottom: 14, maxWidth: 16 + 'ch', fontVariationSettings: '"opsz" 40' }}>
+            Eight documents. Three audiences.
+          </h1>
+          <p style={{ fontFamily: 'var(--font-serif)', fontSize: 17, color: 'var(--ink-80)', lineHeight: 1.55, maxWidth: '56ch', fontVariationSettings: '"opsz" 16' }}>
+            Everything you need to evaluate, integrate, and deploy Trutina. Each document is printable.
+            Cmd-P (or Ctrl-P) on any page saves it as a regulator-ready PDF.
+          </p>
+        </header>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-8 py-12 sm:py-16">
-        <h1 className="text-3xl sm:text-4xl font-bold mb-3">Documentation & Resources</h1>
-        <p className="text-white/50 mb-10 sm:mb-14 max-w-2xl">
-          Everything you need to evaluate, integrate, and deploy Trutina.
-          All documents are printable — use Ctrl+P (or Cmd+P) to save as PDF.
-        </p>
+        {GROUPS.map(group => (
+          <section key={group.id} style={{ marginBottom: 48 }}>
+            <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 14, paddingBottom: 8, borderBottom: '1px solid var(--rule-soft)' }}>
+              <span className="t-section">{group.title}</span>
+              <span className="t-caption" style={{ color: 'var(--ink-40)' }}>{group.intent}</span>
+            </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-          {DOCS.map(d => (
-            <Link key={d.href} href={d.href}
-              className="group rounded-xl border border-white/10 p-5 sm:p-6 transition hover:border-white/20"
-              style={{ background: 'rgba(255,255,255,0.04)' }}>
-              <div className="flex items-start gap-4">
-                <div className="shrink-0 mt-0.5">{d.icon}</div>
-                <div>
-                  <h2 className="font-semibold text-white group-hover:text-teal-300 transition mb-1">{d.title}</h2>
-                  <p className="text-white/40 text-sm leading-relaxed mb-2">{d.desc}</p>
-                  <span className="text-white/20 text-xs">For: {d.audience}</span>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: group.entries.length === 3 ? 'repeat(3, 1fr)' : 'repeat(2, 1fr)',
+              gap: 0,
+              borderTop: '1px solid var(--rule-soft)',
+              borderLeft: '1px solid var(--rule-soft)',
+            }}>
+              {group.entries.map(d => (
+                <Link
+                  key={d.href}
+                  href={d.href}
+                  style={{
+                    padding: '18px 20px 16px',
+                    background: 'var(--bg-print-white)',
+                    borderRight: '1px solid var(--rule-soft)',
+                    borderBottom: '1px solid var(--rule-soft)',
+                    textDecoration: 'none',
+                    color: 'inherit',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 8,
+                    minHeight: 132,
+                    transition: 'background var(--dur-fast) var(--ease)',
+                  }}
+                  className="doc-entry"
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    {d.icon}
+                    <span className="t-subtitle" style={{ fontSize: 15 }}>{d.title}</span>
+                  </div>
+                  <p style={{ fontSize: 13, color: 'var(--ink-60)', lineHeight: 1.5, margin: 0, flex: 1 }}>{d.desc}</p>
+                  <span className="mono" style={{ fontSize: 10.5, color: 'var(--ink-40)', letterSpacing: '0.04em' }}>
+                    {d.audience}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </section>
+        ))}
 
-        <div className="mt-12 text-center text-white/20 text-sm">
-          Need something else? <a href="mailto:hello@trutina.com.au" className="text-teal-400 hover:text-teal-300">hello@trutina.com.au</a>
+        <div style={{ marginTop: 48, padding: '20px 0', borderTop: '1px solid var(--rule)', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+          <span className="t-caption">Need something else?</span>
+          <a href="mailto:hello@trutina.com.au" className="mono" style={{ fontSize: 13, color: 'var(--accent)' }}>hello@trutina.com.au</a>
         </div>
-      </div>
+      </main>
+
+      <SiteFooter />
+
+      {/* eslint-disable-next-line react/no-unknown-property */}
+      <style>{`
+        .doc-entry:hover {
+          background: var(--paper-1) !important;
+        }
+        .doc-entry:hover .t-subtitle {
+          color: var(--accent);
+        }
+      `}</style>
     </div>
   )
 }

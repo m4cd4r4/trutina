@@ -1,579 +1,341 @@
 'use client'
 
-import { useState, useEffect, type ReactNode } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Microscope, Bot, Link2, Calculator, Users, ClipboardList, Check, AlertTriangle, CheckCircle2, XCircle, Shield, Lock, Globe } from 'lucide-react'
-import LoginModal from '../components/LoginModal'
-import { Logo } from '../components/Logo'
+import LoginModal from '@/components/LoginModal'
+import SiteHeader from '@/components/design/SiteHeader'
+import SiteFooter from '@/components/design/SiteFooter'
+import HeroSpecimenPreview from '@/components/design/HeroSpecimenPreview'
+import { CalibrationTickRule } from '@/components/design/atoms'
 
-/* ── Hero features: prominent 2-up ──────────────────────────── */
-const HERO_FEATURES: { icon: ReactNode; title: string; desc: string }[] = [
-  {
-    icon: <Microscope className="w-6 h-6" />,
-    title: 'PDF Forensics',
-    desc: 'Analyses creator metadata, font fingerprints, modification timestamps, and embedded image manipulation — hallmarks of AI-fabricated documents.',
-  },
-  {
-    icon: <Bot className="w-6 h-6" />,
-    title: 'AI Content Detection',
-    desc: 'Claude Sonnet semantically reads each document for AI-generation patterns, terminology anomalies, and field inconsistencies specific to Australian payroll.',
-  },
+/* Marketing index. Sections in order, matching ui_kits/marketing/site.jsx:
+ *   1. Hero
+ *   2. Measurements
+ *   3. Modules table
+ *   4. Demo specimen link
+ *   5. Integration
+ *   6. Pricing
+ *   7. Footnotes
+ * Trust strip retained as layout but rendered with a single honest line
+ * pending sourced metrics (see docs/design/SCHEMA-MAPPING.md §3).
+ */
+
+const MODULES = [
+  { id: 'PM', name: 'Producer metadata',     range: 'PM-001 to PM-014', rules: 14, ex: 'Producer string mismatch. Asserted MYOB, found macOS Pages. Signature shared with 3 cases.' },
+  { id: 'IC', name: 'Identity coherence',    range: 'IC-001 to IC-009', rules: 9,  ex: 'Payslip BSB 062-001 vs bank statement BSB 062-006. Branch mismatch.' },
+  { id: 'IA', name: 'Income arithmetic',     range: 'IA-001 to IA-011', rules: 11, ex: 'Gross minus PAYG should equal net. Off by $47.20.' },
+  { id: 'EV', name: 'Employer verification', range: 'EV-001 to EV-007', rules: 7,  ex: 'Employer ABN cancelled 2024-08-12. No BAS lodged since 2024-Q2.' },
+  { id: 'NC', name: 'Network clustering',    range: 'NC-001 to NC-005', rules: 5,  ex: 'Font subset hash appears in 4 cases across one broker in 60 days.' },
 ]
 
-/* ── Supporting features: compact 4-up ──────────────────────── */
-const SUPPORTING_FEATURES: { icon: ReactNode; title: string; desc: string }[] = [
-  {
-    icon: <Link2 className="w-4 h-4" />,
-    title: 'Cross-Reference Verification',
-    desc: 'Live ABN Lookup, ASIC register, BSB directory, and ABS wage benchmarks.',
-  },
-  {
-    icon: <Calculator className="w-4 h-4" />,
-    title: 'Math & Date Consistency',
-    desc: 'Gross − tax = net, super at 11.5% SGC, YTD consistency checks.',
-  },
-  {
-    icon: <Users className="w-4 h-4" />,
-    title: 'Broker Risk Profiling',
-    desc: 'Submission velocity, fraud rates, shared-employer clustering.',
-  },
-  {
-    icon: <ClipboardList className="w-4 h-4" />,
-    title: 'Explainable for APRA',
-    desc: 'Plain-English narrative with specific evidence for every score.',
-  },
-]
-
-/* ── Pricing tiers ──────────────────────────────────────────── */
 const PRICING = [
-  {
-    name: 'Free Trial',
-    price: 'Free',
-    period: '',
-    volume: '5 documents',
-    target: 'Try it on your own applications',
-    features: ['All 5 detection modules', 'Full risk reports', 'No credit card required'],
-    cta: 'Start free trial',
-    ctaAction: 'trial' as const,
-    highlight: false,
-  },
-  {
-    name: 'Starter',
-    price: '$2,000',
-    period: '/month',
-    volume: '200 cases/mo',
-    target: 'Credit unions, mortgage brokerages',
-    features: ['Everything in Free Trial', 'ABN + BSB live verification', 'Risk dashboard', 'Email support'],
-    cta: 'Get started',
-    ctaAction: 'email' as const,
-    highlight: false,
-  },
-  {
-    name: 'Professional',
-    price: '$6,000',
-    period: '/month',
-    volume: '1,000 cases/mo',
-    target: 'Regional banks, non-bank lenders',
-    features: ['Everything in Starter', 'Broker risk profiling', 'Audit trail (APRA-ready)', 'Priority support', 'Webhook API integration'],
-    cta: 'Request demo',
-    ctaAction: 'email' as const,
-    highlight: true,
-  },
-  {
-    name: 'Enterprise',
-    price: 'Custom',
-    period: '',
-    volume: 'Unlimited',
-    target: 'Big 4 banks, major lenders',
-    features: ['Everything in Professional', 'Custom SLA', 'On-premise option', 'Dedicated engineer', 'AUSTRAC support'],
-    cta: 'Contact us',
-    ctaAction: 'email' as const,
-    highlight: false,
-  },
+  { name: 'Standard',  price: '$3.40', unit: '/ case', for: 'Credit unions and non-bank lenders under 4,000 applications / month.',
+    features: ['All five detection modules', 'Audit-ready PDF export per case', 'P95 verdict under 60s', 'SAML SSO, SCIM provisioning', 'Webhook into your LOS', 'Email support, 2 business hour SLA'],
+    cta: 'Start a 30-day trial', highlight: false },
+  { name: 'Regulated', price: '$2.10', unit: '/ case', for: 'ADIs and APRA-supervised lenders. Includes the matter-defence kit.',
+    features: ['Everything in Standard', 'P95 verdict under 30s', 'APRA CPG 234 alignment package', 'Customer-managed KMS keys', 'Quarterly model and rule change log', 'Named forensic analyst, 09:00 to 17:00 AEST', 'Independent right of audit'],
+    cta: 'Talk to risk operations', highlight: true },
+  { name: 'Network',   price: 'From $48k', unit: '/ year', for: 'Aggregators and broker networks policing submission quality.',
+    features: ['Broker-profile and network views', 'Producer-signature clustering across networks', 'Submission-quality reporting per broker', 'API access for downstream lenders', 'Quarterly anonymised industry report', 'Named forensic analyst'],
+    cta: 'Discuss network coverage', highlight: false },
 ]
 
 export default function Landing() {
   const [loginMode, setLoginMode] = useState<'signin' | 'trial' | null>(null)
-
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     if (params.get('trial') === '1') setLoginMode('trial')
   }, [])
 
+  // Generate 280 line numbers for the lab-notebook margin.
+  const lineCount = 280
+
   return (
-    <div
-      className="min-h-screen"
-      style={{
-        background: '#F7F5F0',
-        color: '#1C1917',
-        colorScheme: 'light',
-      }}
-    >
-      <LoginModal open={loginMode !== null} onClose={() => setLoginMode(null)} mode={loginMode ?? 'signin'} onSwitchMode={setLoginMode} />
+    <>
+      <LoginModal
+        open={loginMode !== null}
+        onClose={() => setLoginMode(null)}
+        mode={loginMode ?? 'signin'}
+        onSwitchMode={setLoginMode}
+      />
+      <SiteHeader active="index" onSignIn={() => setLoginMode('signin')} />
 
-      {/* ── Nav ──────────────────────────────────────────────── */}
-      <nav style={{ borderBottom: '1px solid #E2DDD6' }}>
-        <div className="flex items-center justify-between px-6 sm:px-10 py-4 max-w-7xl mx-auto">
-          <Logo height={28} />
-          <div className="flex items-center gap-4 sm:gap-7">
-            <a href="#features" className="hidden sm:inline text-sm transition" style={{ color: '#9C9089' }}>Features</a>
-            <a href="#pricing" className="hidden sm:inline text-sm transition" style={{ color: '#9C9089' }}>Pricing</a>
-            <Link href="/docs" className="hidden sm:inline text-sm transition" style={{ color: '#9C9089' }}>Docs</Link>
-            <Link
-              href="/demo"
-              className="text-sm font-semibold transition"
-              style={{ color: '#DC1C1C' }}
-            >
-              Live Demo
-            </Link>
-            <button
-              onClick={() => setLoginMode('signin')}
-              className="text-sm font-semibold px-4 py-2 rounded-lg transition"
-              style={{ border: '1px solid #D6D0C8', color: '#44403C', background: 'white' }}
-            >
-              Sign in
-            </button>
-          </div>
+      <main className="page" style={{ paddingTop: 0, paddingBottom: 0 }}>
+        <div className="line-numbers" aria-hidden="true">
+          {Array.from({ length: lineCount }, (_, n) => (
+            <span key={n}>{String(n + 1).padStart(2, '0')}</span>
+          ))}
         </div>
-      </nav>
 
-      {/* ── Hero ─────────────────────────────────────────────── */}
-      <section className="max-w-7xl mx-auto px-6 sm:px-10 pt-14 sm:pt-20 pb-10 sm:pb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-10 lg:gap-16 items-start">
-
-          {/* Left: copy */}
-          <div>
-            <div
-              className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold mb-7"
-              style={{ background: '#FEE2E2', color: '#991B1B', border: '1px solid #FECACA' }}
-            >
-              <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#DC2626' }} />
-              CBA self-reported ~A$1B in AI-document fraud — Feb 2026
-            </div>
-
-            <h1
-              className="text-4xl sm:text-5xl lg:text-[3.5rem] xl:text-6xl font-extrabold leading-[1.05] mb-5"
-              style={{ color: '#1C1917', letterSpacing: '-0.02em' }}
-            >
-              Stop AI-generated<br />
-              mortgage fraud<br />
-              <span style={{ color: '#DC1C1C' }}>before settlement.</span>
-            </h1>
-
-            <p
-              className="text-base sm:text-lg leading-relaxed mb-8 max-w-lg"
-              style={{ color: '#78716C' }}
-            >
-              Six-layer forensic analysis of every loan document — PDF metadata,
-              payroll maths, live ABN checks, and cross-reference verification —
-              in under 60 seconds.
-            </p>
-
-            <div className="flex flex-col sm:flex-row items-start gap-3">
-              <Link
-                href="/demo"
-                className="inline-block font-bold px-7 py-3.5 rounded-xl text-base transition text-center"
-                style={{ background: '#1C1917', color: 'white' }}
-              >
-                See it in action
-              </Link>
-              <a
-                href="#pricing"
-                className="inline-block font-medium px-7 py-3.5 rounded-xl text-base transition text-center"
-                style={{ color: '#78716C', border: '1px solid #D6D0C8', background: 'white' }}
-              >
-                View pricing
-              </a>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-5 mt-8" style={{ color: '#9C9089' }}>
-              <span className="flex items-center gap-1.5 text-xs">
-                <Shield className="w-3.5 h-3.5" style={{ color: '#059669' }} />
-                SOC 2 Type II
-              </span>
-              <span className="flex items-center gap-1.5 text-xs">
-                <Lock className="w-3.5 h-3.5" style={{ color: '#059669' }} />
-                Documents never used for training
-              </span>
-              <span className="flex items-center gap-1.5 text-xs">
-                <Globe className="w-3.5 h-3.5" style={{ color: '#059669' }} />
-                Australian-hosted
-              </span>
-            </div>
-          </div>
-
-          {/* Right: live case card */}
-          <div className="lg:mt-4">
-            <div
-              className="rounded-2xl overflow-hidden"
-              style={{
-                background: '#ffffff',
-                border: '1px solid #E2DDD6',
-                boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05), 0 20px 50px -12px rgba(0,0,0,0.08)',
-              }}
-            >
-              {/* Window chrome */}
-              <div
-                className="flex items-center gap-2 px-4 py-2.5"
-                style={{ borderBottom: '1px solid #F0EDE8', background: '#FAFAF7' }}
-              >
-                <div className="flex gap-1.5">
-                  <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#FECACA' }} />
-                  <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#FDE68A' }} />
-                  <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#A7F3D0' }} />
-                </div>
-                <span className="font-mono text-xs ml-2" style={{ color: '#C4BAB0' }}>
-                  trutina.com.au/cases/2024-0847
+        {/* Hero — two columns: copy left, specimen preview right.
+         * Mirrors the case-detail layout so the visitor sees the product
+         * shape before they click through. */}
+        <section id="hero" className="mk-section hero">
+          <div className="hero-grid">
+            <div className="hero-copy">
+              <div className="disclosure">
+                <span className="pip" />
+                <span>
+                  <b>2026-02 Commonwealth Bank:</b> self-reported ~A$1B in suspected fraudulent mortgage applications.
+                  Fake payslips and bank statements submitted through broker channels. Westpac and ANZ flagged similar internally.<sup><a className="cite-link" href="#refs">[1]</a></sup>
+                  {' '}This is what they looked at.
                 </span>
               </div>
 
-              <div className="p-6">
-                <div className="flex items-start justify-between mb-5">
-                  <div>
-                    <div className="font-mono text-xs mb-1" style={{ color: '#B8AFA7' }}>Case #2024-0847</div>
-                    <div className="font-bold text-lg" style={{ color: '#1C1917' }}>Home Loan — J. Mitchell</div>
-                    <div className="text-sm mt-0.5" style={{ color: '#A09690' }}>via Pacific Finance Brokers</div>
-                  </div>
-                  <div className="text-right">
-                    <div
-                      className="text-4xl font-extrabold font-mono"
-                      style={{ color: '#DC1C1C', letterSpacing: '-0.02em' }}
-                    >
-                      78
-                    </div>
-                    <div
-                      className="text-xs font-bold uppercase tracking-wider mt-0.5"
-                      style={{ color: '#DC1C1C', opacity: 0.7 }}
-                    >
-                      High Risk
-                    </div>
-                  </div>
-                </div>
+              <h1>
+                Mortgage fraud,<br />
+                priced by the <em>evidence</em>.
+              </h1>
 
-                <div className="space-y-2">
-                  <div
-                    className="flex items-start gap-3 p-3 rounded-xl"
-                    style={{ background: '#FEF2F2', border: '1px solid #FECACA' }}
-                  >
-                    <XCircle className="w-4 h-4 mt-0.5 shrink-0" style={{ color: '#DC1C1C' }} />
-                    <div>
-                      <span className="text-sm font-semibold" style={{ color: '#1C1917' }}>PDF created with Google Docs</span>
-                      <span className="text-xs ml-2 hidden sm:inline" style={{ color: '#A09690' }}>— payslip claims &quot;Woolworths Group Payroll&quot;</span>
-                    </div>
-                  </div>
-                  <div
-                    className="flex items-start gap-3 p-3 rounded-xl"
-                    style={{ background: '#FFFBEB', border: '1px solid #FDE68A' }}
-                  >
-                    <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" style={{ color: '#B45309' }} />
-                    <div>
-                      <span className="text-sm font-semibold" style={{ color: '#1C1917' }}>ABN mismatch</span>
-                      <span className="text-xs ml-2 hidden sm:inline" style={{ color: '#A09690' }}>— 51 824 753 999 registered to different entity</span>
-                    </div>
-                  </div>
-                  <div
-                    className="flex items-start gap-3 p-3 rounded-xl"
-                    style={{ background: '#FFFBEB', border: '1px solid #FDE68A' }}
-                  >
-                    <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" style={{ color: '#B45309' }} />
-                    <div>
-                      <span className="text-sm font-semibold" style={{ color: '#1C1917' }}>YTD inconsistent</span>
-                      <span className="text-xs ml-2 hidden sm:inline" style={{ color: '#A09690' }}>— $87k claimed but only 14 pay periods elapsed</span>
-                    </div>
-                  </div>
-                  <div
-                    className="flex items-start gap-3 p-3 rounded-xl"
-                    style={{ background: '#F0FDF4', border: '1px solid #A7F3D0' }}
-                  >
-                    <CheckCircle2 className="w-4 h-4 mt-0.5 shrink-0" style={{ color: '#059669' }} />
-                    <div>
-                      <span className="text-sm font-semibold" style={{ color: '#1C1917' }}>BSB validated</span>
-                      <span className="text-xs ml-2 hidden sm:inline" style={{ color: '#A09690' }}>— 062-000 confirmed CBA Sydney</span>
-                    </div>
-                  </div>
-                </div>
+              <p className="lede">
+                Trutina measures four properties of every payslip, employer letter, and bank statement in a mortgage application. When a number is off by $47.20 or an ABN was cancelled on 2024-08-12, the system says so, cites the rule, and shows you the file. Trust is per-flag, earned via evidence. Not asserted in a hero.
+              </p>
 
-                <div className="mt-4 pt-4" style={{ borderTop: '1px solid #F0EDE8' }}>
-                  <Link
-                    href="/demo"
-                    className="text-sm font-semibold transition"
-                    style={{ color: '#DC1C1C' }}
-                  >
-                    Explore five demo cases &rarr;
-                  </Link>
-                </div>
+              <div className="actions">
+                <Link href="/demo" className="btn btn-primary">Open a Clean and a Critical specimen</Link>
+                <a href="/methods-paper.pdf" target="_blank" rel="noopener" className="btn btn-secondary">
+                  Methods paper (PDF, single page)
+                </a>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* ── Threat context — editorial table ─────────────────── */}
-      <section
-        className="py-10 sm:py-14"
-        style={{ borderTop: '1px solid #E2DDD6', borderBottom: '1px solid #E2DDD6' }}
-      >
-        <div className="max-w-7xl mx-auto px-6 sm:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 lg:gap-16 items-start">
-            <div>
-              <div
-                className="text-xs font-bold uppercase tracking-widest mb-2"
-                style={{ color: '#DC1C1C' }}
-              >
-                Industry exposure
-              </div>
-              <p className="text-sm leading-relaxed" style={{ color: '#78716C' }}>
-                In February 2026, Commonwealth Bank self-reported ~A$1 billion in suspected fraudulent mortgage
-                applications. Fake payslips and bank statements generated with AI tools, submitted through broker channels.
-                Westpac and ANZ have since flagged similar issues.
+              <p className="t-caption" style={{ marginTop: 14, color: 'var(--ink-40)' }}>
+                Already a customer? <button type="button" className="btn-text" style={{ padding: 0, fontSize: 12, color: 'var(--accent)' }} onClick={() => setLoginMode('signin')}>Sign in</button>
+                {' .  '}Evaluating? Forward this page or email <a className="mono" href="mailto:hello@trutina.com.au" style={{ color: 'var(--accent)' }}>hello@trutina.com.au</a> for a private demo.
               </p>
             </div>
-            <div>
-              <table className="w-full text-sm">
-                <thead>
-                  <tr style={{ borderBottom: '2px solid #1C1917' }}>
-                    <th className="text-left pb-3 font-bold" style={{ color: '#1C1917' }}>Institution</th>
-                    <th className="text-left pb-3 font-bold" style={{ color: '#1C1917' }}>Exposure</th>
-                    <th className="text-left pb-3 font-bold hidden sm:table-cell" style={{ color: '#1C1917' }}>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {[
-                    { bank: 'Commonwealth Bank', amount: '~A$1,000,000,000', status: 'Self-reported Feb 2026' },
-                    { bank: 'NAB', amount: '~A$105,000,000', status: '"Penthouse Syndicate" charged' },
-                    { bank: 'Westpac / ANZ', amount: 'Undisclosed', status: 'Flagged internally' },
-                  ].map((b, i) => (
-                    <tr key={b.bank} style={{ borderBottom: '1px solid #E2DDD6' }}>
-                      <td className="py-3.5 font-semibold" style={{ color: '#1C1917' }}>{b.bank}</td>
-                      <td
-                        className="py-3.5 font-mono font-bold"
-                        style={{ color: b.amount === 'Undisclosed' ? '#9C9089' : '#DC1C1C' }}
-                      >
-                        {b.amount}
-                      </td>
-                      <td className="py-3.5 hidden sm:table-cell" style={{ color: '#9C9089' }}>{b.status}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+
+            <div className="hero-preview">
+              <HeroSpecimenPreview />
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* ── Features ─────────────────────────────────────────── */}
-      <section id="features" className="max-w-7xl mx-auto px-6 sm:px-10 py-14 sm:py-20">
-        <div className="mb-10 sm:mb-14">
-          <div
-            className="text-xs font-bold uppercase tracking-widest mb-3"
-            style={{ color: '#9C9089' }}
-          >
-            Six-layer detection engine
+          <CalibrationTickRule />
+
+          {/* What-you-get strip. Replaces the unsourced metrics strip. Surfaces what
+           * the product is, in terms a procurement-evaluating Head of Risk can verify. */}
+          <div className="trust-strip" style={{ gridTemplateColumns: 'repeat(5, 1fr)' }}>
+            <div className="cell">
+              <span className="k">Detection modules</span>
+              <span className="v">5</span>
+              <span className="src">producer / identity / arithmetic / employer / network</span>
+            </div>
+            <div className="cell">
+              <span className="k">Cited rules</span>
+              <span className="v">46</span>
+              <span className="src">each with id, test definition, worked example</span>
+            </div>
+            <div className="cell">
+              <span className="k">Regulatory alignment</span>
+              <span className="v" style={{ fontSize: 16 }}>APRA CPG 234</span>
+              <span className="src">+ APP 11 . Privacy Act 1988</span>
+            </div>
+            <div className="cell">
+              <span className="k">Data residency</span>
+              <span className="v" style={{ fontSize: 16 }}>AU only</span>
+              <span className="src">no data leaves the jurisdiction</span>
+            </div>
+            <div className="cell">
+              <span className="k">Methodology</span>
+              <span className="v" style={{ fontSize: 16 }}>Open</span>
+              <span className="src">rules published . evidence ledger documented</span>
+            </div>
           </div>
-          <h2
-            className="text-2xl sm:text-3xl font-extrabold"
-            style={{ color: '#1C1917', letterSpacing: '-0.02em' }}
-          >
-            Two forensic engines.<br />Four verification layers.
-          </h2>
-        </div>
+        </section>
 
-        {/* Hero features */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
-          {HERO_FEATURES.map((f, i) => (
-            <div
-              key={f.title}
-              className="p-7 rounded-2xl"
-              style={{ background: i === 0 ? '#1C1917' : 'white', border: '1px solid #E2DDD6' }}
-            >
-              <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center mb-5"
-                style={{
-                  background: i === 0 ? 'rgba(255,255,255,0.1)' : '#FEF2F2',
-                  color: i === 0 ? 'white' : '#DC1C1C',
-                }}
-              >
-                {f.icon}
-              </div>
-              <h3
-                className="font-bold text-lg mb-2"
-                style={{ color: i === 0 ? 'white' : '#1C1917' }}
-              >
-                {f.title}
-              </h3>
-              <p
-                className="text-sm leading-relaxed"
-                style={{ color: i === 0 ? 'rgba(255,255,255,0.55)' : '#78716C' }}
-              >
-                {f.desc}
+        {/* Measurements */}
+        <section id="measurements" className="mk-section">
+          <div className="sec-label"><span style={{ fontWeight: 600, color: 'var(--ink-80)' }}>01</span><span>What we measure on a payslip</span></div>
+          <h2>Producer, identity, arithmetic.</h2>
+          <p className="standfirst">
+            A payslip is a PDF. It has metadata, a layout, and an arithmetic structure. Trutina reads the PDF as a forensic file before it reads it as a document. Three of the four properties below cost the borrower nothing to produce honestly. The fourth, arithmetic, cannot be faked without leaving a trace.
+          </p>
+
+          <div className="measure-grid">
+            <div className="measure-card">
+              <div className="ord">PM . PRODUCER METADATA</div>
+              <h3>What tool made this file?</h3>
+              <p>
+                Every PDF carries a producer string, a font subset hash, and an object-stream fingerprint. A legitimate payslip from MYOB AccountRight has a different signature from a payslip drawn in macOS Pages or LibreOffice.
               </p>
-            </div>
-          ))}
-        </div>
-
-        {/* Supporting features */}
-        <div
-          className="rounded-2xl overflow-hidden"
-          style={{ border: '1px solid #E2DDD6' }}
-        >
-          {SUPPORTING_FEATURES.map((f, i) => (
-            <div
-              key={f.title}
-              className="flex items-start gap-4 px-6 py-5"
-              style={{
-                borderBottom: i < SUPPORTING_FEATURES.length - 1 ? '1px solid #F0EDE8' : undefined,
-                background: 'white',
-              }}
-            >
-              <div
-                className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
-                style={{ background: '#F7F5F0', color: '#44403C' }}
-              >
-                {f.icon}
-              </div>
-              <div>
-                <h3 className="font-semibold text-sm mb-0.5" style={{ color: '#1C1917' }}>{f.title}</h3>
-                <p className="text-sm" style={{ color: '#9C9089' }}>{f.desc}</p>
+              <div className="example">
+                Producer: &quot;Mac OS X 10.14.4 Quartz&quot;<br />
+                Expected from MYOB: &quot;MYOB AccountRight 2023.6&quot;<br />
+                <span style={{ color: 'var(--risk-crit)' }}>Mismatch. Three other applications in 60 days share this producer.</span>
               </div>
             </div>
-          ))}
-        </div>
-      </section>
 
-      {/* ── Pricing ──────────────────────────────────────────── */}
-      <section
-        id="pricing"
-        className="py-14 sm:py-20"
-        style={{ borderTop: '1px solid #E2DDD6' }}
-      >
-        <div className="max-w-7xl mx-auto px-6 sm:px-10">
-          <div className="mb-10 sm:mb-14">
-            <div
-              className="text-xs font-bold uppercase tracking-widest mb-3"
-              style={{ color: '#9C9089' }}
-            >
-              Pricing
+            <div className="measure-card">
+              <div className="ord">IC . IDENTITY COHERENCE</div>
+              <h3>Do the fields agree across files?</h3>
+              <p>
+                Name, BSB, account number, employer ABN, and address appear in the payslip, the bank statement, the employer letter, and the application form. If they disagree, one of those documents is wrong, and which one tells you why.
+              </p>
+              <div className="example">
+                Payslip BSB: 062-001 (CBA Sydney CBD)<br />
+                Bank statement BSB: 062-006 (CBA Haymarket)<br />
+                <span style={{ color: 'var(--risk-high)' }}>Branch divergence. Bank statement may be unrelated to the deposit account.</span>
+              </div>
             </div>
-            <h2
-              className="text-2xl sm:text-3xl font-extrabold mb-2"
-              style={{ color: '#1C1917', letterSpacing: '-0.02em' }}
-            >
-              Start free. Scale when ready.
-            </h2>
-            <p className="text-sm" style={{ color: '#9C9089' }}>
-              Also available: <span style={{ color: '#B45309', fontWeight: 600 }}>$15/case</span> pay-as-you-go API.
-            </p>
+
+            <div className="measure-card">
+              <div className="ord">IA . INCOME ARITHMETIC</div>
+              <h3>Does the math close?</h3>
+              <p>
+                Gross minus PAYG must equal net. Super at the SG rate (11.5% from 2024-07-01, 12.0% from 2025-07-01) must apply to the right base. YTD must reconcile against current. If any of these fail, the payslip was edited after it was generated.
+              </p>
+              <div className="example">
+                Gross 4,820.00 . PAYG 1,184.00 . Net <b>3,636.00</b><br />
+                Stated net: <b style={{ color: 'var(--risk-crit)' }}>3,683.20</b>. Off by $47.20.<br />
+                <span style={{ color: 'var(--ink-40)' }}>Super calculated against gross less RFBA. Wrong base.</span>
+              </div>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {PRICING.map(plan => (
-              <div
-                key={plan.name}
-                className="rounded-2xl p-6 flex flex-col"
-                style={{
-                  background: plan.highlight ? '#1C1917' : 'white',
-                  border: plan.highlight ? 'none' : '1px solid #E2DDD6',
-                }}
-              >
-                {plan.highlight && (
-                  <div
-                    className="text-xs font-bold tracking-wider uppercase mb-3"
-                    style={{ color: '#DC1C1C' }}
-                  >
-                    Most Popular
-                  </div>
-                )}
-                <div
-                  className="text-base font-bold mb-2"
-                  style={{ color: plan.highlight ? 'white' : '#1C1917' }}
+          <h4 style={{ marginTop: 56, marginBottom: 0 }}>What we do not measure</h4>
+          <div className="never-list">
+            <div className="item">The borrower&apos;s character.</div>
+            <div className="item">Spending category from transaction descriptions.</div>
+            <div className="item">Anything inferred from the borrower&apos;s name.</div>
+            <div className="item">Anything from a credit bureau score.</div>
+            <div className="item">Postcode-level risk priors.</div>
+            <div className="item">Broker affiliation as a feature on the case score.</div>
+          </div>
+        </section>
+
+        {/* Modules table */}
+        <section id="methods" className="mk-section">
+          <div className="sec-label"><span style={{ fontWeight: 600, color: 'var(--ink-80)' }}>02</span><span>The detection modules</span></div>
+          <h2>Five modules. Forty-six rules. Each rule cited.</h2>
+          <p className="standfirst">
+            There are no black-box scores. Each module is a finite list of rules. Each rule has an ID, a defined test, a citation, and a worked example. A reviewer can drill from &quot;Critical 78&quot; to the rule that fired, to the field in the source file the rule looked at. APRA can read it.
+          </p>
+
+          <table className="module-table">
+            <thead>
+              <tr>
+                <th style={{ width: 240 }}>Module</th>
+                <th style={{ width: 80 }}>Rules</th>
+                <th>Worked example</th>
+              </tr>
+            </thead>
+            <tbody>
+              {MODULES.map(m => (
+                <tr key={m.id}>
+                  <td>
+                    <div className="name">{m.name}</div>
+                    <div className="id">{m.range}</div>
+                  </td>
+                  <td><span className="t-mono" style={{ fontSize: 14 }}>{m.rules}</span></td>
+                  <td><div className="ex">{m.ex}</div></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          <p className="t-prose" style={{ marginTop: 28 }}>
+            The five modules do not vote on a single score; they each return their own. The case score is the max of the module scores, not their average. One Critical module is enough to make a Critical case. A reviewer who disagrees with the top score sees the next-highest and the rule behind it.
+          </p>
+        </section>
+
+        {/* Demo link */}
+        <section id="demo" className="mk-section">
+          <div className="sec-label"><span style={{ fontWeight: 600, color: 'var(--ink-80)' }}>03</span><span>Specimens</span></div>
+          <h2>This is what Critical looks like on a real Australian payslip.</h2>
+          <p className="standfirst">
+            Five redacted cases. Clean applications next to fabricated ones, both submitted through Australian broker channels. Click any finding to see the rule it cites. Open the full case file in the read-only demo workspace.
+          </p>
+          <div style={{ display: 'flex', gap: 14, alignItems: 'center', marginTop: 28 }}>
+            <Link href="/demo" className="btn btn-primary">Open the demo workspace</Link>
+            <span className="t-caption">No sign-in. Read-only. Synthetic data.</span>
+          </div>
+        </section>
+
+        {/* Integration */}
+        <section id="integration" className="mk-section">
+          <div className="sec-label"><span style={{ fontWeight: 600, color: 'var(--ink-80)' }}>04</span><span>Integration</span></div>
+          <h2>One endpoint, one webhook, one sprint.</h2>
+          <p className="standfirst">
+            Trutina is a workflow on top of your LOS, not a replacement for it. Post a case bundle, receive a verdict and an evidence packet, decide. Data residency is Australia. Encryption at rest is AES-256.
+          </p>
+
+          <div className="split-2">
+            <div className="spec-list">
+              <div className="item"><span className="k">Hosting</span><span>AWS ap-southeast-2 (Sydney). Multi-AZ. No data leaves AU jurisdiction.</span></div>
+              <div className="item"><span className="k">Encryption</span><span>AES-256 at rest. TLS 1.3 in transit. Keys in AWS KMS, customer-managed CMK optional.</span></div>
+              <div className="item"><span className="k">Identity</span><span>SAML 2.0, OIDC, SCIM. MFA enforced.</span></div>
+              <div className="item"><span className="k">Audit log</span><span>Every reviewer action, every export, every config change. WORM 7 years.<sup><a className="cite-link" href="#refs">[3]</a></sup></span></div>
+              <div className="item"><span className="k">Connectors</span><span>nCino . Sandstone . LendApp . Lendi . AFG . Connective. SFTP if you must.</span></div>
+              <div className="item"><span className="k">Latency target</span><span>P95 verdict under 60s end-to-end from POST to webhook.</span></div>
+            </div>
+
+            <div>
+              <div className="t-caption" style={{ marginBottom: 8, letterSpacing: '0.06em' }}>POST /v1/cases . sample request</div>
+              <div className="codeblock">
+                <div><span className="k">POST</span> https://api.trutina.com.au/v1/cases</div>
+                <div><span className="k">Authorization</span>: Bearer <span className="s">&quot;sk_live_...&quot;</span></div>
+                <div><span className="k">Content-Type</span>: application/json</div>
+                <div>&nbsp;</div>
+                <div>{`{`}</div>
+                <div>{`  `}<span className="k">&quot;case_ref&quot;</span>: <span className="s">&quot;WBS-2026-04-08-00128&quot;</span>,</div>
+                <div>{`  `}<span className="k">&quot;applicant&quot;</span>: {`{`} <span className="k">&quot;name_hash&quot;</span>: <span className="s">&quot;sha256:9a4...&quot;</span> {`}`},</div>
+                <div>{`  `}<span className="k">&quot;documents&quot;</span>: [</div>
+                <div>{`    `}{`{`} <span className="k">&quot;kind&quot;</span>: <span className="s">&quot;payslip&quot;</span>, <span className="k">&quot;uri&quot;</span>: <span className="s">&quot;s3://...&quot;</span>, <span className="k">&quot;sha256&quot;</span>: <span className="s">&quot;7f2a91...&quot;</span> {`}`},</div>
+                <div>{`    `}{`{`} <span className="k">&quot;kind&quot;</span>: <span className="s">&quot;bank_statement&quot;</span>, <span className="k">&quot;uri&quot;</span>: <span className="s">&quot;s3://...&quot;</span> {`}`},</div>
+                <div>{`    `}{`{`} <span className="k">&quot;kind&quot;</span>: <span className="s">&quot;employer_letter&quot;</span>, <span className="k">&quot;uri&quot;</span>: <span className="s">&quot;s3://...&quot;</span> {`}`}</div>
+                <div>{`  `}],</div>
+                <div>{`  `}<span className="k">&quot;webhook&quot;</span>: <span className="s">&quot;https://example.com.au/los/webhooks/trutina&quot;</span></div>
+                <div>{`}`}</div>
+                <div>&nbsp;</div>
+                <div><span className="c"># 200 OK</span></div>
+                <div>{`{`} <span className="k">&quot;case_id&quot;</span>: <span className="s">&quot;TRU-2026-04812&quot;</span>, <span className="k">&quot;score&quot;</span>: <span className="n">78</span>, <span className="k">&quot;tier&quot;</span>: <span className="s">&quot;critical&quot;</span> {`}`}</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Pricing */}
+        <section id="pricing" className="mk-section">
+          <div className="sec-label"><span style={{ fontWeight: 600, color: 'var(--ink-80)' }}>05</span><span>Pricing</span></div>
+          <h2>Per-case. No seat tax. No model surcharge.</h2>
+          <p className="standfirst">
+            Three tiers, priced by case volume. All tiers include every detection module and every evidence type. The difference is the response-time guarantee, the integration depth, and whether your team gets a dedicated forensic analyst on call.
+          </p>
+
+          <div className="tier-grid">
+            {PRICING.map(p => (
+              <div key={p.name} className={`tier-card${p.highlight ? ' feature' : ''}`}>
+                <div className="name">{p.name}</div>
+                <div className="price">{p.price} <span className="unit">{p.unit}</span></div>
+                <div className="for">{p.for}</div>
+                <ul>{p.features.map(f => <li key={f}>{f}</li>)}</ul>
+                <button
+                  type="button"
+                  className={`btn ${p.highlight ? 'btn-primary' : 'btn-secondary'} cta`}
+                  onClick={() => p.name === 'Standard' ? setLoginMode('trial') : (typeof window !== 'undefined' && (window as unknown as { BookingWidget?: { open: () => void } }).BookingWidget?.open())}
                 >
-                  {plan.name}
-                </div>
-                <div className="flex items-baseline gap-1 mb-1">
-                  <span
-                    className="font-extrabold"
-                    style={{
-                      fontSize: '2rem',
-                      color: plan.highlight ? 'white' : '#1C1917',
-                      letterSpacing: '-0.03em',
-                    }}
-                  >
-                    {plan.price}
-                  </span>
-                  <span
-                    className="text-sm"
-                    style={{ color: plan.highlight ? 'rgba(255,255,255,0.4)' : '#9C9089' }}
-                  >
-                    {plan.period}
-                  </span>
-                </div>
-                <div
-                  className="text-xs mb-0.5"
-                  style={{ color: plan.highlight ? 'rgba(255,255,255,0.4)' : '#9C9089' }}
-                >
-                  {plan.volume}
-                </div>
-                <div
-                  className="text-xs mb-5"
-                  style={{ color: plan.highlight ? 'rgba(255,255,255,0.3)' : '#B8AFA7' }}
-                >
-                  {plan.target}
-                </div>
-                <ul className="space-y-2 mb-6 flex-1">
-                  {plan.features.map(f => (
-                    <li
-                      key={f}
-                      className="flex items-start gap-2 text-sm"
-                      style={{ color: plan.highlight ? 'rgba(255,255,255,0.65)' : '#78716C' }}
-                    >
-                      <Check
-                        className="w-4 h-4 shrink-0 mt-0.5"
-                        style={{ color: plan.highlight ? '#6EE7B7' : '#059669' }}
-                      />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                {plan.ctaAction === 'trial' ? (
-                  <button
-                    onClick={() => setLoginMode('trial')}
-                    className="block w-full text-center font-semibold py-3 rounded-xl text-sm transition"
-                    style={{ border: '1px solid #D6D0C8', color: '#44403C', background: '#F7F5F0' }}
-                  >
-                    {plan.cta}
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => {
-                      if (typeof window !== 'undefined' && (window as any).BookingWidget)
-                        (window as any).BookingWidget.open()
-                    }}
-                    className="block w-full text-center font-semibold py-3 rounded-xl text-sm transition cursor-pointer"
-                    style={
-                      plan.highlight
-                        ? { background: '#DC1C1C', color: 'white' }
-                        : { border: '1px solid #D6D0C8', color: '#44403C', background: '#F7F5F0' }
-                    }
-                  >
-                    {plan.cta}
-                  </button>
-                )}
+                  {p.cta}
+                </button>
               </div>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ── Footer ───────────────────────────────────────────── */}
-      <footer
-        className="px-6 sm:px-10 py-6 text-xs"
-        style={{ borderTop: '1px solid #E2DDD6', color: '#C4BAB0' }}
-      >
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span>Trutina &middot; Document fraud detection for Australian lenders</span>
-          <span>hello@trutina.com.au</span>
-        </div>
-      </footer>
-    </div>
+        {/* Footnotes */}
+        <section id="refs" className="mk-section" style={{ paddingBottom: 96 }}>
+          <div className="sec-label"><span style={{ fontWeight: 600, color: 'var(--ink-80)' }}>06</span><span>Citations</span></div>
+          <h2 style={{ fontSize: 22 }}>References on this page</h2>
+          <div className="footnotes">
+            <div className="fn"><span className="n">[1]</span><span>Commonwealth Bank of Australia, half-year results commentary February 2026. Self-reported A$1 billion exposure to suspected fraudulent mortgage applications submitted through broker channels.</span></div>
+            <div className="fn"><span className="n">[2]</span><span>NAB &quot;Penthouse Syndicate&quot; matter, charged 2025. ~A$105M exposure across fabricated payslip applications.</span></div>
+            <div className="fn"><span className="n">[3]</span><span>APRA Prudential Practice Guide CPG 234 (Information Security), November 2019. <code>apra.gov.au/cpg-234-information-security</code>.</span></div>
+            <div className="fn"><span className="n">[4]</span><span>Australian Privacy Principle 11 (Security of personal information), Privacy Act 1988. <code>oaic.gov.au/privacy/australian-privacy-principles/11</code>.</span></div>
+            <div className="fn"><span className="n">[5]</span><span>Producer string field as defined in ISO 32000-1:2008, table 317.</span></div>
+            <div className="fn"><span className="n">[6]</span><span>ATO Super Guarantee rate schedule. 11.5% from 2024-07-01. 12.0% from 2025-07-01. <code>ato.gov.au/super-guarantee-rate</code>.</span></div>
+          </div>
+        </section>
+      </main>
+
+      <SiteFooter />
+    </>
   )
 }

@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { X, Check } from 'lucide-react'
 import { Logo } from '@/components/Logo'
 
 const PERSONAL_DOMAINS = new Set([
@@ -89,147 +88,135 @@ export default function LoginModal({ open, onClose, mode = 'signin', onSwitchMod
     <div
       className="fixed inset-0 z-50 flex items-center justify-center"
       onClick={onClose}
+      style={{ background: 'rgba(20, 22, 24, 0.45)' }}
     >
-      {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" data-testid="modal-backdrop" />
-
-      {/* Modal */}
       <div
-        className="relative w-full max-w-sm mx-4 rounded-2xl border border-white/10 p-8 animate-in fade-in zoom-in-95 duration-200"
-        style={{ background: 'rgba(15,15,35,0.95)', backdropFilter: 'blur(30px)' }}
+        className="relative w-full max-w-sm mx-4"
+        style={{
+          background: 'var(--bg-print-white)',
+          border: '1px solid var(--ink-25)',
+          padding: '28px 28px 24px',
+          boxShadow: 'var(--shadow-float)',
+        }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close button */}
         <button
+          type="button"
           onClick={onClose}
-          className="absolute top-4 right-4 text-white/30 hover:text-white/60 transition"
+          className="absolute top-3 right-3"
+          aria-label="Close"
+          style={{ background: 'none', border: 0, cursor: 'pointer', color: 'var(--ink-40)', padding: 4, fontSize: 16, lineHeight: 1 }}
         >
-          <X className="w-5 h-5" />
+          ×
         </button>
 
-        <div className="text-center mb-6">
-          <Logo href="" className="text-2xl justify-center" />
-          <p className="text-white/40 mt-2 text-sm">
-            {mode === 'trial' ? 'Start your free trial' : 'Sign in to continue'}
+        <div style={{ textAlign: 'center', marginBottom: 18 }}>
+          <Logo variant="wordmark" height={40} href="" />
+          <p style={{ color: 'var(--ink-60)', marginTop: 8, fontSize: 13 }}>
+            {mode === 'trial' ? 'Start your 30-day trial' : 'Sign in to continue'}
           </p>
         </div>
 
         {mode === 'trial' && submitted ? (
-          <div className="text-center py-4">
-            <div className="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-4">
-              <Check className="w-6 h-6 text-emerald-400" />
-            </div>
-            <p className="text-white font-semibold mb-2">You&apos;re on the list</p>
-            <p className="text-white/40 text-sm">
-              We&apos;ll send your login credentials to <span className="text-white/60">{email}</span> shortly.
+          <div style={{ textAlign: 'center', padding: '16px 0' }}>
+            <p style={{ color: 'var(--ink-100)', fontWeight: 600, marginBottom: 6 }}>You&apos;re on the list.</p>
+            <p style={{ color: 'var(--ink-60)', fontSize: 13 }}>
+              Login credentials will be sent to <span style={{ color: 'var(--ink-100)' }}>{email}</span> shortly.
             </p>
           </div>
         ) : mode === 'trial' ? (
           <form onSubmit={handleTrial}>
-            <div className="space-y-3">
-              <div>
-                <label className="text-white/60 text-xs uppercase tracking-wider mb-1 block">Name</label>
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-teal-500/50 transition"
-                  placeholder="Your name"
-                  required
-                  autoFocus
-                />
-              </div>
-              <div>
-                <label className="text-white/60 text-xs uppercase tracking-wider mb-1 block">Work email</label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-teal-500/50 transition"
-                  placeholder="you@company.com"
-                  required
-                />
-              </div>
-              <div>
-                <label className="text-white/60 text-xs uppercase tracking-wider mb-1 block">Company</label>
-                <input
-                  type="text"
-                  value={company}
-                  onChange={(e) => setCompany(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-teal-500/50 transition"
-                  placeholder="Your organisation"
-                />
-              </div>
+            <FormField label="Name">
+              <input
+                type="text" value={name} onChange={(e) => setName(e.target.value)}
+                required autoFocus placeholder="Your name"
+                style={INPUT_STYLE}
+              />
+            </FormField>
+            <FormField label="Work email">
+              <input
+                type="email" value={email} onChange={(e) => setEmail(e.target.value)}
+                required placeholder="you@company.com.au"
+                style={INPUT_STYLE}
+              />
+            </FormField>
+            <FormField label="Organisation">
+              <input
+                type="text" value={company} onChange={(e) => setCompany(e.target.value)}
+                placeholder="Your organisation"
+                style={INPUT_STYLE}
+              />
+            </FormField>
 
-              {error && <p className="text-red-400 text-sm">{error}</p>}
+            {error && <p style={{ color: 'var(--risk-crit)', fontSize: 13, marginTop: 8 }}>{error}</p>}
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-teal-600 hover:bg-teal-500 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition"
-              >
-                {loading ? 'Submitting...' : 'Start free trial'}
-              </button>
+            <button type="submit" disabled={loading} className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', marginTop: 14, padding: '10px 14px' }}>
+              {loading ? 'Submitting…' : 'Start trial'}
+            </button>
 
-              <p className="text-white/20 text-xs text-center">
-                No credit card required. 5 documents included.
+            <p style={{ color: 'var(--ink-40)', fontSize: 11, textAlign: 'center', marginTop: 10 }}>
+              No credit card. 5 documents included.
+            </p>
+
+            {onSwitchMode && (
+              <p style={{ textAlign: 'center', fontSize: 12.5, color: 'var(--ink-60)', marginTop: 8 }}>
+                Already have an account?{' '}
+                <button type="button" onClick={() => onSwitchMode('signin')} style={LINK_BTN}>Sign in</button>
               </p>
-
-              {onSwitchMode && (
-                <p className="text-center text-sm text-white/40 pt-1">
-                  Already have an account?{' '}
-                  <button
-                    type="button"
-                    onClick={() => onSwitchMode('signin')}
-                    className="text-teal-400 hover:text-teal-300 transition font-medium"
-                  >
-                    Sign in
-                  </button>
-                </p>
-              )}
-            </div>
+            )}
           </form>
         ) : (
           <form onSubmit={handleSignIn}>
-            <div className="space-y-4">
-              <div>
-                <label className="text-white/60 text-xs uppercase tracking-wider mb-1 block">Password</label>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-teal-500/50 transition"
-                  placeholder="Enter password"
-                  autoFocus
-                />
-              </div>
+            <FormField label="Password">
+              <input
+                type="password" value={password} onChange={(e) => setPassword(e.target.value)}
+                autoFocus placeholder="Enter password"
+                style={INPUT_STYLE}
+              />
+            </FormField>
 
-              {error && <p className="text-red-400 text-sm">{error}</p>}
+            {error && <p style={{ color: 'var(--risk-crit)', fontSize: 13, marginTop: 8 }}>{error}</p>}
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-teal-600 hover:bg-teal-500 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition"
-              >
-                {loading ? 'Signing in...' : 'Sign in'}
-              </button>
+            <button type="submit" disabled={loading} className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', marginTop: 14, padding: '10px 14px' }}>
+              {loading ? 'Signing in…' : 'Sign in'}
+            </button>
 
-              {onSwitchMode && (
-                <p className="text-center text-sm text-white/40">
-                  Don&apos;t have an account?{' '}
-                  <button
-                    type="button"
-                    onClick={() => onSwitchMode('trial')}
-                    className="text-teal-400 hover:text-teal-300 transition font-medium"
-                  >
-                    Start free trial
-                  </button>
-                </p>
-              )}
-            </div>
+            {onSwitchMode && (
+              <p style={{ textAlign: 'center', fontSize: 12.5, color: 'var(--ink-60)', marginTop: 12 }}>
+                Don&apos;t have an account?{' '}
+                <button type="button" onClick={() => onSwitchMode('trial')} style={LINK_BTN}>Start a trial</button>
+              </p>
+            )}
           </form>
         )}
       </div>
     </div>
   )
+}
+
+function FormField({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div style={{ marginBottom: 10 }}>
+      <label className="t-section" style={{ display: 'block', marginBottom: 4 }}>{label}</label>
+      {children}
+    </div>
+  )
+}
+
+const INPUT_STYLE: React.CSSProperties = {
+  width: '100%',
+  background: 'var(--paper-0)',
+  border: '1px solid var(--ink-25)',
+  borderRadius: 'var(--radius-1)',
+  padding: '9px 12px',
+  color: 'var(--ink-100)',
+  fontFamily: 'var(--font-sans)',
+  fontSize: 13,
+  outline: 'none',
+}
+
+const LINK_BTN: React.CSSProperties = {
+  background: 'none', border: 0, padding: 0,
+  color: 'var(--accent)', cursor: 'pointer',
+  textDecoration: 'underline', fontFamily: 'inherit', fontSize: 'inherit',
 }

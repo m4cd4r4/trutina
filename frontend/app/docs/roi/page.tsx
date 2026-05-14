@@ -2,7 +2,8 @@
 
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
-import { Logo } from '@/components/Logo'
+import SiteHeader from '@/components/design/SiteHeader'
+import SiteFooter from '@/components/design/SiteFooter'
 
 function formatAUD(value: number): string {
   if (value >= 1_000_000_000) {
@@ -50,7 +51,7 @@ function SliderInput({ label, value, min, max, step, format, onChange }: SliderI
         onChange={e => onChange(Number(e.target.value))}
         className="w-full h-1.5 rounded-full appearance-none cursor-pointer"
         style={{
-          background: `linear-gradient(to right, #0d9488 0%, #0d9488 ${((value - min) / (max - min)) * 100}%, rgba(255,255,255,0.1) ${((value - min) / (max - min)) * 100}%, rgba(255,255,255,0.1) 100%)`,
+          background: `linear-gradient(to right, #1F4FA3 0%, #1F4FA3 ${((value - min) / (max - min)) * 100}%, rgba(255,255,255,0.1) ${((value - min) / (max - min)) * 100}%, rgba(255,255,255,0.1) 100%)`,
         }}
       />
       <div className="flex justify-between mt-1">
@@ -97,7 +98,7 @@ export default function ROICalculator() {
           width: 16px;
           height: 16px;
           border-radius: 50%;
-          background: #0d9488;
+          background: #1F4FA3;
           border: 2px solid #1e1b4b;
           cursor: pointer;
         }
@@ -105,27 +106,18 @@ export default function ROICalculator() {
           width: 16px;
           height: 16px;
           border-radius: 50%;
-          background: #0d9488;
+          background: #1F4FA3;
           border: 2px solid #1e1b4b;
           cursor: pointer;
         }
       `}</style>
 
       <div
-        className="min-h-screen text-white"
-        style={{ background: '#0a1210' }}
+        className="min-h-screen docs-page"
+        style={{  }}
       >
         {/* Nav */}
-        <nav className="border-b border-white/5 no-print">
-          <div className="flex items-center justify-between px-4 sm:px-8 py-4 max-w-7xl mx-auto">
-          <Logo height={32} />
-          <div className="flex items-center gap-4 sm:gap-6">
-            <Link href="/docs" className="text-white/50 hover:text-white/80 text-sm transition">
-              Docs
-            </Link>
-          </div>
-          </div>
-        </nav>
+        <SiteHeader active="docs" />
 
         <div className="max-w-5xl mx-auto px-4 sm:px-8 py-10 sm:py-14">
           {/* Header */}
@@ -341,6 +333,7 @@ export default function ROICalculator() {
             </p>
           </div>
         </div>
+      <SiteFooter />
       </div>
     </>
   )

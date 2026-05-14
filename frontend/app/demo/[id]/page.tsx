@@ -1,201 +1,206 @@
 'use client'
 
-import { use } from 'react'
+import { use, useState } from 'react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ChevronLeft } from 'lucide-react'
-import { Logo } from '@/components/Logo'
 import { getDemoCase } from '@/lib/demo-data'
-import { CategoryIcon, getCategoryLabel } from '@/components/ui/CategoryIcon'
-import type { FlagCategory, FraudFlag, RiskLevel } from '@/lib/types'
-import ScoreGauge from '@/components/ui/ScoreGauge'
-import RiskBadge from '@/components/ui/RiskBadge'
-import DocumentViewer from '@/components/ui/DocumentViewer'
-import DemoTour from '@/components/ui/DemoTour'
-
-const ACTION_CONFIG = {
-  approve: { label: 'Approve', bg: 'bg-emerald-500/10', border: 'border-emerald-500/30', text: 'text-emerald-300', desc: 'All checks passed. This application can proceed through standard processing.' },
-  manual_review: { label: 'Manual Review', bg: 'bg-amber-500/10', border: 'border-amber-500/30', text: 'text-amber-300', desc: 'Flags detected that require human assessment before a decision can be made.' },
-  reject: { label: 'Reject', bg: 'bg-red-500/10', border: 'border-red-500/30', text: 'text-red-300', desc: 'Critical issues detected. This application should not proceed without escalation.' },
-} as const
-
-const SEVERITY_STYLES: Record<RiskLevel, string> = {
-  critical: 'border-l-red-500 bg-red-500/5',
-  high: 'border-l-orange-500 bg-orange-500/5',
-  medium: 'border-l-amber-500 bg-amber-500/5',
-  low: 'border-l-emerald-500 bg-emerald-500/5',
-}
-
-const CATEGORY_COLORS: Record<FlagCategory, string> = {
-  pdf_forensics: 'text-teal-400',
-  ai_content: 'text-amber-400',
-  cross_reference: 'text-teal-400',
-  consistency: 'text-amber-400',
-  broker_risk: 'text-teal-400',
-  identity: 'text-amber-400',
-}
-
-function groupFlags(flags: FraudFlag[]): Record<FlagCategory, FraudFlag[]> {
-  const groups: Partial<Record<FlagCategory, FraudFlag[]>> = {}
-  for (const f of flags) {
-    if (!groups[f.category]) groups[f.category] = []
-    groups[f.category]!.push(f)
-  }
-  return groups as Record<FlagCategory, FraudFlag[]>
-}
+import SiteHeader from '@/components/design/SiteHeader'
+import SiteFooter from '@/components/design/SiteFooter'
+import ModuleCard from '@/components/design/ModuleCard'
+import EvidenceStub from '@/components/design/EvidenceStub'
+import { RiskBadge, ScoreOnScale } from '@/components/design/atoms'
+import {
+  aggregateModules,
+  evidenceView,
+  findDocForFlag,
+  tierToken,
+  type ModuleId,
+} from '@/lib/case-modules'
+import type { FraudFlag } from '@/lib/types'
 
 export default function DemoCaseDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
   const c = getDemoCase(id)
   if (!c) notFound()
 
-  const grouped = groupFlags(c.flags)
-  const action = c.recommended_action ? ACTION_CONFIG[c.recommended_action] : null
+  const [activeModule, setActiveModule] = useState<ModuleId | null>(null)
+  const [expandedFlag, setExpandedFlag] = useState<string | null>(null)
+
+  const t = tierToken(c.risk_level)
+  const score = c.risk_score ?? 0
+  const modules = aggregateModules(c.flags)
+  const activeFlags = activeModule == null
+    ? c.flags
+    : modules.find(m => m.id === activeModule)?.flags ?? []
+  const otherFlags = activeModule == null
+    ? []
+    : c.flags.filter(f => !activeFlags.includes(f))
 
   return (
-    <div className="min-h-screen text-white"
-      style={{ background: '#0a1210' }}>
+    <>
+      <SiteHeader active="demo" />
 
-      {/* Nav */}
-      <nav className="border-b border-white/5">
-        <div className="flex items-center justify-between px-6 md:px-8 py-4 max-w-7xl mx-auto">
-        <Logo height={32} />
-        <div className="flex items-center gap-4">
-          <span className="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full px-3 py-1 font-medium">
-            Live Demo
-          </span>
-          <Link href="/demo" className="text-white/50 hover:text-white/80 text-sm transition">
-            All cases
-          </Link>
+      <main className="page" style={{ paddingTop: 24, paddingBottom: 60 }}>
+        <div style={{ marginBottom: 12, fontSize: 12.5, color: 'var(--ink-60)' }}>
+          <Link href="/demo" style={{ color: 'inherit', textDecoration: 'none' }}>Specimens</Link>
+          <span className="dot-sep">/</span>
+          <span style={{ color: 'var(--ink-100)' }}>{c.reference}</span>
         </div>
-        </div>
-      </nav>
 
-      <div className="max-w-4xl mx-auto px-6 md:px-8 py-10">
-        {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-start gap-8 mb-10">
-          <div className="shrink-0 flex justify-center" data-tour="score-gauge">
-            <ScoreGauge score={c.risk_score} size={140} />
-          </div>
-          <div className="flex-1" data-tour="case-header">
-            <div className="flex flex-wrap items-center gap-2 mb-2">
-              <span className="text-white/30 text-xs font-mono">{c.reference}</span>
-              <RiskBadge level={c.risk_level} size="md" />
+        <header className={`case-header${t === 'crit' ? ' is-crit' : ''}`}>
+          <div className="case-header-row">
+            <div className="left">
+              <div className="case-id">
+                <span className="mono">{c.reference}</span>
+                {c.broker ? <>
+                  <span className="dot-sep">.</span>
+                  <span className="mono">{c.broker.broker_name}</span>
+                </> : null}
+              </div>
+              <h2 className="title">{c.applicant_name}</h2>
+              <div className="sub">{c.headline}</div>
             </div>
-            <h1 className="text-2xl md:text-3xl font-bold mb-1">{c.applicant_name}</h1>
-            <p className="text-white/40 text-sm mb-4">{c.headline}</p>
-
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
-              <div className="bg-white/5 rounded-lg p-3">
-                <div className="text-white/30 text-xs mb-1">Loan Amount</div>
-                <div className="text-amber-300/80 font-semibold font-mono">${c.loan_amount?.toLocaleString()}</div>
+            <div className="score-stack">
+              <RiskBadge tier={t} stark score={score} />
+              <div style={{ marginTop: 4 }}>
+                <span className="n" style={{ color: t === 'crit' ? 'var(--risk-crit)' : t === 'high' ? 'var(--risk-high)' : t === 'med' ? 'var(--risk-med)' : 'var(--ink-100)' }}>{score}</span>
+                <span className="of">/100</span>
               </div>
-              <div className="bg-white/5 rounded-lg p-3">
-                <div className="text-white/30 text-xs mb-1">Documents</div>
-                <div className="text-white font-semibold">{c.document_count}</div>
-              </div>
-              <div className="bg-white/5 rounded-lg p-3">
-                <div className="text-white/30 text-xs mb-1">Flags</div>
-                <div className="text-white font-semibold">{c.flags.length}</div>
-              </div>
-              <div className="bg-white/5 rounded-lg p-3">
-                <div className="text-white/30 text-xs mb-1">Broker</div>
-                <div className="text-white font-semibold truncate">{c.broker?.broker_name || '—'}</div>
-              </div>
+              <div className="mono" style={{ fontSize: 11, color: 'var(--ink-40)', marginTop: -8 }}>{c.flags.length} flag{c.flags.length === 1 ? '' : 's'}</div>
             </div>
           </div>
+        </header>
+
+        <div style={{ margin: '32px 0 8px' }}>
+          <div className="t-section" style={{ marginBottom: 22 }}>Score on scale</div>
+          <ScoreOnScale value={score} />
         </div>
 
-        {/* Recommended Action */}
-        {action && (
-          <div data-tour="recommended-action" className={`rounded-xl border ${action.border} ${action.bg} p-6 mb-8`}>
-            <div className="flex items-center gap-3 mb-2">
-              <span className={`text-lg font-bold ${action.text}`}>Recommended: {action.label}</span>
-            </div>
-            <p className="text-white/50 text-sm">{action.desc}</p>
+        <div style={{ marginTop: 32, padding: '12px 14px', background: 'var(--paper-1)', borderLeft: '2px solid var(--ink-25)', fontSize: 13, color: 'var(--ink-80)', lineHeight: 1.55, maxWidth: 780 }}>
+          {c.summary}
+        </div>
+
+        <div className="drill" style={{ marginTop: 36 }}>
+          <div className="drill-head">
+            <span className="t-section">Module breakdown</span>
+            <span className="drill-hint">
+              {activeModule == null
+                ? <>Click a module to filter the flag list.</>
+                : <>Showing flags from <b style={{ color: 'var(--ink-100)' }}>{modules.find(m => m.id === activeModule)?.name}</b>.
+                    <button type="button" className="drill-clear" onClick={() => setActiveModule(null)}>Show all</button>
+                  </>}
+            </span>
           </div>
-        )}
 
-        {/* Summary */}
-        <div data-tour="analysis-summary" className="rounded-xl border border-white/10 p-6 mb-8"
-          style={{ background: 'rgba(255,255,255,0.03)' }}>
-          <h2 className="text-white font-semibold mb-3">Analysis Summary</h2>
-          <p className="text-white/60 text-sm leading-relaxed">{c.summary}</p>
-        </div>
+          <div className="modules-grid">
+            {modules.map(m => (
+              <ModuleCard
+                key={m.id}
+                module={m}
+                isActive={activeModule === m.id}
+                isMuted={activeModule != null && activeModule !== m.id}
+                onClick={() => setActiveModule(activeModule === m.id ? null : m.id)}
+              />
+            ))}
+          </div>
 
-        {/* Documents with inline PDF viewer */}
-        <div data-tour="document-viewer">
-          <DocumentViewer documents={c.documents} flags={c.flags} />
-        </div>
+          <div className="drill-rule" aria-hidden="true">
+            {activeModule != null ? (
+              <span
+                className="drill-rule-tab"
+                style={{ left: `calc(${modules.findIndex(m => m.id === activeModule) * 20}% + 10%)` }}
+              />
+            ) : null}
+          </div>
 
-        {/* Flags by category */}
-        <div data-tour="fraud-flags">
-        <h2 className="text-white font-semibold text-lg mb-4">
-          Fraud Flags ({c.flags.length})
-        </h2>
-
-        <div className="space-y-6">
-          {(Object.entries(grouped) as [FlagCategory, FraudFlag[]][]).map(([category, flags]) => (
-            <div key={category}>
-              <div className="flex items-center gap-2 mb-3">
-                <CategoryIcon category={category} className={`w-5 h-5 ${CATEGORY_COLORS[category] || 'text-teal-400'}`} />
-                <span className="text-white/60 text-sm font-medium">{getCategoryLabel(category)}</span>
-                <span className="text-white/20 text-xs">({flags.length})</span>
+          <div className="flag-list">
+            {activeFlags.length === 0 ? (
+              <div style={{ padding: '40px 0', textAlign: 'center', color: 'var(--ink-40)', fontSize: 13 }}>
+                No flags in this module.
               </div>
+            ) : activeFlags.map(f => (
+              <DemoFlagRow
+                key={f.id}
+                flag={f}
+                caseRef={c.reference}
+                doc={findDocForFlag(c, f)}
+                isExpanded={expandedFlag === f.id}
+                onToggle={() => setExpandedFlag(expandedFlag === f.id ? null : f.id)}
+              />
+            ))}
 
-              <div className="space-y-3">
-                {flags.map(f => (
-                  <div key={f.id}
-                    className={`rounded-xl border-l-4 border border-white/5 p-5 ${SEVERITY_STYLES[f.severity]}`}>
-                    <div className="flex flex-wrap items-center gap-2 mb-2">
-                      <RiskBadge level={f.severity} />
-                      <span className="text-white font-semibold text-sm">{f.title}</span>
-                      <span className="text-white/20 text-xs font-mono ml-auto">{f.code}</span>
-                    </div>
-                    <p className="text-white/50 text-sm leading-relaxed mb-3">{f.description}</p>
-
-                    {/* Evidence */}
-                    {Object.keys(f.evidence).length > 0 && (
-                      <div className="bg-black/20 rounded-lg p-3 overflow-x-auto">
-                        <div className="text-white/30 text-xs uppercase tracking-wider mb-2">Evidence</div>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
-                          {Object.entries(f.evidence).map(([key, val]) => (
-                            <div key={key}>
-                              <span className="text-white/30">{key.replace(/_/g, ' ')}: </span>
-                              <span className="text-white/70 font-mono">
-                                {Array.isArray(val) ? val.join(', ') : String(val)}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
+            {otherFlags.length > 0 ? (
+              <div className="other-flags">
+                <div className="other-flags-head">
+                  <span>Flags in other modules</span>
+                  <span className="mono ct">{otherFlags.length}</span>
+                </div>
+                {otherFlags.map(f => (
+                  <DemoFlagRow
+                    key={f.id}
+                    flag={f}
+                    caseRef={c.reference}
+                    doc={findDocForFlag(c, f)}
+                    isExpanded={expandedFlag === f.id}
+                    muted
+                    onToggle={() => setExpandedFlag(expandedFlag === f.id ? null : f.id)}
+                  />
                 ))}
               </div>
-            </div>
-          ))}
-        </div>
+            ) : null}
+          </div>
         </div>
 
-        {/* Bottom nav */}
-        <div className="flex items-center justify-between mt-12 pt-8 border-t border-white/5">
-          <Link href="/demo" className="text-white/50 hover:text-white/80 transition text-sm flex items-center gap-1">
-            <ChevronLeft className="w-4 h-4" />
-            All demo cases
-          </Link>
-          <Link href="/#pricing"
-            className="bg-teal-600 hover:bg-teal-500 text-white font-semibold px-6 py-2.5 rounded-xl transition text-sm">
-            Start free trial
-          </Link>
+        <div style={{ marginTop: 56, padding: 32, background: 'var(--paper-1)', border: '1px solid var(--rule)', textAlign: 'center' }}>
+          <h2 style={{ fontSize: 22, marginBottom: 8 }}>Try this on your own documents</h2>
+          <p style={{ color: 'var(--ink-60)', maxWidth: 480, margin: '0 auto 16px' }}>
+            30-day trial. 5 documents. No credit card.
+          </p>
+          <Link href="/?trial=1" className="btn btn-primary">Start trial</Link>
         </div>
+
+        <div style={{ marginTop: 24, textAlign: 'center', color: 'var(--ink-40)', fontSize: 11 }}>
+          All sample data is synthetic. No real applicant data shown.
+        </div>
+      </main>
+
+      <SiteFooter />
+    </>
+  )
+}
+
+function DemoFlagRow({
+  flag, caseRef, doc, isExpanded, muted = false, onToggle,
+}: {
+  flag: FraudFlag
+  caseRef: string
+  doc: ReturnType<typeof findDocForFlag>
+  isExpanded: boolean
+  muted?: boolean
+  onToggle: () => void
+}) {
+  const ev = evidenceView(flag, doc)
+  const sevTier = tierToken(flag.severity)
+  return (
+    <div className={`flag-row${isExpanded ? ' is-open' : ''}${muted ? ' is-muted' : ''}`}>
+      <div className="num">{flag.id.slice(-2).toUpperCase()}</div>
+      <button
+        type="button"
+        onClick={onToggle}
+        className="body"
+        style={{ background: 'none', border: 0, padding: '2px 0 0', cursor: 'pointer', textAlign: 'left' }}
+      >
+        <div className="ttl">{flag.title}</div>
+        <div className="det">{flag.description}</div>
+      </button>
+      <div className="module-tag">
+        <RiskBadge tier={sevTier} />
+        <div style={{ marginTop: 6 }}>{flag.code}</div>
+        <button type="button" className="cite" onClick={onToggle}>
+          {isExpanded ? 'Hide source' : 'View source'}
+        </button>
       </div>
-
-      <footer className="border-t border-white/5 px-8 py-6 text-center text-white/20 text-xs mt-8">
-        All sample data is synthetic — no real applicant data is shown
-      </footer>
-
-      <DemoTour page="case-detail" />
+      {isExpanded ? <EvidenceStub caseRef={caseRef} flag={flag} ev={ev} /> : null}
     </div>
   )
 }
