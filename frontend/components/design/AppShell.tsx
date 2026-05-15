@@ -33,13 +33,16 @@ interface AppShellProps {
 export default function AppShell({ crumbs, children, navCounts = {} }: AppShellProps) {
   const pathname = usePathname() ?? ''
   const [moreOpen, setMoreOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
 
   useEffect(() => {
-    if (!moreOpen) return
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setMoreOpen(false) }
+    if (!moreOpen && !searchOpen) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') { setMoreOpen(false); setSearchOpen(false) }
+    }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
-  }, [moreOpen])
+  }, [moreOpen, searchOpen])
 
   // Workflow-keyed nav (Inbox / Assigned to me / Watching) takes the top of the
   // sidebar where action lives; population + regulatory reference views sit
@@ -117,9 +120,42 @@ export default function AppShell({ crumbs, children, navCounts = {} }: AppShellP
             <input placeholder="Search case, broker, ABN, BSB, hash..." aria-label="Search" />
             <span className="kbd">/</span>
           </div>
+          <button
+            type="button"
+            className="topbar-search-btn"
+            aria-label="Search"
+            aria-expanded={searchOpen}
+            onClick={() => setSearchOpen(true)}
+          >
+            <svg width="20" height="20" viewBox="0 0 22 22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <circle cx="10" cy="10" r="6" />
+              <path d="m15 15 4 4" />
+            </svg>
+          </button>
         </div>
         <div className="content">{children}</div>
       </main>
+
+      {/* Mobile fullscreen search overlay. Hidden via CSS above 1024px. */}
+      <div className={`search-overlay${searchOpen ? ' is-open' : ''}`} role="dialog" aria-modal="true" aria-label="Search" aria-hidden={!searchOpen}>
+        <div className="search-overlay-head">
+          <button type="button" className="search-overlay-close" aria-label="Close search" onClick={() => setSearchOpen(false)}>
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="m6 6 10 10M16 6 6 16" />
+            </svg>
+          </button>
+          <input
+            type="search"
+            className="search-overlay-input"
+            placeholder="Search case, broker, ABN, BSB, hash..."
+            aria-label="Search query"
+            autoFocus={searchOpen}
+          />
+        </div>
+        <div className="search-overlay-hint">
+          Search is wired to the SaaS shell only on this portfolio build. In a deployment it queries the case index, broker registry, ABN lookups, and the SHA-256 ledger.
+        </div>
+      </div>
 
       {/* Mobile bottom-bar nav. Hidden via CSS above 1024px. */}
       <nav className="bottom-bar" aria-label="Primary mobile">

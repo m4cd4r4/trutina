@@ -152,11 +152,14 @@ export default function DemoCaseDetail({ params }: { params: Promise<{ id: strin
         </div>
 
         <div style={{ marginTop: 56, padding: 32, background: 'var(--paper-1)', border: '1px solid var(--rule)', textAlign: 'center' }}>
-          <h2 style={{ fontSize: 22, marginBottom: 8 }}>Try this on your own documents</h2>
+          <h2 style={{ fontSize: 22, marginBottom: 8 }}>Assess against your portfolio</h2>
           <p style={{ color: 'var(--ink-60)', maxWidth: 480, margin: '0 auto 16px' }}>
-            30-day trial. 5 documents. No credit card.
+            For Australian lenders, aggregators, and credit-risk teams. Source and methods paper available on request.
           </p>
-          <Link href="/?trial=1" className="btn btn-primary">Start trial</Link>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap' }}>
+            <a href="mailto:hello@trutina.com.au?subject=Trutina%20engagement%20enquiry" className="btn btn-primary">Email about an engagement</a>
+            <a href="/methods-paper.pdf" target="_blank" rel="noopener" className="btn-text">Methods paper (PDF)</a>
+          </div>
         </div>
 
         <div style={{ marginTop: 24, textAlign: 'center', color: 'var(--ink-40)', fontSize: 11 }}>
