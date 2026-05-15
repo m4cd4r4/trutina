@@ -1555,51 +1555,52 @@ html:has(.landing-saas) .site-footer {
   .page { padding: 0 16px; }
 }
 
-/* ---------- App-shell (dashboard/cases/audit): collapse sidebar ----------
- * Use minmax(0, 1fr) — plain 1fr respects content min-width which lets
- * wide children (search input, long crumbs) blow out the grid track.
- * minmax(0, ...) lets the track shrink below content width and forces
- * the overflow into a scroll context that won't escape the viewport.
+/* ---------- App-shell mobile: hide sidebar, show bottom bar ----------
+ *
+ * Desktop (>1024px): 220px sidebar on left, content right. Unchanged.
+ * Mobile (<=1024px): sidebar hidden entirely. Logo moves into topbar.
+ * 4-tab bottom bar (Inbox / Brokers / Specimens / More) fixed at the
+ * viewport bottom — thumb-reachable, persistent navigation. "More" tab
+ * opens a bottom sheet exposing secondary destinations.
+ *
+ * Content gets padding-bottom: 80px so the bar doesn't cover the last
+ * row. Bottom bar uses safe-area-inset on iOS to clear the home bar.
+ *
+ * The minmax(0, 1fr) on the grid track prevents wide topbar children
+ * (search input, long crumbs) from blowing out the layout.
  */
 @media (max-width: 1024px) {
   .app-shell {
     grid-template-columns: minmax(0, 1fr);
   }
   .app-shell > * { min-width: 0; }
-  .sidebar {
-    border-right: 0;
-    border-bottom: 1px solid var(--rule);
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    padding: 12px 16px;
-    gap: 10px;
-  }
-  .sidebar-brand {
-    padding: 0;
-    border-bottom: 0;
-    margin: 0 8px 0 0;
-  }
-  .sidebar-section {
-    display: none;
-  }
-  .nav-item {
-    border-left: 0;
-    padding: 6px 10px;
-    font-size: 12.5px;
-    border-radius: var(--radius-1);
-  }
-  .nav-item.active {
-    border-left: 0;
-    background: var(--paper-2);
-  }
-  .nav-item .count { margin-left: 6px; }
-  .sidebar-foot { display: none; }
+
+  /* Sidebar is dead on mobile — bottom bar carries nav. */
+  .sidebar { display: none; }
 
   .topbar {
     padding: 10px 16px;
-    gap: 10px;
+    gap: 12px;
+    align-items: center;
     flex-wrap: wrap;
+  }
+  .topbar-brand {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    flex-shrink: 0;
+  }
+  .topbar .crumbs {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .topbar .crumbs > span {
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .topbar .search {
     min-width: 0;
@@ -1607,9 +1608,8 @@ html:has(.landing-saas) .site-footer {
     order: 3;
   }
   .topbar .search .kbd { display: none; }
-  .topbar .user { margin-left: auto; }
 
-  .content { padding: 16px 16px 48px; }
+  .content { padding: 16px 16px 96px; }
   .content-header {
     flex-wrap: wrap;
     gap: 8px;
@@ -1620,6 +1620,152 @@ html:has(.landing-saas) .site-footer {
     font-size: 22px;
   }
   .content-header .meta { margin-left: 0; font-size: 10.5px; }
+}
+
+/* On desktop the topbar brand link isn't needed — sidebar has the logo.
+ * Bottom bar + sheet only render on mobile, defined default hidden so
+ * desktop never paints them even if cascade order shifts. */
+.topbar-brand { display: none; }
+.bottom-bar { display: none; }
+.more-sheet { display: none; }
+.more-sheet-backdrop { display: none; }
+
+/* ---- Bottom bar (mobile only) ---- */
+@media (max-width: 1024px) {
+  .topbar-brand { display: inline-flex; }
+  .bottom-bar { display: flex; }
+  .more-sheet { display: block; }
+  /* backdrop is conditionally rendered in JSX; only show it when present */
+  .more-sheet-backdrop { display: block; }
+}
+
+.bottom-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 64px;
+  background: var(--bg-print-white);
+  border-top: 1px solid var(--ink-25);
+  box-shadow: 0 -1px 0 var(--rule-soft), 0 -8px 24px -16px rgba(20, 22, 24, 0.12);
+  z-index: 30;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+.bottom-bar .bb-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 8px 4px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  color: var(--ink-60);
+  text-decoration: none;
+  position: relative;
+  transition: color var(--dur-fast) var(--ease);
+  min-width: 0;
+}
+.bottom-bar .bb-tab:hover { color: var(--ink-100); }
+.bottom-bar .bb-tab.is-active { color: var(--ink-100); }
+.bottom-bar .bb-tab.is-active::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 18%; right: 18%;
+  height: 2px;
+  background: var(--ink-100);
+}
+.bottom-bar .bb-ico {
+  display: inline-flex;
+  width: 22px; height: 22px;
+}
+.bottom-bar .bb-label {
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+.bottom-bar .bb-pip {
+  position: absolute;
+  top: 8px;
+  right: calc(50% - 16px);
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--risk-crit);
+}
+
+/* ---- More sheet ---- */
+.more-sheet {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--bg-print-white);
+  border-top: 1px solid var(--ink-25);
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 -12px 32px -16px rgba(20, 22, 24, 0.18);
+  z-index: 60;
+  padding: 12px 20px calc(96px + env(safe-area-inset-bottom, 0));
+  transform: translateY(100%);
+  transition: transform var(--dur) var(--ease);
+  visibility: hidden;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+.more-sheet.is-open {
+  transform: translateY(0);
+  visibility: visible;
+}
+.more-sheet-handle {
+  width: 40px; height: 4px;
+  border-radius: 2px;
+  background: var(--ink-25);
+  margin: 0 auto 14px;
+}
+.more-sheet-section {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-40);
+  padding: 12px 0 6px;
+}
+.more-sheet-section:first-of-type { padding-top: 0; }
+.more-sheet-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--rule-soft);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  color: var(--ink-100);
+  text-decoration: none;
+}
+.more-sheet-link:last-child { border-bottom: 0; }
+.more-sheet-link .count {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-40);
+}
+.more-sheet-foot {
+  margin-top: 14px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--ink-40);
+  text-align: center;
+}
+.more-sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 22, 24, 0.32);
+  z-index: 59;
+  animation: backdrop-in 200ms ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .more-sheet { transition: none; }
+  .more-sheet-backdrop { animation: none; }
 }
 
 /* ---------- Q-table: wrap in horizontal-scroll container on mobile ---------- *
