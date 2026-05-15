@@ -17,6 +17,7 @@ export default function StyleguideBroker() {
           <button type="button" className="btn btn-secondary btn-sm">Export view</button>
         </div>
       </div>
+      <div className="q-table-wrap">
       <table className="q-table">
         <thead>
           <tr>
@@ -52,6 +53,7 @@ export default function StyleguideBroker() {
           })}
         </tbody>
       </table>
+      </div>
     </AppShell>
   )
 }

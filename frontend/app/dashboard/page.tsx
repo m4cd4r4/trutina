@@ -95,7 +95,7 @@ export default function QueuePage() {
         <FilterChip active={tierFilter === 'low'}  onClick={() => setTierFilter('low')}  label="Cleared"      count={tierCount('low')}  dot="low" />
       </div>
 
-      <div style={{ overflowX: 'auto' }}>
+      <div className="q-table-wrap">
         <table className="q-table">
           <thead>
             <tr>

@@ -124,13 +124,14 @@ export default function DocsHub() {
               <span className="t-caption" style={{ color: 'var(--ink-40)' }}>{group.intent}</span>
             </div>
 
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: group.entries.length === 3 ? 'repeat(3, 1fr)' : 'repeat(2, 1fr)',
-              gap: 0,
-              borderTop: '1px solid var(--rule-soft)',
-              borderLeft: '1px solid var(--rule-soft)',
-            }}>
+            <div
+              className={group.entries.length === 3 ? 'docs-group-grid docs-group-grid-3' : 'docs-group-grid docs-group-grid-2'}
+              style={{
+                gap: 0,
+                borderTop: '1px solid var(--rule-soft)',
+                borderLeft: '1px solid var(--rule-soft)',
+              }}
+            >
               {group.entries.map(d => (
                 <Link
                   key={d.href}
