@@ -900,3 +900,506 @@ hr { border: 0; border-top: var(--rule-width) solid var(--rule); margin: var(--s
 .trutina-tour-popover .driver-popover-arrow-side-right .driver-popover-arrow,
 .trutina-tour-popover .driver-popover-arrow-side-top .driver-popover-arrow,
 .trutina-tour-popover .driver-popover-arrow-side-bottom .driver-popover-arrow { border-color: var(--bg-print-white) !important; }
+
+/* =====================================================================
+ *  Landing SaaS scope (.landing-saas)
+ *  Linear-shape structure, Vercel-sharp execution. Applies ONLY to /
+ *  (landing). Editorial surfaces (docs, login, dashboard, styleguide,
+ *  audit) keep the cool-paper + Fraunces system above.
+ * ===================================================================== */
+.landing-saas {
+  /* Type override: Geist Sans replaces Fraunces + IBM Plex on this scope. */
+  --font-saas: var(--font-geist), 'Inter', -apple-system, 'Segoe UI', system-ui, sans-serif;
+
+  /* Palette override: white background, sharper near-black ink. */
+  --saas-bg:       #FFFFFF;
+  --saas-bg-soft:  #FAFAFA;
+  --saas-ink-100:  #0A0A0A;
+  --saas-ink-80:   #1F1F1F;
+  --saas-ink-60:   #525252;
+  --saas-ink-40:   #8A8A8A;
+  --saas-ink-20:   #C2C2C2;
+  --saas-ink-10:   #E5E5E5;
+  --saas-ink-05:   #F2F2F2;
+  --saas-accent:   #1F4FA3;
+  --saas-accent-hover: #1A4490;
+
+  background: var(--saas-bg);
+  color: var(--saas-ink-100);
+  font-family: var(--font-saas);
+  font-feature-settings: 'ss01', 'cv11', 'tnum';
+  letter-spacing: -0.005em;
+}
+
+/* When the landing renders, extend white to the whole document so the
+ * editorial cool-paper doesn't bleed around the header and footer. */
+html:has(.landing-saas) {
+  background: #FFFFFF;
+}
+html:has(.landing-saas) body {
+  background: #FFFFFF;
+}
+html:has(.landing-saas) .site-header,
+html:has(.landing-saas) .site-footer {
+  background: #FFFFFF;
+}
+
+/* Kill the editorial page padding on the landing so mobile doesn't
+ * push horizontal overflow from the 132px lab-notebook margin. */
+.landing-saas {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+.landing-saas .page {
+  padding: 0 !important;
+  margin: 0;
+  max-width: none;
+  width: 100%;
+}
+
+/* Hard reset for editorial chrome under .landing-saas */
+.landing-saas .line-numbers { display: none; }
+.landing-saas .disclosure { all: unset; }
+.landing-saas .mk-section { padding: 0; }
+.landing-saas .sec-label { all: unset; }
+
+/* Hero */
+.landing-saas .hero {
+  padding: 88px 0 64px;
+  background: var(--saas-bg);
+  position: relative;
+}
+.landing-saas .hero-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 64px;
+  align-items: center;
+}
+.landing-saas .hero-copy { max-width: 600px; }
+
+/* Disclosure chip — demoted to small tag */
+.landing-saas .saas-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px 5px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--saas-ink-60);
+  background: var(--saas-ink-05);
+  border: 1px solid var(--saas-ink-10);
+  border-radius: 100px;
+  margin-bottom: 28px;
+  letter-spacing: -0.002em;
+}
+.landing-saas .saas-chip .pip {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--risk-crit);
+  flex-shrink: 0;
+}
+.landing-saas .saas-chip strong { color: var(--saas-ink-100); font-weight: 600; }
+.landing-saas .saas-chip .cite-link {
+  font-size: 11px;
+  color: var(--saas-accent);
+  text-decoration: none;
+}
+
+/* Headline */
+.landing-saas .hero h1 {
+  font-family: var(--font-saas);
+  font-size: clamp(40px, 5.6vw, 64px);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  font-weight: 600;
+  color: var(--saas-ink-100);
+  margin: 0 0 24px;
+}
+
+/* Lede */
+.landing-saas .lede {
+  font-family: var(--font-saas);
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--saas-ink-60);
+  letter-spacing: -0.005em;
+  margin: 0 0 32px;
+  max-width: 540px;
+}
+
+/* CTA buttons — primary dominant, secondary text-link */
+.landing-saas .actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.landing-saas .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  font-family: var(--font-saas);
+  font-size: 14.5px;
+  font-weight: 500;
+  letter-spacing: -0.002em;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 150ms ease, color 150ms ease, border-color 150ms ease, transform 150ms ease, box-shadow 150ms ease;
+  min-height: 44px;
+}
+.landing-saas .btn-primary {
+  background: var(--saas-ink-100);
+  color: var(--saas-bg);
+  border-color: var(--saas-ink-100);
+}
+.landing-saas .btn-primary:hover {
+  background: var(--saas-ink-80);
+  border-color: var(--saas-ink-80);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.landing-saas .btn-secondary {
+  background: transparent;
+  color: var(--saas-ink-60);
+  border-color: transparent;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+.landing-saas .btn-secondary:hover {
+  color: var(--saas-ink-100);
+}
+.landing-saas .btn-secondary .arrow {
+  transition: transform 150ms ease;
+}
+.landing-saas .btn-secondary:hover .arrow { transform: translateX(2px); }
+
+/* Attribution byline */
+.landing-saas .byline {
+  margin-top: 22px;
+  font-size: 13px;
+  color: var(--saas-ink-40);
+  letter-spacing: -0.002em;
+}
+.landing-saas .byline a { color: var(--saas-ink-80); text-decoration: none; border-bottom: 1px solid var(--saas-ink-20); }
+.landing-saas .byline a:hover { color: var(--saas-ink-100); border-bottom-color: var(--saas-ink-100); }
+
+/* Hero artefact (spec card) */
+.landing-saas .hero-artefact {
+  position: relative;
+  background: var(--saas-bg-soft);
+  border: 1px solid var(--saas-ink-10);
+  border-radius: 14px;
+  padding: 28px;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.02), 0 12px 32px -8px rgba(0,0,0,0.06);
+}
+
+/* Section shell */
+.landing-saas .saas-section {
+  padding: 96px 0;
+  border-top: 1px solid var(--saas-ink-10);
+}
+.landing-saas .saas-section.no-border { border-top: 0; }
+.landing-saas .saas-eyebrow {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--saas-accent);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.landing-saas .saas-section h2 {
+  font-family: var(--font-saas);
+  font-size: clamp(28px, 3.4vw, 40px);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  font-weight: 600;
+  color: var(--saas-ink-100);
+  margin: 0 0 16px;
+  max-width: 720px;
+}
+.landing-saas .saas-section .section-lede {
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--saas-ink-60);
+  max-width: 640px;
+  margin: 0 0 48px;
+  letter-spacing: -0.005em;
+}
+
+/* Trust strip — clean grid, no editorial chrome. Marked up as
+ * dl/dt/dd for the key-value pairs; we reset the default block
+ * margins so the grid layout stays as designed. */
+.landing-saas .saas-trust {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  padding: 32px 0;
+  margin: 0;
+  border-top: 1px solid var(--saas-ink-10);
+  border-bottom: 1px solid var(--saas-ink-10);
+}
+.landing-saas .saas-trust dt,
+.landing-saas .saas-trust dd { margin: 0; }
+.landing-saas .saas-trust .cell .k {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--saas-ink-40);
+  margin-bottom: 6px;
+}
+.landing-saas .saas-trust .cell .v {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--saas-ink-100);
+  letter-spacing: -0.01em;
+}
+.landing-saas .saas-trust .cell .v .unit {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--saas-ink-40);
+  font-weight: 400;
+  margin-left: 2px;
+}
+
+/* Module grid */
+.landing-saas .modules-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--saas-ink-10);
+  border: 1px solid var(--saas-ink-10);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.landing-saas .module-cell {
+  background: var(--saas-bg);
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: background 150ms ease;
+}
+.landing-saas .module-cell:hover { background: var(--saas-bg-soft); }
+.landing-saas .module-cell .id {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--saas-accent);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+.landing-saas .module-cell .name {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--saas-ink-100);
+  letter-spacing: -0.012em;
+}
+.landing-saas .module-cell .range {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--saas-ink-40);
+}
+.landing-saas .module-cell .ex {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--saas-ink-60);
+  margin-top: 4px;
+  letter-spacing: -0.003em;
+}
+
+/* Integration / engagements / refs */
+.landing-saas .saas-card {
+  background: var(--saas-bg-soft);
+  border: 1px solid var(--saas-ink-10);
+  border-radius: 12px;
+  padding: 32px;
+}
+.landing-saas .saas-card pre.codeblock {
+  background: var(--saas-ink-100);
+  color: var(--saas-bg);
+  border: 0;
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  padding: 20px 22px;
+  line-height: 1.6;
+  overflow-x: auto;
+  letter-spacing: 0;
+}
+.landing-saas .saas-card pre.codeblock code {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background: transparent;
+  padding: 0;
+  white-space: pre;
+}
+.landing-saas .saas-card p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--saas-ink-60);
+}
+
+.landing-saas .engagement-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  padding: 14px 22px;
+  background: var(--saas-accent);
+  color: var(--saas-bg);
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 150ms ease, transform 150ms ease, box-shadow 150ms ease;
+}
+.landing-saas .engagement-cta:hover {
+  background: var(--saas-accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(31,79,163,0.18);
+}
+.landing-saas .engagement-sub {
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--saas-ink-40);
+  letter-spacing: -0.002em;
+}
+
+/* The engagement section is the page's primary conversion. Give it a
+ * soft fill that extends edge-to-edge so the eye registers it as
+ * "the destination," distinct from the white reading sections above. */
+.landing-saas .saas-section.is-conversion {
+  background: var(--saas-bg-soft);
+  margin: 0 -32px;
+  padding-left: 32px;
+  padding-right: 32px;
+  padding-top: 120px;
+  padding-bottom: 120px;
+  border-top: 1px solid var(--saas-ink-10);
+  border-bottom: 1px solid var(--saas-ink-10);
+}
+@media (max-width: 640px) {
+  .landing-saas .saas-section.is-conversion {
+    margin: 0 -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+}
+
+/* Footnotes — small print, monochrome */
+.landing-saas .saas-refs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px 32px;
+  padding: 24px 0 0;
+  border-top: 1px solid var(--saas-ink-10);
+}
+.landing-saas .saas-refs .fn {
+  display: flex;
+  gap: 10px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--saas-ink-60);
+}
+.landing-saas .saas-refs .fn .n {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 11px;
+  color: var(--saas-accent);
+  flex-shrink: 0;
+  min-width: 18px;
+}
+
+/* Motion budget: just hover lifts + smooth transitions on interactive
+ * elements. No scroll-driven fade-in — it caused content to render as
+ * invisible in screenshot tooling, prerendered HTML, and slow-JS paths.
+ * The SaaS feel comes from typography, hierarchy, and hover states,
+ * not from decorative scroll motion.
+ */
+.landing-saas .reveal { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-saas .btn:hover { transform: none; box-shadow: none; }
+  .landing-saas .engagement-cta:hover { transform: none; box-shadow: none; }
+  .landing-saas .module-cell:hover { background: var(--saas-bg); }
+}
+
+/* Responsive: tablet */
+@media (max-width: 1024px) {
+  .landing-saas .hero { padding: 64px 0 48px; }
+  .landing-saas .hero-grid { grid-template-columns: 1fr; gap: 48px; }
+  .landing-saas .hero-artefact { max-width: 560px; }
+  .landing-saas .saas-section { padding: 72px 0; }
+  .landing-saas .modules-grid { grid-template-columns: 1fr; }
+  .landing-saas .saas-trust { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .landing-saas .saas-refs { grid-template-columns: 1fr; }
+}
+
+/* Mobile responsive for the SHARED SiteHeader/SiteFooter on landing.
+ * Scoped via html:has(.landing-saas) so internal app surfaces are
+ * unchanged. The editorial header/footer were authored desktop-only;
+ * on the landing we collapse them cleanly. */
+@media (max-width: 768px) {
+  html:has(.landing-saas) .site-header .inner {
+    padding-left: 20px;
+    padding-right: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  html:has(.landing-saas) .site-header nav {
+    display: none;
+  }
+  html:has(.landing-saas) .site-header .auth {
+    margin-left: auto;
+    gap: 10px;
+  }
+  html:has(.landing-saas) .site-header .filed {
+    display: none;
+  }
+  html:has(.landing-saas) .site-footer .page {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  html:has(.landing-saas) .site-footer .row1 {
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+  html:has(.landing-saas) .site-footer .row1 > div:first-child {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 480px) {
+  html:has(.landing-saas) .site-footer .row1 {
+    grid-template-columns: 1fr;
+  }
+  html:has(.landing-saas) .site-footer .legal {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+}
+
+/* Responsive: mobile */
+@media (max-width: 640px) {
+  .landing-saas { padding: 0 20px; }
+  .landing-saas .hero { padding: 48px 0 32px; }
+  .landing-saas .saas-section { padding: 56px 0; }
+  .landing-saas .saas-section h2 { font-size: 28px; }
+  .landing-saas .lede { font-size: 16px; }
+  .landing-saas .saas-card { padding: 22px; }
+  .landing-saas .hero-artefact { padding: 20px; }
+  .landing-saas .actions { gap: 4px; }
+  .landing-saas .btn { width: 100%; justify-content: center; }
+  .landing-saas .btn-secondary { justify-content: flex-start; padding-left: 0; }
+  .landing-saas .engagement-cta { width: 100%; justify-content: center; }
+  .landing-saas .saas-trust { grid-template-columns: 1fr 1fr; padding: 24px 0; }
+  .landing-saas .saas-trust .cell .v { font-size: 14px; }
+  .landing-saas .saas-chip { font-size: 11.5px; padding: 4px 9px 4px 7px; }
+}

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, IBM_Plex_Sans, Geist_Mono } from "next/font/google";
+import { Fraunces, IBM_Plex_Sans, Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import PageTracker from "@/components/PageTracker";
 import "./globals.css";
@@ -18,6 +18,14 @@ const ibmPlexSans = IBM_Plex_Sans({
   variable: "--font-ibm-plex-sans",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+});
+
+// Geist Sans — landing-only sans. Sharper than IBM Plex; pairs with Mono.
+const geist = Geist({
+  variable: "--font-geist",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
   display: "swap",
 });
 
@@ -65,7 +73,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${fraunces.variable} ${ibmPlexSans.variable} ${geistMono.variable} antialiased`}
+        className={`${fraunces.variable} ${ibmPlexSans.variable} ${geist.variable} ${geistMono.variable} antialiased`}
       >
         <script
           type="application/ld+json"
@@ -101,12 +109,6 @@ export default function RootLayout({
         {children}
         <Analytics />
         <PageTracker />
-        <script src="https://donnacha.app/booking-widget.js" defer />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.addEventListener('load',function(){if(window.BookingWidget)BookingWidget.init({project:'trutina',host:'https://donnacha.app'})})`,
-          }}
-        />
       </body>
     </html>
   );
