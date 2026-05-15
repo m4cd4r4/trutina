@@ -1,8 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import Link from 'next/link'
-import LoginModal from '@/components/LoginModal'
 import SiteHeader from '@/components/design/SiteHeader'
 import SiteFooter from '@/components/design/SiteFooter'
 import HeroSpecimenPreview from '@/components/design/HeroSpecimenPreview'
@@ -27,8 +26,6 @@ const MODULES = [
 ]
 
 export default function Landing() {
-  const [loginOpen, setLoginOpen] = useState(false)
-
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     if (params.get('trial') === '1') {
@@ -38,8 +35,7 @@ export default function Landing() {
 
   return (
     <>
-      <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} />
-      <SiteHeader active="index" onSignIn={() => setLoginOpen(true)} />
+      <SiteHeader active="index" />
 
       <div className="landing-saas">
         <main className="page" style={{ paddingTop: 0, paddingBottom: 0 }}>
