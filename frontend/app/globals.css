@@ -1799,3 +1799,236 @@ html:has(.landing-saas) .site-footer {
 @media (max-width: 480px) {
   .print-page { transform: scale(0.42); margin-bottom: -58%; }
 }
+
+/* =====================================================================
+ *  MOBILE DENSITY PASS (case-detail focused)
+ *  Baseline measured 2026-05-15 at 393px viewport:
+ *    case-header 451px / modules-grid 673px / per-flag 250px+
+ *    total scroll: 4140px on 900px viewport
+ *
+ *  Strategy per SaaS reference patterns (Stripe Dashboard, Sentry,
+ *  Linear, Datadog):
+ *  - Cards -> dense list rows on mobile (32-44px each, not 130px)
+ *  - Severity as inline chip, not multi-element stack
+ *  - Long descriptions collapse default-closed on mobile; default-open
+ *    on desktop (CSS-only via @media; no JS state)
+ *  - Decorative gradient scales -> single chip+tick at mobile
+ *
+ *  Desktop unchanged.
+ * ===================================================================== */
+
+/* ---- Module cards: card grid -> compact row list at <=768px ---- */
+@media (max-width: 768px) {
+  .modules-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-1);
+    overflow: hidden;
+  }
+  .module-card {
+    background: var(--bg-print-white);
+    border: 0;
+    border-bottom: 1px solid var(--rule-soft);
+    padding: 10px 12px !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 40px 56px 12px;
+    grid-template-areas: "name score flags chev";
+    align-items: center;
+    gap: 10px;
+    flex-direction: unset !important;
+    min-height: 44px;
+    position: relative;
+  }
+  .module-card:last-child { border-bottom: 0; }
+  .module-card.has-crit::before,
+  .module-card.has-high::before {
+    width: 3px;
+  }
+  .module-card .name {
+    grid-area: name;
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
+    color: var(--ink-100);
+    text-transform: uppercase;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .module-card .score {
+    grid-area: score;
+    font-size: 18px !important;
+    line-height: 1;
+    text-align: right;
+    font-family: var(--font-mono);
+    font-weight: 600;
+  }
+  .module-card .flags {
+    grid-area: flags;
+    font-size: 10.5px;
+    color: var(--ink-60);
+    text-align: right;
+    font-family: var(--font-mono);
+  }
+  .module-card .bar {
+    /* Hide the decorative track bar on mobile — the score number
+     * and severity stripe already convey the same signal. */
+    display: none;
+  }
+  .module-card::after {
+    content: "›";
+    grid-area: chev;
+    color: var(--ink-25);
+    font-size: 18px;
+    line-height: 1;
+    justify-self: end;
+    transition: color var(--dur-fast) var(--ease);
+  }
+  .module-card.is-active::after { color: var(--ink-100); }
+  .module-card.is-active {
+    background: var(--paper-2);
+    box-shadow: inset 0 0 0 1px var(--ink-100);
+  }
+  /* drill-rule (the chevron pointer line under cards) is meaningless
+   * on a vertical list — hide it. */
+  .drill-rule { display: none; }
+}
+
+/* ---- Case header: dedupe + compact ---- */
+@media (max-width: 768px) {
+  .case-header {
+    padding: 14px 0 16px;
+  }
+  .case-header.is-crit::before {
+    left: -16px;
+  }
+  .case-header .case-id {
+    font-size: 11.5px;
+  }
+  .case-header .title {
+    font-size: 22px !important;
+    line-height: 1.2;
+  }
+  .case-header .sub {
+    font-size: 12px;
+  }
+  /* Hide the giant 84px serif score number on mobile.
+   * The CRITICAL chip below already shows tier + score number. */
+  .case-header .score-stack .n,
+  .case-header .score-stack .of {
+    display: none;
+  }
+  .case-header .score-stack {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    text-align: left;
+  }
+  .case-header .score-stack > div[style] {
+    /* 'mono / N flags' caption */
+    margin-top: 0 !important;
+    font-size: 11px;
+    color: var(--ink-60);
+  }
+  /* Drop one of the breadcrumb / case-id duplicates.
+   * AppShell crumbs already render "Specimens / TT-2026-00017".
+   * The .case-id row below is redundant on mobile. */
+  .case-header .case-id {
+    display: none;
+  }
+}
+
+/* ---- Score on scale: collapse the 5-band gauge on mobile ---- *
+ * Desktop keeps the full calibration gauge. Mobile gets a single
+ * compact band + needle that still shows "where 82 sits" without
+ * 80px of decorative gradient.
+ */
+@media (max-width: 768px) {
+  /* Drop the "SCORE ON SCALE" t-section heading row outside the
+   * gauge — the score chip already in the case header carries
+   * the same signal. The section heading + value live in a
+   * sibling div with inline margin style. */
+  .case-detail-score-section,
+  .drill > div[style*="margin: 32px 0 8px"],
+  .drill > div[style*="margin:32px 0 8px"] {
+    display: none;
+  }
+  /* Compact the gauge itself: 24px tall single bar instead of
+   * 80px tall 4-band strip. The needle still positions correctly
+   * because it uses % from left. */
+  .gauge {
+    height: 24px !important;
+    margin-top: 4px;
+  }
+  .gauge .band .l,
+  .gauge .band .l-r {
+    display: none;
+  }
+  .gauge .needle .v {
+    font-size: 11px !important;
+    padding: 0 4px;
+    top: -18px !important;
+  }
+}
+
+/* ---- Flag rows: collapse the description text on mobile ---- *
+ * Title, severity badge, rule code stay visible. Tap-to-expand uses
+ * the existing <details>/<summary> if present, OR a CSS-only
+ * approach: hide .det by default, show on :focus-within / :hover /
+ * .is-open. Since flag rows use a button to toggle .is-open, we
+ * piggyback on that state.
+ */
+@media (max-width: 768px) {
+  .flag-row .body { padding-top: 0; }
+  .flag-row .ttl {
+    font-size: 14px;
+    line-height: 1.35;
+  }
+  .flag-row .det {
+    display: none;
+  }
+  .flag-row.is-open .det {
+    display: block;
+    font-size: 13px;
+    line-height: 1.5;
+    margin-top: 6px;
+    color: var(--ink-60);
+  }
+  /* Cue to tap: small label showing collapsed state */
+  .flag-row .body::after {
+    content: "Show detail";
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 11.5px;
+    color: var(--accent);
+    font-family: var(--font-sans);
+  }
+  .flag-row.is-open .body::after {
+    content: "Hide detail";
+  }
+  /* Tighten the row gap so collapsed rows pack closer */
+  .flag-row {
+    padding: 12px 0 !important;
+  }
+}
+
+/* ---- Q-table tighter on mobile ---- */
+@media (max-width: 768px) {
+  .q-table thead th {
+    font-size: 9.5px !important;
+    padding: 6px 8px !important;
+    letter-spacing: 0.04em;
+  }
+  .q-table tbody td {
+    padding: 7px 8px !important;
+    font-size: 12px;
+    vertical-align: top;
+  }
+  .q-table td.mono { font-size: 11px !important; }
+  /* Reduce the side-stripe overhang on critical/high rows */
+  .q-table tbody tr.row-crit td:first-child,
+  .q-table tbody tr.row-high td:first-child {
+    box-shadow: inset 4px 0 0 0 currentColor !important;
+    padding-left: 12px !important;
+  }
+}
