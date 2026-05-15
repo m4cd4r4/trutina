@@ -24,7 +24,7 @@ export default function DemoLandingPage() {
           Each panel below shows a case as it arrived through a broker channel, the modules that flagged it, and the score derived from the evidence. There is no overall verdict at the top; the verdict is the sum of the measurements.
         </div>
 
-        <div style={{ overflowX: 'auto', marginTop: 24 }}>
+        <div className="q-table-wrap" style={{ marginTop: 24 }}>
           <table className="q-table">
             <thead>
               <tr>

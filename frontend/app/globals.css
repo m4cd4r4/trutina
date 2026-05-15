@@ -1403,3 +1403,299 @@ html:has(.landing-saas) .site-footer {
   .landing-saas .saas-trust .cell .v { font-size: 14px; }
   .landing-saas .saas-chip { font-size: 11.5px; padding: 4px 9px 4px 7px; }
 }
+
+/* =====================================================================
+ *  Global mobile responsive for editorial surfaces (every page EXCEPT
+ *  the SaaS landing). The editorial system was authored desktop-first
+ *  and broke at <=768px: header nav clipped, footer 4-col squashed,
+ *  /demo table forced horizontal scroll of the entire viewport, sidebar
+ *  forced 220px gutter on phones, etc.
+ *
+ *  Strategy: keep aesthetic intact (Fraunces, cool-paper, line-numbered
+ *  margin). Just fix layout breakage so phones don't have to pinch-zoom
+ *  or horizontal-scroll the whole page.
+ * ===================================================================== */
+
+/* ---------- SiteHeader: collapse nav on every page at <=768px ---------- */
+@media (max-width: 768px) {
+  .site-header .inner {
+    padding-left: 20px;
+    padding-right: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .site-header nav { display: none; }
+  .site-header .auth { margin-left: auto; gap: 10px; flex-wrap: wrap; }
+  .site-header .filed { display: none; }
+  .site-header .auth .btn-sm { font-size: 12px; padding: 4px 10px; }
+}
+
+/* ---------- SiteFooter: reflow 4-col grid ---------- */
+@media (max-width: 768px) {
+  .site-footer .page { padding-left: 20px; padding-right: 20px; }
+  .site-footer .row1 {
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+  .site-footer .row1 > div:first-child {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 480px) {
+  .site-footer .row1 { grid-template-columns: 1fr; }
+  .site-footer .legal {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+}
+
+/* ---------- .page: kill horizontal margin overhead on mobile ---------- */
+@media (max-width: 640px) {
+  .page { padding: 0 16px; }
+}
+
+/* ---------- App-shell (dashboard/cases/audit): collapse sidebar ----------
+ * Use minmax(0, 1fr) — plain 1fr respects content min-width which lets
+ * wide children (search input, long crumbs) blow out the grid track.
+ * minmax(0, ...) lets the track shrink below content width and forces
+ * the overflow into a scroll context that won't escape the viewport.
+ */
+@media (max-width: 1024px) {
+  .app-shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .app-shell > * { min-width: 0; }
+  .sidebar {
+    border-right: 0;
+    border-bottom: 1px solid var(--rule);
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 12px 16px;
+    gap: 10px;
+  }
+  .sidebar-brand {
+    padding: 0;
+    border-bottom: 0;
+    margin: 0 8px 0 0;
+  }
+  .sidebar-section {
+    display: none;
+  }
+  .nav-item {
+    border-left: 0;
+    padding: 6px 10px;
+    font-size: 12.5px;
+    border-radius: var(--radius-1);
+  }
+  .nav-item.active {
+    border-left: 0;
+    background: var(--paper-2);
+  }
+  .nav-item .count { margin-left: 6px; }
+  .sidebar-foot { display: none; }
+
+  .topbar {
+    padding: 10px 16px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .topbar .search {
+    min-width: 0;
+    width: 100%;
+    order: 3;
+  }
+  .topbar .search .kbd { display: none; }
+  .topbar .user { margin-left: auto; }
+
+  .content { padding: 16px 16px 48px; }
+  .content-header {
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .content-header h1 {
+    white-space: normal;
+    font-size: 22px;
+  }
+  .content-header .meta { margin-left: 0; font-size: 10.5px; }
+}
+
+/* ---------- Q-table: wrap in horizontal-scroll container on mobile ---------- *
+ * The forensic table is data-dense — squeezing columns at 393px destroys
+ * legibility. Instead, let the table preserve its desktop layout and
+ * scroll horizontally within its container. The page itself stays at
+ * 393px width; only the table area scrolls.
+ */
+@media (max-width: 768px) {
+  .q-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -16px;
+    padding: 0 16px;
+  }
+  .q-table {
+    min-width: 720px;
+    font-size: 12.5px;
+  }
+  .q-table thead th,
+  .q-table tbody td {
+    padding: 8px 10px;
+  }
+}
+
+/* ---------- Toolbar (SaaS workflow shell): wrap on mobile ---------- */
+@media (max-width: 768px) {
+  .toolbar { flex-wrap: wrap; gap: 10px; }
+  .toolbar > * { flex-shrink: 0; }
+  .toolbar-caption { font-size: 11px; margin-bottom: 10px; }
+}
+
+/* ---------- Case shell / detail: stack columns on tablet ---------- */
+@media (max-width: 1024px) {
+  .case-shell,
+  .split-2 {
+    grid-template-columns: 1fr !important;
+    gap: 28px;
+  }
+  .case-sidebar {
+    position: static;
+    border-left: 0;
+    border-top: 1px solid var(--rule);
+    padding-top: 24px;
+  }
+  .case-status {
+    position: static;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 0 0 20px;
+    padding: 10px 16px;
+  }
+  .case-status .actions-overflow {
+    margin-left: 0;
+    flex-wrap: wrap;
+  }
+  /* Module breakdown grid: 5-col is unreadable below 1024px. */
+  .modules-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px;
+  }
+  .case-header-row {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .case-header .actions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  /* Hide the REJECT stamp on mobile — decorative, would clip */
+  .case-header > div[style*="rotate"] {
+    display: none !important;
+  }
+  /* Flag row: collapse 3-col to stacked */
+  .flag-row {
+    grid-template-columns: 28px minmax(0, 1fr) !important;
+    gap: 10px;
+  }
+  .flag-row .module-tag {
+    grid-column: 2 / 3;
+    margin-top: 4px;
+  }
+  /* Evidence stub: stack crop above ledger; ledger keys above values */
+  .es-body {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .es-ledger-row {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 2px;
+  }
+  .es-ledger-row .v {
+    word-break: break-word;
+  }
+}
+@media (max-width: 640px) {
+  .modules-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ---------- Docs page chrome at mobile ---------- */
+.docs-group-grid { display: grid; }
+.docs-group-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.docs-group-grid-2 { grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 768px) {
+  .docs-group-grid-3,
+  .docs-group-grid-2 {
+    grid-template-columns: 1fr !important;
+  }
+  .docs-page .docs-grid,
+  .docs-page .docs-index-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .docs-page h1 { font-size: 28px; line-height: 1.15; }
+  .docs-page h2 { font-size: 22px; }
+  .docs-page table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+  }
+  .docs-page pre {
+    overflow-x: auto;
+    font-size: 11.5px;
+  }
+}
+
+/* ---------- Measure-grid / module-table responsive ---------- */
+@media (max-width: 1024px) {
+  .measure-grid { grid-template-columns: 1fr; gap: 24px; }
+  .trust-strip {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 20px;
+  }
+}
+@media (max-width: 480px) {
+  .trust-strip { grid-template-columns: 1fr !important; }
+  .module-table { font-size: 12.5px; }
+  .module-table td,
+  .module-table th { padding: 8px 6px; }
+}
+
+/* ---------- Forms (login, cases/new): full-width inputs ---------- */
+@media (max-width: 640px) {
+  .auth-card,
+  .new-case-card,
+  .form-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 22px 18px !important;
+  }
+  .form-grid-2 {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+}
+
+/* ---------- Audit print page: horizontal-scroll wrapper on mobile ---------- *
+ * The audit packet is a fixed-width letter-sized artefact. We don't want
+ * to reflow it (that would defeat the print-ready intent). Instead, let
+ * it scroll horizontally inside its viewport so reviewers can read it
+ * on mobile without breaking the print layout.
+ */
+@media (max-width: 1024px) {
+  .audit-page-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 24px;
+  }
+  .print-page {
+    transform: scale(0.55);
+    transform-origin: top left;
+    margin-bottom: -45%;
+  }
+}
+@media (max-width: 480px) {
+  .print-page { transform: scale(0.42); margin-bottom: -58%; }
+}

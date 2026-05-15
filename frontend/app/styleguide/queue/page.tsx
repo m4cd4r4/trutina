@@ -42,6 +42,7 @@ export default function StyleguideQueue() {
         <span className="filter-pill"><span style={{ width: 6, height: 6, background: 'var(--risk-low)', display: 'inline-block' }} />Cleared <span className="ct">{counts.low}</span></span>
       </div>
 
+      <div className="q-table-wrap">
       <table className="q-table">
         <thead>
           <tr>
@@ -90,6 +91,7 @@ export default function StyleguideQueue() {
           })}
         </tbody>
       </table>
+      </div>
     </AppShell>
   )
 }

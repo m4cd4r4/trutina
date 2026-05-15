@@ -30,7 +30,7 @@ export default function BrokersPage() {
         </div>
       </div>
 
-      <div style={{ overflowX: 'auto' }}>
+      <div className="q-table-wrap">
         <table className="q-table">
           <thead>
             <tr>
