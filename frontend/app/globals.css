@@ -443,6 +443,8 @@ hr { border: 0; border-top: var(--rule-width) solid var(--rule); margin: var(--s
 .q-table tbody td { padding: 9px 12px; border-bottom: 1px solid var(--rule-soft); vertical-align: middle; color: var(--ink-100); }
 .q-table tbody tr { cursor: pointer; transition: background var(--dur-fast) var(--ease); }
 .q-table tbody tr:hover { background: var(--paper-1); }
+.q-table tbody tr:focus { outline: 2px solid var(--accent); outline-offset: -2px; background: var(--accent-fill); }
+.q-table tbody tr:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 .q-table tbody tr.row-crit td:first-child { box-shadow: inset 6px 0 0 0 var(--risk-crit); padding-left: 18px; }
 .q-table tbody tr.row-high td:first-child { box-shadow: inset 6px 0 0 0 var(--risk-high); padding-left: 18px; }
 .q-table tbody tr.selected { background: var(--accent-fill); }
@@ -622,10 +624,10 @@ hr { border: 0; border-top: var(--rule-width) solid var(--rule); margin: var(--s
   .site-header .auth { gap: 8px; }
 }
 .site-header .brand { display: flex; align-items: center; text-decoration: none; }
-.site-header nav { display: flex; align-items: center; gap: 22px; margin-left: 16px; }
-.site-header nav a { color: var(--ink-80); text-decoration: none; font-size: 13px; cursor: pointer; }
-.site-header nav a:hover { color: var(--ink-100); }
-.site-header nav a.active { color: var(--ink-100); border-bottom: 1.5px solid var(--ink-100); padding-bottom: 2px; }
+.site-header .nav-desktop { display: flex; align-items: center; gap: 22px; margin-left: 16px; }
+.site-header .nav-desktop a { color: var(--ink-80); text-decoration: none; font-size: 13px; cursor: pointer; }
+.site-header .nav-desktop a:hover { color: var(--ink-100); }
+.site-header .nav-desktop a.active { color: var(--ink-100); border-bottom: 1.5px solid var(--ink-100); padding-bottom: 2px; }
 .site-header .auth { margin-left: auto; display: flex; align-items: center; gap: 12px; }
 .site-header .auth .signin { color: var(--ink-80); text-decoration: none; font-size: 13px; cursor: pointer; background: none; border: 0; font: inherit; padding: 0; }
 .site-header .auth .signin:hover { color: var(--ink-100); }
@@ -1353,7 +1355,7 @@ html:has(.landing-saas) .site-footer {
     flex-wrap: wrap;
     gap: 12px;
   }
-  html:has(.landing-saas) .site-header nav {
+  html:has(.landing-saas) .site-header .nav-desktop {
     display: none;
   }
   html:has(.landing-saas) .site-header .auth {
@@ -1416,18 +1418,116 @@ html:has(.landing-saas) .site-footer {
  *  or horizontal-scroll the whole page.
  * ===================================================================== */
 
-/* ---------- SiteHeader: collapse nav on every page at <=768px ---------- */
+/* ---------- SiteHeader hamburger + drawer ----------
+ * Desktop: nav visible, hamburger hidden, "Open a specimen" visible.
+ * Mobile (<=768px): nav hidden, hamburger button visible, "Open a
+ * specimen" hidden in header (lives inside drawer instead). Drawer
+ * slides in from the right with the full nav, primary CTA, and contact.
+ */
+.site-header .hamburger {
+  display: none;
+  background: transparent;
+  border: 1px solid var(--ink-25);
+  border-radius: var(--radius-1);
+  padding: 8px 10px;
+  cursor: pointer;
+  color: var(--ink-100);
+  width: 40px; height: 40px;
+  align-items: center; justify-content: center;
+  transition: border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
+}
+.site-header .hamburger:hover { border-color: var(--ink-80); background: var(--paper-2); }
+.site-header .hamburger-bars {
+  display: inline-flex; flex-direction: column; gap: 4px;
+  width: 18px;
+}
+.site-header .hamburger-bars span {
+  display: block; height: 2px; width: 100%;
+  background: var(--ink-100);
+  transition: transform var(--dur-fast) var(--ease), opacity var(--dur-fast) var(--ease);
+}
+.site-header .hamburger-bars.is-open span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+.site-header .hamburger-bars.is-open span:nth-child(2) {
+  opacity: 0;
+}
+.site-header .hamburger-bars.is-open span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* Drawer + backdrop are siblings of <header>, not children — the
+ * header has backdrop-filter which creates a containing block that
+ * traps position:fixed children. Selectors must NOT scope to
+ * .site-header. */
+.mobile-drawer {
+  position: fixed; top: 0; right: 0; bottom: 0;
+  width: min(320px, 84vw);
+  background: var(--bg-print-white);
+  border-left: 1px solid var(--ink-25);
+  box-shadow: -12px 0 32px -16px rgba(20, 22, 24, 0.18);
+  transform: translateX(100%);
+  transition: transform var(--dur) var(--ease);
+  z-index: 50;
+  display: flex; flex-direction: column;
+  padding: 72px 24px 24px;
+  visibility: hidden;
+}
+.mobile-drawer.is-open { transform: translateX(0); visibility: visible; }
+.mobile-drawer .drawer-nav {
+  display: flex; flex-direction: column; gap: 4px;
+}
+.mobile-drawer .drawer-nav a {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--rule-soft);
+  font-family: var(--font-sans); font-size: 16px;
+  color: var(--ink-100); text-decoration: none;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.mobile-drawer .drawer-nav a.active { color: var(--accent); font-weight: 600; }
+.mobile-drawer .drawer-foot {
+  margin-top: auto;
+  display: flex; flex-direction: column; gap: 14px;
+  padding-top: 24px;
+}
+.mobile-drawer .drawer-foot .btn { justify-content: center; width: 100%; }
+.mobile-drawer .drawer-engage {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--ink-60);
+  text-decoration: none;
+  text-align: center;
+}
+.drawer-backdrop {
+  position: fixed; inset: 0; background: rgba(20, 22, 24, 0.32);
+  z-index: 49;
+  animation: backdrop-in 200ms ease both;
+}
+@keyframes backdrop-in { from { opacity: 0; } to { opacity: 1; } }
+
+.site-header .hide-on-mobile { display: inline-flex; }
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-drawer { transition: none; }
+  .drawer-backdrop { animation: none; }
+}
+
+/* ---------- SiteHeader mobile reflow ---------- */
 @media (max-width: 768px) {
   .site-header .inner {
     padding-left: 20px;
     padding-right: 20px;
-    flex-wrap: wrap;
     gap: 10px;
   }
-  .site-header nav { display: none; }
-  .site-header .auth { margin-left: auto; gap: 10px; flex-wrap: wrap; }
+  .site-header .nav-desktop { display: none; }
+  .site-header .auth { margin-left: auto; gap: 10px; }
   .site-header .filed { display: none; }
-  .site-header .auth .btn-sm { font-size: 12px; padding: 4px 10px; }
+  .site-header .hide-on-mobile { display: none; }
+  .site-header .hamburger { display: inline-flex; }
+}
+@media (min-width: 769px) {
+  .mobile-drawer,
+  .drawer-backdrop { display: none !important; }
 }
 
 /* ---------- SiteFooter: reflow 4-col grid ---------- */

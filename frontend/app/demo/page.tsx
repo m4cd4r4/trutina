@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { DEMO_CASES } from '@/lib/demo-data'
 import SiteHeader from '@/components/design/SiteHeader'
 import SiteFooter from '@/components/design/SiteFooter'
@@ -8,6 +8,7 @@ import { RiskBadge } from '@/components/design/atoms'
 import { tierToken } from '@/lib/case-modules'
 
 export default function DemoLandingPage() {
+  const router = useRouter()
   return (
     <>
       <SiteHeader active="demo" />
@@ -42,11 +43,19 @@ export default function DemoLandingPage() {
                 const t = tierToken(c.risk_level)
                 const rowCls = t === 'crit' ? 'row-crit' : t === 'high' ? 'row-high' : ''
                 const totalFlags = c.flag_counts.critical + c.flag_counts.high + c.flag_counts.medium + c.flag_counts.low
+                const href = `/demo/${c.id}`
+                const navigate = () => router.push(href)
                 return (
-                  <tr key={c.id} className={rowCls}>
-                    <td className="mono">
-                      <Link href={`/demo/${c.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>{c.reference}</Link>
-                    </td>
+                  <tr
+                    key={c.id}
+                    className={rowCls}
+                    role="link"
+                    tabIndex={0}
+                    aria-label={`Open case ${c.reference} — ${c.applicant_name}`}
+                    onClick={navigate}
+                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate() } }}
+                  >
+                    <td className="mono">{c.reference}</td>
                     <td>
                       <div style={{ fontSize: 13 }}>{c.applicant_name}</div>
                       <div className="derived" style={{ fontSize: 11.5 }}>{c.headline}</div>
@@ -72,13 +81,13 @@ export default function DemoLandingPage() {
         </div>
 
         <div style={{ marginTop: 48, padding: 32, background: 'var(--paper-1)', border: '1px solid var(--rule)', textAlign: 'center' }}>
-          <h2 style={{ fontSize: 22, marginBottom: 8 }}>Try with your own documents</h2>
+          <h2 style={{ fontSize: 22, marginBottom: 8 }}>Assess against your portfolio</h2>
           <p style={{ color: 'var(--ink-60)', maxWidth: 480, margin: '0 auto 16px' }}>
-            Start a 30-day trial. Upload up to 5 documents. No credit card.
+            For Australian lenders, aggregators, and credit-risk teams. Source and methods paper available on request.
           </p>
           <div style={{ display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap' }}>
-            <Link href="/?trial=1" className="btn btn-primary">Start trial</Link>
-            <a href="mailto:hello@trutina.com.au" className="btn-text">hello@trutina.com.au</a>
+            <a href="mailto:hello@trutina.com.au?subject=Trutina%20engagement%20enquiry" className="btn btn-primary">Email about an engagement</a>
+            <a href="/methods-paper.pdf" target="_blank" rel="noopener" className="btn-text">Methods paper (PDF)</a>
           </div>
         </div>
       </main>
