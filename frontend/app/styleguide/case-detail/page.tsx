@@ -42,7 +42,7 @@ export default function StyleguideCaseDetail() {
           <div className="score-stack">
             <RiskBadge tier={t} stark score={c.risk_score!} />
             <div style={{ marginTop: 4 }}>
-              <span className="n" style={{ color: 'var(--risk-crit)' }}>{c.risk_score}</span>
+              <span className="n tier-ink-crit">{c.risk_score}</span>
               <span className="of">/100</span>
             </div>
             <div className="mono" style={{ fontSize: 11, color: 'var(--ink-40)', marginTop: -8 }}>{c.flags.length} flags</div>

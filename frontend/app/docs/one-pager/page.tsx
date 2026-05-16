@@ -1,9 +1,7 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import { Microscope, Bot, Link2, Calculator, Users, ClipboardList, Check } from 'lucide-react'
 import { Logo } from '@/components/Logo'
-import SiteHeader from '@/components/design/SiteHeader'
-import SiteFooter from '@/components/design/SiteFooter'
+import DocShell from '@/components/DocShell'
 
 export const metadata: Metadata = {
   title: 'Sales One-Pager — AI Lending Fraud Detection',
@@ -60,68 +58,13 @@ const STEPS = [
 
 export default function OnePager() {
   return (
-    <>
-      {/* Print styles */}
-      <style dangerouslySetInnerHTML={{ __html: `
-        @media print {
-          @page {
-            margin: 1.5cm;
-            size: A4;
-          }
-          body {
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
-          }
-          .no-print { display: none !important; }
-          .print-page {
-            background: white !important;
-            color: #111 !important;
-            padding: 0 !important;
-            min-height: auto !important;
-          }
-          .print-page * {
-            color: #111 !important;
-            border-color: #ddd !important;
-          }
-          .print-page .print-blue { color: #1F4FA3 !important; }
-          .print-page .print-muted { color: #555 !important; }
-          .print-page .print-light { color: #888 !important; }
-          .print-page .print-card {
-            background: #f8f9fa !important;
-            border: 1px solid #e5e7eb !important;
-          }
-          .print-page .print-highlight {
-            background: #eff6ff !important;
-            border: 2px solid #1F4FA3 !important;
-          }
-          .print-page .print-alert {
-            background: #fef2f2 !important;
-            border: 1px solid #fca5a5 !important;
-          }
-          .print-page .print-alert * { color: #991b1b !important; }
-          .print-page .print-step-num {
-            background: #1F4FA3 !important;
-            color: white !important;
-          }
-          .print-page a { text-decoration: none !important; }
-        }
-      `}} />
-
-      <div className="min-h-screen docs-page print-page"
-        style={{  }}>
-
-        {/* Screen nav */}
-        <SiteHeader active="docs" />
-
-        <div className="max-w-4xl mx-auto px-4 sm:px-8 py-8 sm:py-12">
-
-          {/* Header */}
-          <div className="text-center mb-8 sm:mb-10">
+    <DocShell
+      title="Sales One-Pager"
+      intro="AI Lending Fraud Detection for Australian Lenders"
+    >
+          <div className="text-center mb-8 sm:mb-10 no-print">
             <Logo variant="wordmark" href="" className="text-2xl sm:text-3xl" />
-            <h1 className="text-lg sm:text-xl font-semibold text-white/80 print-muted mb-2">
-              AI Lending Fraud Detection for Australian Lenders
-            </h1>
-            <div className="w-16 h-0.5 bg-teal-500 mx-auto" />
+            <div className="w-16 h-0.5 bg-teal-500 mx-auto mt-2" />
           </div>
 
           {/* Problem */}
@@ -250,9 +193,6 @@ export default function OnePager() {
             </div>
           </div>
 
-        </div>
-      <SiteFooter />
-      </div>
-    </>
+    </DocShell>
   )
 }

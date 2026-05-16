@@ -276,27 +276,37 @@ hr { border: 0; border-top: var(--rule-width) solid var(--rule); margin: var(--s
 .risk-high     { --r-ink: var(--risk-high); --r-fill: var(--risk-high-fill); --r-edge: var(--risk-high-edge); }
 .risk-crit     { --r-ink: var(--risk-crit); --r-fill: var(--risk-crit-fill); --r-edge: var(--risk-crit-edge); }
 
+/* Tier ink utilities - replace inline ternary colour patterns on score cells. */
+.tier-ink-crit { color: var(--risk-crit); font-weight: 600; }
+.tier-ink-high { color: var(--risk-high); }
+.tier-ink-med  { color: var(--risk-med); }
+.tier-ink-low,
+.tier-ink-base { color: var(--ink-100); }
+
 /* =====================================================================
  *  Shared atoms (badges, buttons, tables)
  *  Ported from ui_kits/app/app.css.
  * ===================================================================== */
 
+/* Base pill — shared by stamp-badge, stamp-stark, mk-stamp, ProvenanceTag. */
+.pill {
+  display: inline-flex; align-items: center;
+  font-family: var(--font-sans); font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  border-radius: var(--radius-1); border: 1px solid transparent;
+}
+
 .stamp-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 3px 8px;
-  font-family: var(--font-sans); font-weight: 700; font-size: 10px;
-  letter-spacing: 0.16em; text-transform: uppercase;
-  border-radius: var(--radius-1); color: var(--r-ink, var(--ink-100));
+  gap: 6px; padding: 3px 8px; font-size: 10px; letter-spacing: 0.16em;
+  color: var(--r-ink, var(--ink-100));
   background: var(--r-fill, var(--paper-2));
-  border: 1px solid var(--r-edge, var(--rule));
+  border-color: var(--r-edge, var(--rule));
 }
 .stamp-badge .pip { width: 5px; height: 5px; background: var(--r-ink, var(--ink-100)); border-radius: 50%; }
 
 .stamp-stark {
-  display: inline-flex; padding: 5px 11px;
+  padding: 5px 11px; font-size: 11px; letter-spacing: 0.18em;
   background: var(--r-ink, var(--ink-100)); color: var(--paper-0);
-  font-family: var(--font-sans); font-weight: 700; font-size: 11px; letter-spacing: 0.18em;
-  border-radius: var(--radius-1);
 }
 
 .btn {
@@ -768,7 +778,7 @@ hr { border: 0; border-top: var(--rule-width) solid var(--rule); margin: var(--s
 .cite-link { font-family: var(--font-sans); font-weight: 600; font-size: 0.66em; color: var(--accent); text-decoration: none; padding: 0 1px; vertical-align: super; line-height: 0; }
 .cite-link:hover { text-decoration: underline; }
 
-.mk-stamp { display: inline-block; padding: 1px 6px; font-family: var(--font-sans); font-weight: 700; font-size: 0.78em; letter-spacing: 0.14em; text-transform: uppercase; background: var(--r-fill); color: var(--r-ink); border: 1px solid var(--r-edge); border-radius: var(--radius-1); vertical-align: 2px; font-variation-settings: normal; }
+.mk-stamp { padding: 1px 6px; font-size: 0.78em; background: var(--r-fill); color: var(--r-ink); border-color: var(--r-edge); vertical-align: 2px; font-variation-settings: normal; }
 
 .mk-section[id] { scroll-margin-top: 84px; }
 
@@ -891,6 +901,57 @@ hr { border: 0; border-top: var(--rule-width) solid var(--rule); margin: var(--s
 .docs-page [style*="#0a1210"],
 .docs-page [style*="#0d9488"] {
   background: var(--bg) !important;
+}
+
+/* =====================================================================
+ *  /docs/* shared print styles
+ *  Consolidated from the per-page <style dangerouslySetInnerHTML> blocks.
+ *  Scoped under .docs-page so only doc pages pick it up.
+ *  NOTE: .print-blue uses oxblood (#6E2A38) to match --accent which drives
+ *  all teal headings on screen; the old inline blocks used #1F4FA3 (blue) -
+ *  that was incorrect and is fixed here.
+ * ===================================================================== */
+@media print {
+  @page {
+    margin: 1.5cm;
+    size: A4;
+  }
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .docs-page .no-print { display: none !important; }
+  .docs-page .print-page {
+    background: white !important;
+    color: #111 !important;
+    padding: 0 !important;
+    min-height: auto !important;
+  }
+  .docs-page .print-page * {
+    color: #111 !important;
+    border-color: #ddd !important;
+  }
+  .docs-page .print-blue { color: #6E2A38 !important; }
+  .docs-page .print-muted { color: #555 !important; }
+  .docs-page .print-light { color: #888 !important; }
+  .docs-page .print-card {
+    background: #f8f9fa !important;
+    border: 1px solid #e5e7eb !important;
+  }
+  .docs-page .print-highlight {
+    background: #eff6ff !important;
+    border: 2px solid #6E2A38 !important;
+  }
+  .docs-page .print-alert {
+    background: #fef2f2 !important;
+    border: 1px solid #fca5a5 !important;
+  }
+  .docs-page .print-alert * { color: #991b1b !important; }
+  .docs-page .print-step-num {
+    background: #6E2A38 !important;
+    color: white !important;
+  }
+  .docs-page a { text-decoration: none !important; }
 }
 
 /* =====================================================================

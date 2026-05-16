@@ -5,6 +5,7 @@ import Link from 'next/link'
 import SiteHeader from '@/components/design/SiteHeader'
 import SiteFooter from '@/components/design/SiteFooter'
 import HeroSpecimenPreview from '@/components/design/HeroSpecimenPreview'
+import { EngagementCTA } from '@/components/EngagementCTA'
 
 /* Portfolio landing — SaaS-shape rewrite.
  *
@@ -203,15 +204,7 @@ Content-Type:  application/json
               <p className="section-lede">
                 The engine, rule library, and audit packet design are available for assessment by Australian lenders, aggregators, and credit-risk teams. Bespoke engagements, not a SaaS subscription. Source and methods paper on request.
               </p>
-              <a
-                href="mailto:hello@trutina.com.au?subject=Trutina%20engagement%20enquiry"
-                className="engagement-cta"
-              >
-                Email me about an engagement <span aria-hidden="true">→</span>
-              </a>
-              <p className="engagement-sub">
-                Replies within 48 hours from Perth (AWST).
-              </p>
+              <EngagementCTA variant="saas" />
             </div>
           </section>
 
