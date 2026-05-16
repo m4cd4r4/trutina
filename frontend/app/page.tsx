@@ -25,6 +25,13 @@ const MODULES = [
   { id: 'NC', name: 'Network clustering',    range: 'NC-001 to NC-005', rules: 5,  ex: 'Font subset hash appears in 4 cases across one broker in 60 days.' },
 ]
 
+const FLOW = [
+  { n: '01', t: 'A case arrives', d: 'Payslip, bank statement, employer letter, application form. Every file is hashed with SHA-256 before a single rule reads it.', meta: 'POST /v1/cases, or via LOS connector' },
+  { n: '02', t: 'Five modules read it', d: 'Producer, identity, arithmetic, employer, network. Each runs its own rules against the source PDFs, independently. No shared black-box score.', meta: '46 cited rules across 5 modules' },
+  { n: '03', t: 'Highest module wins', d: 'The case score is the single highest module score, never an average. One Critical module makes a Critical case. Every flag drills to the rule and the byte.', meta: 'Disagree? See the next-highest' },
+  { n: '04', t: 'Signed evidence packet', d: 'The verdict ships with the rules that fired, the field each one read, and a citation for every rule. Written to a WORM ledger.', meta: 'AES-256 . AU residency . 7-year retention' },
+]
+
 export default function Landing() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -100,13 +107,35 @@ export default function Landing() {
             </dl>
           </section>
 
+          {/* How it works — scannable pipeline before the deep detail */}
+          <section id="how" className="saas-section">
+            <div>
+              <div className="saas-eyebrow">01 — How it works</div>
+              <h2>How a case moves through the engine.</h2>
+              <p className="section-lede">
+                Four steps, no black box. Documents go in; a scored verdict and a citable evidence packet come out.
+              </p>
+            </div>
+
+            <div className="saas-flow">
+              {FLOW.map(s => (
+                <div className="flow-step" key={s.n}>
+                  <span className="n">{s.n}</span>
+                  <div className="t">{s.t}</div>
+                  <div className="d">{s.d}</div>
+                  <div className="meta">{s.meta}</div>
+                </div>
+              ))}
+            </div>
+          </section>
+
           {/* Measurements */}
           <section id="measurements" className="saas-section">
             <div>
-              <div className="saas-eyebrow">01 — What it measures</div>
+              <div className="saas-eyebrow">02 — What it measures</div>
               <h2>Producer, identity, arithmetic.</h2>
               <p className="section-lede">
-                A payslip is a PDF. It has metadata, a layout, and an arithmetic structure. Trutina reads the PDF as a forensic file before it reads it as a document. Three of the four properties cost the borrower nothing to produce honestly; the fourth — arithmetic — cannot be faked without leaving a trace.
+                Trutina reads the PDF as a forensic file before it reads it as a document. Three of the four properties cost the borrower nothing to produce honestly; the fourth, arithmetic, cannot be faked without leaving a trace.
               </p>
             </div>
 
@@ -125,10 +154,10 @@ export default function Landing() {
           {/* Demo CTA */}
           <section id="demo" className="saas-section">
             <div>
-              <div className="saas-eyebrow">02 — Worked specimens</div>
+              <div className="saas-eyebrow">03 — Worked specimens</div>
               <h2>Five redacted Australian cases.</h2>
               <p className="section-lede">
-                Clean applications next to fabricated ones, all five submitted through Australian broker channels. Each specimen shows the source PDFs, the named rules that fired, and the audit packet that would be produced. No sign-in. Read-only. Synthetic data.
+                Clean applications next to fabricated ones, all submitted through Australian broker channels. Each shows the source PDFs, the rules that fired, and the audit packet produced. No sign-in. Read-only. Synthetic data.
               </p>
               <Link href="/demo" className="btn btn-primary">Open the specimens →</Link>
             </div>
@@ -137,10 +166,10 @@ export default function Landing() {
           {/* Methods + integration */}
           <section id="methods" className="saas-section">
             <div>
-              <div className="saas-eyebrow">03 — Methods & integration</div>
+              <div className="saas-eyebrow">04 — Methods & integration</div>
               <h2>How a deployment receives a case.</h2>
               <p className="section-lede">
-                The design contemplates an LOS integration: POST a case bundle, receive a verdict and an evidence packet, decide. Data residency Australia, encryption AES-256, evidence ledger retained seven years. This portfolio site does not run the engine against uploaded files.
+                The shape of a working LOS integration: POST a case bundle, receive a verdict and an evidence packet. AU data residency, AES-256, seven-year ledger. This portfolio site does not run the engine against uploaded files.
               </p>
             </div>
 
@@ -169,10 +198,10 @@ Content-Type:  application/json
               it from the white reading sections above. */}
           <section id="engagements" className="saas-section is-conversion">
             <div>
-              <div className="saas-eyebrow">04 — Engagements</div>
+              <div className="saas-eyebrow">05 — Engagements</div>
               <h2>Available for genuine enquiries.</h2>
               <p className="section-lede">
-                The Trutina engine, rule library, and audit packet design are available for assessment by Australian lenders, aggregators, and credit-risk teams. Source and methods paper available on request. Bespoke engagements rather than a SaaS subscription.
+                The engine, rule library, and audit packet design are available for assessment by Australian lenders, aggregators, and credit-risk teams. Bespoke engagements, not a SaaS subscription. Source and methods paper on request.
               </p>
               <a
                 href="mailto:hello@trutina.com.au?subject=Trutina%20engagement%20enquiry"
@@ -189,7 +218,7 @@ Content-Type:  application/json
           {/* References */}
           <section id="refs" className="saas-section" style={{ paddingBottom: 80 }}>
             <div>
-              <div className="saas-eyebrow">05 — Citations</div>
+              <div className="saas-eyebrow">06 — Citations</div>
               <h2 style={{ fontSize: 24 }}>References</h2>
             </div>
             <div className="saas-refs">
