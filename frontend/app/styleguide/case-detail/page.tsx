@@ -30,7 +30,7 @@ export default function StyleguideCaseDetail() {
             <div className="case-id">
               <span className="mono">{c.reference}</span>
               <span className="dot-sep">.</span>
-              <span className="mono" style={{ color: 'var(--accent)' }}>{c.broker?.broker_name}</span>
+              <span className="mono" style={{ color: 'var(--ink-100)' }}>{c.broker?.broker_name}</span>
             </div>
             <h2 className="title">Payslip does not reconcile to MYOB producer signature</h2>
             <div className="sub">
