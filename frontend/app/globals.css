@@ -839,77 +839,14 @@ hr { border: 0; border-top: var(--rule-width) solid var(--rule); margin: var(--s
 }
 
 /* =====================================================================
- *  /docs/* compatibility shim
- *  The /docs pages were authored against a dark-teal palette with
- *  text-white utility classes throughout. Rather than touching ~4300 lines
- *  of doc JSX, this shim:
- *    1. Sets the doc page substrate to cool-paper.
- *    2. Remaps every text-white/N and border-white/N descendant utility
- *       to ink/rule equivalents.
- *    3. Recolours the teal/red/amber/green accent classes to design-system
- *       token equivalents.
- *  Applied via className="docs-page" on each /docs route root element.
- * ===================================================================== */
-.docs-page {
-  background: var(--bg) !important;
-  color: var(--ink-100) !important;
-}
-.docs-page .text-white         { color: var(--ink-100) !important; }
-.docs-page .text-white\/90     { color: var(--ink-100) !important; }
-.docs-page .text-white\/80     { color: var(--ink-80) !important; }
-.docs-page .text-white\/70     { color: var(--ink-80) !important; }
-.docs-page .text-white\/60     { color: var(--ink-60) !important; }
-.docs-page .text-white\/50     { color: var(--ink-60) !important; }
-.docs-page .text-white\/40     { color: var(--ink-40) !important; }
-.docs-page .text-white\/30     { color: var(--ink-40) !important; }
-.docs-page .text-white\/20     { color: var(--ink-25) !important; }
-.docs-page .text-white\/10     { color: var(--ink-15) !important; }
-.docs-page .border-white\/20   { border-color: var(--ink-25) !important; }
-.docs-page .border-white\/10   { border-color: var(--rule) !important; }
-.docs-page .border-white\/5    { border-color: var(--rule-soft) !important; }
-.docs-page .bg-white\/5        { background: var(--paper-1) !important; }
-.docs-page .bg-white\/10       { background: var(--paper-2) !important; }
-.docs-page .bg-white\/20       { background: var(--paper-2) !important; }
-.docs-page .bg-white\/40       { background: var(--paper-2) !important; }
-.docs-page .placeholder-white\/20::placeholder { color: var(--ink-25) !important; }
-/* Teal accent -> oxblood (--accent is oxblood #6E2A38) */
-.docs-page [class*="text-teal"] { color: var(--accent) !important; }
-.docs-page [class*="bg-teal"]   { background: var(--accent) !important; color: var(--paper-0) !important; }
-.docs-page [class*="border-teal"] { border-color: var(--accent-edge) !important; }
-.docs-page [class*="hover\:bg-teal"]:hover { background: var(--accent-press) !important; }
-/* Emerald -> accent. These mark affirmative/"guarantee/savings" callouts,
- * not risk tiers - map to the brand accent so risk-low (a severity token)
- * is not overloaded as a decorative success colour. */
-.docs-page [class*="text-emerald"]   { color: var(--accent) !important; }
-.docs-page [class*="bg-emerald"]     { background: var(--accent-fill) !important; color: var(--accent-press) !important; }
-.docs-page [class*="border-emerald"] { border-color: var(--accent-edge) !important; }
-/* Amber / orange -> aged brass + rust */
-.docs-page [class*="text-amber"]   { color: var(--risk-med) !important; }
-.docs-page [class*="bg-amber"]     { background: var(--risk-med) !important; color: var(--paper-0) !important; }
-.docs-page [class*="border-amber"] { border-color: var(--risk-med-edge) !important; }
-.docs-page [class*="text-orange"]  { color: var(--risk-high) !important; }
-.docs-page [class*="bg-orange"]    { background: var(--risk-high) !important; color: var(--paper-0) !important; }
-.docs-page [class*="border-orange"] { border-color: var(--risk-high-edge) !important; }
-/* Red -> stamp oxblood */
-.docs-page [class*="text-red"]     { color: var(--risk-crit) !important; }
-.docs-page [class*="bg-red"]       { background: var(--risk-crit) !important; color: var(--paper-0) !important; }
-.docs-page [class*="border-red"]   { border-color: var(--risk-crit-edge) !important; }
-/* Inline-hex overrides (style={{ background: '#0a1210' }} etc).
- * These can't be selector-targeted; pages will need the inline style
- * stripped or replaced. Captured as follow-up; for now the parent
- * .docs-page background wins for the outermost element via specificity. */
-.docs-page [style*="#0a1210"],
-.docs-page [style*="#0d9488"] {
-  background: var(--bg) !important;
-}
-
-/* =====================================================================
- *  /docs/* shared print styles
- *  Consolidated from the per-page <style dangerouslySetInnerHTML> blocks.
- *  Scoped under .docs-page so only doc pages pick it up.
- *  NOTE: .print-blue uses oxblood (#6E2A38) to match --accent which drives
- *  all teal headings on screen; the old inline blocks used #1F4FA3 (blue) -
- *  that was incorrect and is fixed here.
+ *  /docs/* print styles
+ *  The /docs pages now render natively in the editorial system, whose
+ *  tokens are already print-safe (light paper, dark ink, oxblood accent) -
+ *  screen and print are the same colour, so no medium-dependent colour
+ *  forcing is needed. This rebases the old shim print block onto the
+ *  editorial classes: A4 page geometry, accurate colour, drop link
+ *  underlines for a regulator-ready PDF. Chrome is hidden by the audit
+ *  @media print block above.
  * ===================================================================== */
 @media print {
   @page {
@@ -921,36 +858,6 @@ hr { border: 0; border-top: var(--rule-width) solid var(--rule); margin: var(--s
     print-color-adjust: exact;
   }
   .docs-page .no-print { display: none !important; }
-  .docs-page .print-page {
-    background: white !important;
-    color: #111 !important;
-    padding: 0 !important;
-    min-height: auto !important;
-  }
-  .docs-page .print-page * {
-    color: #111 !important;
-    border-color: #ddd !important;
-  }
-  .docs-page .print-blue { color: #6E2A38 !important; }
-  .docs-page .print-muted { color: #555 !important; }
-  .docs-page .print-light { color: #888 !important; }
-  .docs-page .print-card {
-    background: #f8f9fa !important;
-    border: 1px solid #e5e7eb !important;
-  }
-  .docs-page .print-highlight {
-    background: #eff6ff !important;
-    border: 2px solid #6E2A38 !important;
-  }
-  .docs-page .print-alert {
-    background: #fef2f2 !important;
-    border: 1px solid #fca5a5 !important;
-  }
-  .docs-page .print-alert * { color: #991b1b !important; }
-  .docs-page .print-step-num {
-    background: #6E2A38 !important;
-    color: white !important;
-  }
   .docs-page a { text-decoration: none !important; }
 }
 
@@ -2140,18 +2047,6 @@ html:has(.landing-saas) .site-footer .legal { letter-spacing: -0.002em; }
   .docs-page pre {
     overflow-x: auto;
     font-size: 11.5px;
-  }
-  /* The docs roots reuse .print-page (an 820px paper-document mock with a
-   * 110px lab-notebook left margin). That padding is absolute, so on a
-   * 393px phone it left ~165px of content and ran pages 6800px+ tall.
-   * Collapse the paper chrome on mobile; @media print still overrides. */
-  .docs-page.print-page {
-    max-width: 100%;
-    padding: 24px 18px 56px;
-    min-height: 0;
-    margin: 0;
-    border: 0;
-    box-shadow: none;
   }
 }
 

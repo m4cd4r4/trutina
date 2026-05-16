@@ -1,6 +1,6 @@
 // Shared shell for /docs/* subpages.
-// Standardises: root div, SiteHeader, container width (max-w-4xl),
-// back-to-docs nav, h1, optional intro, footer, SiteFooter.
+// Emits the editorial scaffold (mirrors app/docs/page.tsx): .page container,
+// forensic margin, serif heading, editorial tokens. No Tailwind dark utilities.
 // NOTE: pitch/page.tsx is a fullscreen slide deck and is excluded.
 
 import type { ReactNode } from 'react'
@@ -17,27 +17,38 @@ interface DocShellProps {
 
 export default function DocShell({ title, intro, updated, children }: DocShellProps) {
   return (
-    <div className="min-h-screen docs-page print-page">
+    <div className="min-h-screen docs-page">
       <SiteHeader active="docs" />
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-8 py-8 sm:py-12">
-        <div className="mb-10">
-          <Link href="/docs" className="text-white/30 hover:text-white/50 text-xs uppercase tracking-wider transition no-print">
-            Back to Docs
+      <main className="page" style={{ paddingTop: 56, paddingBottom: 80 }}>
+        <header style={{ borderBottom: '1px solid var(--rule)', paddingBottom: 28, marginBottom: 40 }}>
+          <Link
+            href="/docs"
+            className="t-section no-print"
+            style={{ color: 'var(--ink-40)', textDecoration: 'none', display: 'inline-block', marginBottom: 16 }}
+          >
+            &larr; Back to Docs
           </Link>
-          <h1 className="text-3xl sm:text-4xl font-bold mt-2 mb-3">{title}</h1>
+          <h1 style={{ fontSize: 40, lineHeight: 1.1, marginBottom: intro ? 14 : 0, fontVariationSettings: '"opsz" 36', textWrap: 'balance' }}>
+            {title}
+          </h1>
           {intro ? (
-            <p className="text-white/50 max-w-2xl">{intro}</p>
+            <p style={{ fontFamily: 'var(--font-serif)', fontSize: 17, color: 'var(--ink-80)', lineHeight: 1.55, maxWidth: '62ch', fontVariationSettings: '"opsz" 16' }}>
+              {intro}
+            </p>
           ) : null}
-        </div>
+        </header>
 
         {children}
 
-        <div className="mt-12 pt-6 border-t border-white/5 text-center text-white/20 text-xs">
-          {updated ? <p>Last updated: {updated}</p> : null}
-          <p className="mt-1">&copy; Trutina &mdash; AI Lending Fraud Detection</p>
+        <div
+          className="t-caption"
+          style={{ marginTop: 56, paddingTop: 18, borderTop: '1px solid var(--rule)', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: 8 }}
+        >
+          {updated ? <span>Last updated: {updated}</span> : <span />}
+          <span>&copy; Trutina &mdash; AI Lending Fraud Detection</span>
         </div>
-      </div>
+      </main>
 
       <SiteFooter />
     </div>

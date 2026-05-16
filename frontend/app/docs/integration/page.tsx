@@ -4,6 +4,8 @@ import { useState } from 'react'
 import Link from 'next/link'
 import DocShell from '@/components/DocShell'
 
+const CARD = { background: 'var(--bg-print-white)', border: '1px solid var(--rule-soft)' } as const
+
 const CODE_SAMPLES = {
   python: {
     label: 'Python',
@@ -127,15 +129,24 @@ function CodeBlock({ code, language }: { code: string; language: string }) {
     <div className="relative group">
       <button
         onClick={handleCopy}
-        className="absolute top-3 right-3 px-2 py-1 text-[10px] uppercase tracking-wider rounded border border-white/10 text-white/40 hover:text-white/70 hover:border-white/20 transition opacity-0 group-hover:opacity-100 no-print"
+        className="absolute top-3 right-3 px-2 py-1 text-[10px] uppercase tracking-wider rounded transition opacity-0 group-hover:opacity-100 no-print"
+        style={{ border: '1px solid var(--rule)', color: 'var(--ink-40)' }}
+        onMouseEnter={e => {
+          (e.currentTarget as HTMLButtonElement).style.color = 'var(--ink-80)'
+          ;(e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--ink-25)'
+        }}
+        onMouseLeave={e => {
+          (e.currentTarget as HTMLButtonElement).style.color = 'var(--ink-40)'
+          ;(e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--rule)'
+        }}
       >
         {copied ? 'Copied' : 'Copy'}
       </button>
       <pre
         className="overflow-x-auto rounded-lg p-4 text-[13px] leading-relaxed font-mono"
-        style={{ background: 'rgba(0,0,0,0.4)' }}
+        style={{ background: 'var(--paper-2)', border: '1px solid var(--rule)', color: 'var(--ink-100)' }}
       >
-        <code className="text-white/80" data-language={language}>{code}</code>
+        <code data-language={language}>{code}</code>
       </pre>
     </div>
   )
@@ -143,7 +154,11 @@ function CodeBlock({ code, language }: { code: string; language: string }) {
 
 function SectionHeading({ id, children }: { id: string; children: React.ReactNode }) {
   return (
-    <h2 id={id} className="text-xl font-bold mt-12 mb-4 pt-4 border-t border-white/5 scroll-mt-24">
+    <h2
+      id={id}
+      className="mt-12 mb-4 pt-4 scroll-mt-24"
+      style={{ marginBottom: 12, borderTop: '1px solid var(--rule-soft)' }}
+    >
       {children}
     </h2>
   )
@@ -152,8 +167,8 @@ function SectionHeading({ id, children }: { id: string; children: React.ReactNod
 function InlineCode({ children }: { children: React.ReactNode }) {
   return (
     <code
-      className="text-[13px] font-mono px-1.5 py-0.5 rounded text-teal-300"
-      style={{ background: 'rgba(59,130,246,0.1)' }}
+      className="text-[13px] font-mono px-1.5 py-0.5 rounded"
+      style={{ background: 'var(--paper-2)', color: 'var(--ink-100)' }}
     >
       {children}
     </code>
@@ -171,10 +186,10 @@ export default function IntegrationGuide() {
 
           {/* Table of Contents */}
           <div
-            className="rounded-xl border border-white/10 p-5 mb-10 no-print"
-            style={{ background: 'rgba(255,255,255,0.04)' }}
+            className="rounded-xl p-5 mb-10 no-print"
+            style={CARD}
           >
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-white/40 mb-3">On this page</h2>
+            <h2 className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: 'var(--ink-40)' }}>On this page</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 text-sm">
               {[
                 ['overview', 'Overview'],
@@ -187,7 +202,7 @@ export default function IntegrationGuide() {
                 ['webhooks', 'Webhooks'],
                 ['support', 'Support'],
               ].map(([id, label]) => (
-                <a key={id} href={`#${id}`} className="text-teal-400 hover:text-teal-300 transition">
+                <a key={id} href={`#${id}`} style={{ color: 'var(--accent)' }} className="transition">
                   {label}
                 </a>
               ))}
@@ -196,38 +211,38 @@ export default function IntegrationGuide() {
 
           {/* Overview */}
           <SectionHeading id="overview">Overview</SectionHeading>
-          <div className="text-white/60 text-sm leading-relaxed space-y-3">
+          <div className="text-sm leading-relaxed space-y-3" style={{ color: 'var(--ink-60)' }}>
             <p>
               Trutina exposes a single webhook endpoint for document analysis.
               Submit one or more base64-encoded documents and receive a comprehensive risk assessment
               with individual flags, severity scores, and a recommended action.
             </p>
             <div
-              className="rounded-lg border border-white/10 p-4 flex flex-col sm:flex-row sm:items-center gap-3"
-              style={{ background: 'rgba(255,255,255,0.04)' }}
+              className="rounded-lg p-4 flex flex-col sm:flex-row sm:items-center gap-3"
+              style={{ ...CARD }}
             >
-              <span className="px-2.5 py-1 bg-emerald-600/30 text-emerald-300 text-xs font-mono rounded shrink-0 w-fit">POST</span>
-              <code className="text-teal-300 text-sm font-mono break-all">/api/v1/webhooks/ingest</code>
+              <span className="px-2.5 py-1 text-xs font-mono rounded shrink-0 w-fit" style={{ background: 'var(--accent-fill)', color: 'var(--accent-press)' }}>POST</span>
+              <code className="text-sm font-mono break-all" style={{ color: 'var(--accent)' }}>/api/v1/webhooks/ingest</code>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
-              <div className="rounded-lg border border-white/10 p-3" style={{ background: 'rgba(255,255,255,0.04)' }}>
-                <p className="text-[10px] uppercase tracking-wider text-white/30 mb-1">Authentication</p>
-                <p className="text-white/80 text-sm"><InlineCode>X-Api-Key</InlineCode> header</p>
+              <div className="rounded-lg p-3" style={CARD}>
+                <p className="text-[10px] uppercase tracking-wider mb-1" style={{ color: 'var(--ink-40)' }}>Authentication</p>
+                <p className="text-sm" style={{ color: 'var(--ink-80)' }}><InlineCode>X-Api-Key</InlineCode> header</p>
               </div>
-              <div className="rounded-lg border border-white/10 p-3" style={{ background: 'rgba(255,255,255,0.04)' }}>
-                <p className="text-[10px] uppercase tracking-wider text-white/30 mb-1">Content Type</p>
-                <p className="text-white/80 text-sm"><InlineCode>application/json</InlineCode></p>
+              <div className="rounded-lg p-3" style={CARD}>
+                <p className="text-[10px] uppercase tracking-wider mb-1" style={{ color: 'var(--ink-40)' }}>Content Type</p>
+                <p className="text-sm" style={{ color: 'var(--ink-80)' }}><InlineCode>application/json</InlineCode></p>
               </div>
-              <div className="rounded-lg border border-white/10 p-3" style={{ background: 'rgba(255,255,255,0.04)' }}>
-                <p className="text-[10px] uppercase tracking-wider text-white/30 mb-1">Response Time</p>
-                <p className="text-white/80 text-sm">~60 seconds (full analysis)</p>
+              <div className="rounded-lg p-3" style={CARD}>
+                <p className="text-[10px] uppercase tracking-wider mb-1" style={{ color: 'var(--ink-40)' }}>Response Time</p>
+                <p className="text-sm" style={{ color: 'var(--ink-80)' }}>~60 seconds (full analysis)</p>
               </div>
             </div>
           </div>
 
           {/* Authentication */}
           <SectionHeading id="authentication">Authentication</SectionHeading>
-          <div className="text-white/60 text-sm leading-relaxed space-y-3">
+          <div className="text-sm leading-relaxed space-y-3" style={{ color: 'var(--ink-60)' }}>
             <p>
               All API requests must include your API key in the <InlineCode>X-Api-Key</InlineCode> header.
               API keys are issued when you sign up for a plan and can be rotated from your dashboard.
@@ -238,16 +253,16 @@ export default function IntegrationGuide() {
 Content-Type: application/json`}
             />
             <div
-              className="rounded-lg border border-amber-500/20 p-4 text-amber-200/80 text-xs"
-              style={{ background: 'rgba(245,158,11,0.06)' }}
+              className="rounded-lg p-4 text-xs"
+              style={{ background: 'var(--risk-med-fill)', border: '1px solid var(--risk-med-edge)', color: 'var(--ink-80)' }}
             >
-              <strong>Security note:</strong> Store your API key in environment variables or a secrets manager. Never commit API keys to source control.
+              <strong style={{ color: 'var(--risk-med)' }}>Security note:</strong> Store your API key in environment variables or a secrets manager. Never commit API keys to source control.
             </div>
           </div>
 
           {/* Request Format */}
           <SectionHeading id="request">Request Format</SectionHeading>
-          <div className="text-white/60 text-sm leading-relaxed space-y-3">
+          <div className="text-sm leading-relaxed space-y-3" style={{ color: 'var(--ink-60)' }}>
             <p>
               Submit an applicant&rsquo;s details along with one or more base64-encoded documents.
               Each document must specify a <InlineCode>type</InlineCode>, <InlineCode>filename</InlineCode>,
@@ -274,69 +289,69 @@ Content-Type: application/json`}
 }`}
             />
 
-            <h3 className="text-white/80 font-semibold text-sm mt-6 mb-2">Document Types</h3>
+            <h3 className="font-semibold text-sm mt-6 mb-2" style={{ color: 'var(--ink-80)' }}>Document Types</h3>
             <div className="flex flex-wrap gap-2">
               {DOC_TYPES.map(t => (
                 <span
                   key={t}
-                  className="px-2.5 py-1 text-xs font-mono rounded border border-white/10 text-white/60"
-                  style={{ background: 'rgba(255,255,255,0.04)' }}
+                  className="px-2.5 py-1 text-xs font-mono rounded"
+                  style={{ ...CARD, color: 'var(--ink-60)' }}
                 >
                   {t}
                 </span>
               ))}
             </div>
 
-            <h3 className="text-white/80 font-semibold text-sm mt-6 mb-2">Field Reference</h3>
+            <h3 className="font-semibold text-sm mt-6 mb-2" style={{ color: 'var(--ink-80)' }}>Field Reference</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead>
-                  <tr className="border-b border-white/10 text-left">
-                    <th className="py-2 pr-4 text-white/40 font-medium">Field</th>
-                    <th className="py-2 pr-4 text-white/40 font-medium">Type</th>
-                    <th className="py-2 pr-4 text-white/40 font-medium">Required</th>
-                    <th className="py-2 text-white/40 font-medium">Description</th>
+                  <tr className="text-left" style={{ borderBottom: '1px solid var(--rule)' }}>
+                    <th className="py-2 pr-4 font-medium" style={{ color: 'var(--ink-40)' }}>Field</th>
+                    <th className="py-2 pr-4 font-medium" style={{ color: 'var(--ink-40)' }}>Type</th>
+                    <th className="py-2 pr-4 font-medium" style={{ color: 'var(--ink-40)' }}>Required</th>
+                    <th className="py-2 font-medium" style={{ color: 'var(--ink-40)' }}>Description</th>
                   </tr>
                 </thead>
-                <tbody className="text-white/60">
-                  <tr className="border-b border-white/5">
-                    <td className="py-2 pr-4 font-mono text-teal-300">applicant_name</td>
+                <tbody style={{ color: 'var(--ink-60)' }}>
+                  <tr style={{ borderBottom: '1px solid var(--rule-soft)' }}>
+                    <td className="py-2 pr-4 font-mono" style={{ color: 'var(--accent)' }}>applicant_name</td>
                     <td className="py-2 pr-4">string</td>
                     <td className="py-2 pr-4">Yes</td>
                     <td className="py-2">Full name of the applicant</td>
                   </tr>
-                  <tr className="border-b border-white/5">
-                    <td className="py-2 pr-4 font-mono text-teal-300">loan_amount</td>
+                  <tr style={{ borderBottom: '1px solid var(--rule-soft)' }}>
+                    <td className="py-2 pr-4 font-mono" style={{ color: 'var(--accent)' }}>loan_amount</td>
                     <td className="py-2 pr-4">number</td>
                     <td className="py-2 pr-4">Yes</td>
                     <td className="py-2">Loan amount in AUD (no decimals)</td>
                   </tr>
-                  <tr className="border-b border-white/5">
-                    <td className="py-2 pr-4 font-mono text-teal-300">broker_abn</td>
+                  <tr style={{ borderBottom: '1px solid var(--rule-soft)' }}>
+                    <td className="py-2 pr-4 font-mono" style={{ color: 'var(--accent)' }}>broker_abn</td>
                     <td className="py-2 pr-4">string</td>
                     <td className="py-2 pr-4">No</td>
                     <td className="py-2">11-digit ABN for broker risk profiling</td>
                   </tr>
-                  <tr className="border-b border-white/5">
-                    <td className="py-2 pr-4 font-mono text-teal-300">documents</td>
+                  <tr style={{ borderBottom: '1px solid var(--rule-soft)' }}>
+                    <td className="py-2 pr-4 font-mono" style={{ color: 'var(--accent)' }}>documents</td>
                     <td className="py-2 pr-4">array</td>
                     <td className="py-2 pr-4">Yes</td>
                     <td className="py-2">One or more documents to analyse</td>
                   </tr>
-                  <tr className="border-b border-white/5">
-                    <td className="py-2 pr-4 font-mono text-teal-300">documents[].type</td>
+                  <tr style={{ borderBottom: '1px solid var(--rule-soft)' }}>
+                    <td className="py-2 pr-4 font-mono" style={{ color: 'var(--accent)' }}>documents[].type</td>
                     <td className="py-2 pr-4">string</td>
                     <td className="py-2 pr-4">Yes</td>
                     <td className="py-2">One of the supported document types</td>
                   </tr>
-                  <tr className="border-b border-white/5">
-                    <td className="py-2 pr-4 font-mono text-teal-300">documents[].filename</td>
+                  <tr style={{ borderBottom: '1px solid var(--rule-soft)' }}>
+                    <td className="py-2 pr-4 font-mono" style={{ color: 'var(--accent)' }}>documents[].filename</td>
                     <td className="py-2 pr-4">string</td>
                     <td className="py-2 pr-4">Yes</td>
                     <td className="py-2">Original filename (for logging)</td>
                   </tr>
                   <tr>
-                    <td className="py-2 pr-4 font-mono text-teal-300">documents[].content_base64</td>
+                    <td className="py-2 pr-4 font-mono" style={{ color: 'var(--accent)' }}>documents[].content_base64</td>
                     <td className="py-2 pr-4">string</td>
                     <td className="py-2 pr-4">Yes</td>
                     <td className="py-2">Base64-encoded document content (max 20MB)</td>
@@ -348,7 +363,7 @@ Content-Type: application/json`}
 
           {/* Response Format */}
           <SectionHeading id="response">Response Format</SectionHeading>
-          <div className="text-white/60 text-sm leading-relaxed space-y-3">
+          <div className="text-sm leading-relaxed space-y-3" style={{ color: 'var(--ink-60)' }}>
             <p>
               A successful response includes a risk score (0-100), risk level, recommended action,
               and an array of individual flags with evidence.
@@ -375,58 +390,64 @@ Content-Type: application/json`}
 }`}
             />
 
-            <h3 className="text-white/80 font-semibold text-sm mt-6 mb-2">Risk Levels</h3>
+            <h3 className="font-semibold text-sm mt-6 mb-2" style={{ color: 'var(--ink-80)' }}>Risk Levels</h3>
+            {/* Risk-level grid: 5 named levels mapped to 4 risk tiers.
+                clear (0-20)  -> risk-low
+                low   (21-40) -> risk-low  (both sub-medium; collapsed per brief)
+                medium (41-60) -> risk-med
+                high  (61-80) -> risk-high
+                critical (81-100) -> risk-crit */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {[
-                { level: 'clear', range: '0-20', color: 'text-emerald-400', bg: 'rgba(16,185,129,0.08)' },
-                { level: 'low', range: '21-40', color: 'text-teal-400', bg: 'rgba(59,130,246,0.08)' },
-                { level: 'medium', range: '41-60', color: 'text-amber-400', bg: 'rgba(245,158,11,0.08)' },
-                { level: 'high', range: '61-80', color: 'text-orange-400', bg: 'rgba(249,115,22,0.08)' },
+                { level: 'clear',  range: '0-20',  bg: 'var(--risk-low-fill)',  edge: 'var(--risk-low-edge)',  ink: 'var(--risk-low)' },
+                { level: 'low',    range: '21-40', bg: 'var(--risk-low-fill)',  edge: 'var(--risk-low-edge)',  ink: 'var(--risk-low)' },
+                { level: 'medium', range: '41-60', bg: 'var(--risk-med-fill)',  edge: 'var(--risk-med-edge)',  ink: 'var(--risk-med)' },
+                { level: 'high',   range: '61-80', bg: 'var(--risk-high-fill)', edge: 'var(--risk-high-edge)', ink: 'var(--risk-high)' },
               ].map(r => (
                 <div
                   key={r.level}
-                  className="rounded-lg border border-white/10 p-3 text-center"
-                  style={{ background: r.bg }}
+                  className="rounded-lg p-3 text-center"
+                  style={{ background: r.bg, border: `1px solid ${r.edge}` }}
                 >
-                  <p className={`text-sm font-semibold capitalize ${r.color}`}>{r.level}</p>
-                  <p className="text-[10px] text-white/30 mt-0.5">{r.range}</p>
+                  <p className="text-sm font-semibold capitalize" style={{ color: r.ink }}>{r.level}</p>
+                  <p className="text-[10px] mt-0.5" style={{ color: 'var(--ink-40)' }}>{r.range}</p>
                 </div>
               ))}
             </div>
             <div className="grid grid-cols-1 gap-3 mt-1">
               <div
-                className="rounded-lg border border-red-500/20 p-3 text-center"
-                style={{ background: 'rgba(239,68,68,0.08)' }}
+                className="rounded-lg p-3 text-center"
+                style={{ background: 'var(--risk-crit-fill)', border: '1px solid var(--risk-crit-edge)' }}
               >
-                <p className="text-sm font-semibold text-red-400">Critical</p>
-                <p className="text-[10px] text-white/30 mt-0.5">81-100 &mdash; reject or escalate immediately</p>
+                <p className="text-sm font-semibold" style={{ color: 'var(--risk-crit)' }}>Critical</p>
+                <p className="text-[10px] mt-0.5" style={{ color: 'var(--ink-40)' }}>81-100 &mdash; reject or escalate immediately</p>
               </div>
             </div>
 
-            <h3 className="text-white/80 font-semibold text-sm mt-6 mb-2">Recommended Actions</h3>
+            <h3 className="font-semibold text-sm mt-6 mb-2" style={{ color: 'var(--ink-80)' }}>Recommended Actions</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead>
-                  <tr className="border-b border-white/10 text-left">
-                    <th className="py-2 pr-4 text-white/40 font-medium">Action</th>
-                    <th className="py-2 text-white/40 font-medium">Meaning</th>
+                  <tr className="text-left" style={{ borderBottom: '1px solid var(--rule)' }}>
+                    <th className="py-2 pr-4 font-medium" style={{ color: 'var(--ink-40)' }}>Action</th>
+                    <th className="py-2 font-medium" style={{ color: 'var(--ink-40)' }}>Meaning</th>
                   </tr>
                 </thead>
-                <tbody className="text-white/60">
-                  <tr className="border-b border-white/5">
-                    <td className="py-2 pr-4 font-mono text-emerald-400">approve</td>
+                <tbody style={{ color: 'var(--ink-60)' }}>
+                  <tr style={{ borderBottom: '1px solid var(--rule-soft)' }}>
+                    <td className="py-2 pr-4 font-mono" style={{ color: 'var(--risk-low)' }}>approve</td>
                     <td className="py-2">No flags detected, proceed normally</td>
                   </tr>
-                  <tr className="border-b border-white/5">
-                    <td className="py-2 pr-4 font-mono text-amber-400">review</td>
+                  <tr style={{ borderBottom: '1px solid var(--rule-soft)' }}>
+                    <td className="py-2 pr-4 font-mono" style={{ color: 'var(--risk-med)' }}>review</td>
                     <td className="py-2">Minor flags, manual review recommended</td>
                   </tr>
-                  <tr className="border-b border-white/5">
-                    <td className="py-2 pr-4 font-mono text-orange-400">escalate</td>
+                  <tr style={{ borderBottom: '1px solid var(--rule-soft)' }}>
+                    <td className="py-2 pr-4 font-mono" style={{ color: 'var(--risk-high)' }}>escalate</td>
                     <td className="py-2">Significant flags, escalate to fraud team</td>
                   </tr>
                   <tr>
-                    <td className="py-2 pr-4 font-mono text-red-400">reject</td>
+                    <td className="py-2 pr-4 font-mono" style={{ color: 'var(--risk-crit)' }}>reject</td>
                     <td className="py-2">High-confidence fraud indicators detected</td>
                   </tr>
                 </tbody>
@@ -436,23 +457,34 @@ Content-Type: application/json`}
 
           {/* Code Samples */}
           <SectionHeading id="code-samples">Code Samples</SectionHeading>
-          <div className="text-white/60 text-sm leading-relaxed space-y-3">
+          <div className="text-sm leading-relaxed space-y-3" style={{ color: 'var(--ink-60)' }}>
             <p>
               Complete working examples for submitting a document and reading the result.
               Replace the API URL and key with your instance details.
             </p>
 
             {/* Tabs */}
-            <div className="flex gap-0 border-b border-white/10 no-print">
+            <div className="flex gap-0 no-print" style={{ borderBottom: '1px solid var(--rule)' }}>
               {(Object.keys(CODE_SAMPLES) as TabKey[]).map(key => (
                 <button
                   key={key}
                   onClick={() => setActiveTab(key)}
-                  className={`px-4 py-2.5 text-sm font-medium transition border-b-2 -mb-px ${
+                  className="px-4 py-2.5 text-sm font-medium transition border-b-2 -mb-px"
+                  style={
                     activeTab === key
-                      ? 'text-teal-400 border-teal-400'
-                      : 'text-white/40 border-transparent hover:text-white/60'
-                  }`}
+                      ? { color: 'var(--accent)', borderColor: 'var(--accent)' }
+                      : { color: 'var(--ink-40)', borderColor: 'transparent' }
+                  }
+                  onMouseEnter={e => {
+                    if (activeTab !== key) {
+                      (e.currentTarget as HTMLButtonElement).style.color = 'var(--ink-60)'
+                    }
+                  }}
+                  onMouseLeave={e => {
+                    if (activeTab !== key) {
+                      (e.currentTarget as HTMLButtonElement).style.color = 'var(--ink-40)'
+                    }
+                  }}
                 >
                   {CODE_SAMPLES[key].label}
                 </button>
@@ -465,7 +497,7 @@ Content-Type: application/json`}
             <div className="hidden print:block space-y-4">
               {(Object.keys(CODE_SAMPLES) as TabKey[]).map(key => (
                 <div key={key}>
-                  <h4 className="text-white/80 font-semibold text-sm mb-2">{CODE_SAMPLES[key].label}</h4>
+                  <h4 className="font-semibold text-sm mb-2" style={{ color: 'var(--ink-80)' }}>{CODE_SAMPLES[key].label}</h4>
                   <CodeBlock language={key} code={CODE_SAMPLES[key].code} />
                 </div>
               ))}
@@ -474,30 +506,31 @@ Content-Type: application/json`}
 
           {/* Error Codes */}
           <SectionHeading id="errors">Error Codes</SectionHeading>
-          <div className="text-white/60 text-sm leading-relaxed">
+          <div className="text-sm leading-relaxed" style={{ color: 'var(--ink-60)' }}>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-white/10 text-left">
-                    <th className="py-2.5 pr-6 text-white/40 font-medium">Status</th>
-                    <th className="py-2.5 text-white/40 font-medium">Meaning</th>
+                  <tr className="text-left" style={{ borderBottom: '1px solid var(--rule)' }}>
+                    <th className="py-2.5 pr-6 font-medium" style={{ color: 'var(--ink-40)' }}>Status</th>
+                    <th className="py-2.5 font-medium" style={{ color: 'var(--ink-40)' }}>Meaning</th>
                   </tr>
                 </thead>
                 <tbody>
                   {ERROR_CODES.map(e => (
-                    <tr key={e.status} className="border-b border-white/5">
+                    <tr key={e.status} style={{ borderBottom: '1px solid var(--rule-soft)' }}>
                       <td className="py-2.5 pr-6">
                         <span
-                          className={`font-mono font-semibold ${
-                            e.status === '200' ? 'text-emerald-400'
-                            : e.status.startsWith('4') ? 'text-amber-400'
-                            : 'text-red-400'
-                          }`}
+                          className="font-mono font-semibold"
+                          style={{
+                            color: e.status === '200' ? 'var(--risk-low)'
+                              : e.status.startsWith('4') ? 'var(--risk-med)'
+                              : 'var(--risk-crit)',
+                          }}
                         >
                           {e.status}
                         </span>
                       </td>
-                      <td className="py-2.5 text-white/60">{e.meaning}</td>
+                      <td className="py-2.5" style={{ color: 'var(--ink-60)' }}>{e.meaning}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -507,7 +540,7 @@ Content-Type: application/json`}
 
           {/* Rate Limits */}
           <SectionHeading id="rate-limits">Rate Limits</SectionHeading>
-          <div className="text-white/60 text-sm leading-relaxed space-y-3">
+          <div className="text-sm leading-relaxed space-y-3" style={{ color: 'var(--ink-60)' }}>
             <p>
               Rate limits are enforced per API key. Exceeding limits returns a <InlineCode>429</InlineCode> status code.
               Contact us if you need higher limits.
@@ -515,18 +548,18 @@ Content-Type: application/json`}
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-white/10 text-left">
-                    <th className="py-2.5 pr-6 text-white/40 font-medium">Plan</th>
-                    <th className="py-2.5 pr-6 text-white/40 font-medium">Concurrent</th>
-                    <th className="py-2.5 text-white/40 font-medium">Monthly Limit</th>
+                  <tr className="text-left" style={{ borderBottom: '1px solid var(--rule)' }}>
+                    <th className="py-2.5 pr-6 font-medium" style={{ color: 'var(--ink-40)' }}>Plan</th>
+                    <th className="py-2.5 pr-6 font-medium" style={{ color: 'var(--ink-40)' }}>Concurrent</th>
+                    <th className="py-2.5 font-medium" style={{ color: 'var(--ink-40)' }}>Monthly Limit</th>
                   </tr>
                 </thead>
                 <tbody>
                   {RATE_LIMITS.map(r => (
-                    <tr key={r.plan} className="border-b border-white/5">
-                      <td className="py-2.5 pr-6 text-white/80 font-medium">{r.plan}</td>
-                      <td className="py-2.5 pr-6 font-mono text-white/60">{r.concurrent}</td>
-                      <td className="py-2.5 font-mono text-white/60">{r.monthly}</td>
+                    <tr key={r.plan} style={{ borderBottom: '1px solid var(--rule-soft)' }}>
+                      <td className="py-2.5 pr-6 font-medium" style={{ color: 'var(--ink-80)' }}>{r.plan}</td>
+                      <td className="py-2.5 pr-6 font-mono" style={{ color: 'var(--ink-60)' }}>{r.concurrent}</td>
+                      <td className="py-2.5 font-mono" style={{ color: 'var(--ink-60)' }}>{r.monthly}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -536,7 +569,7 @@ Content-Type: application/json`}
 
           {/* Webhooks */}
           <SectionHeading id="webhooks">Webhooks (Optional)</SectionHeading>
-          <div className="text-white/60 text-sm leading-relaxed space-y-3">
+          <div className="text-sm leading-relaxed space-y-3" style={{ color: 'var(--ink-60)' }}>
             <p>
               Instead of polling for results, configure a webhook URL in your dashboard to receive
               analysis results as soon as they are ready. Trutina will send a <InlineCode>POST</InlineCode> request
@@ -555,39 +588,46 @@ Content-Type: application/json`}
 // Body:    Same response format as synchronous API`}
             />
             <div
-              className="rounded-lg border border-white/10 p-4 text-white/50 text-xs"
-              style={{ background: 'rgba(255,255,255,0.04)' }}
+              className="rounded-lg p-4 text-xs"
+              style={CARD}
             >
-              <strong className="text-white/70">Verification:</strong> Validate the <InlineCode>X-Trutina-Signature</InlineCode> header
+              <strong style={{ color: 'var(--ink-80)' }}>Verification:</strong>{' '}
+              <span style={{ color: 'var(--ink-60)' }}>Validate the <InlineCode>X-Trutina-Signature</InlineCode> header
               by computing an HMAC-SHA256 of the raw request body using your webhook secret. Reject any requests with
-              invalid signatures.
+              invalid signatures.</span>
             </div>
           </div>
 
           {/* Support */}
           <SectionHeading id="support">Support</SectionHeading>
-          <div className="text-white/60 text-sm leading-relaxed space-y-3">
+          <div className="text-sm leading-relaxed space-y-3" style={{ color: 'var(--ink-60)' }}>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div
-                className="rounded-xl border border-white/10 p-5"
-                style={{ background: 'rgba(255,255,255,0.04)' }}
+                className="rounded-xl p-5"
+                style={CARD}
               >
-                <h3 className="text-white/80 font-semibold mb-2">Email Support</h3>
-                <a href="mailto:hello@trutina.com.au" className="text-teal-400 hover:text-teal-300 transition">
+                <h3 className="font-semibold mb-2" style={{ color: 'var(--ink-80)' }}>Email Support</h3>
+                <a
+                  href="mailto:hello@trutina.com.au"
+                  className="transition"
+                  style={{ color: 'var(--accent)' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = 'var(--accent-press)' }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = 'var(--accent)' }}
+                >
                   hello@trutina.com.au
                 </a>
-                <div className="mt-3 text-xs text-white/40 space-y-1">
+                <div className="mt-3 text-xs space-y-1" style={{ color: 'var(--ink-40)' }}>
                   <p>Starter: response within 24 hours</p>
                   <p>Professional: response within 4 hours</p>
                   <p>Enterprise: response within 1 hour</p>
                 </div>
               </div>
               <div
-                className="rounded-xl border border-white/10 p-5"
-                style={{ background: 'rgba(255,255,255,0.04)' }}
+                className="rounded-xl p-5"
+                style={CARD}
               >
-                <h3 className="text-white/80 font-semibold mb-2">Integration Help</h3>
-                <p className="text-white/50 text-xs leading-relaxed">
+                <h3 className="font-semibold mb-2" style={{ color: 'var(--ink-80)' }}>Integration Help</h3>
+                <p className="text-xs leading-relaxed" style={{ color: 'var(--ink-60)' }}>
                   Professional and Enterprise plans include dedicated integration support.
                   We can join your Slack, provide sandbox environments, and assist with
                   UAT testing against your loan origination system.

@@ -7,13 +7,16 @@ export const metadata: Metadata = {
   alternates: { canonical: '/docs/risk-scores' },
 }
 
+const CARD = { background: 'var(--bg-print-white)', border: '1px solid var(--rule-soft)' } as const
+const DOT = { background: 'var(--ink-40)' } as const
+
 const THRESHOLDS = [
   {
-    range: '0 \u2013 19',
+    range: '0 – 19',
     label: 'Low Risk',
-    color: '#22c55e',
-    bgColor: 'rgba(34,197,94,0.08)',
-    borderColor: 'rgba(34,197,94,0.25)',
+    color: 'var(--risk-low)',
+    bgColor: 'var(--risk-low-fill)',
+    borderColor: 'var(--risk-low-edge)',
     action: 'Approve',
     description:
       'Documents appear genuine. May have minor informational flags that do not indicate fraud.',
@@ -24,50 +27,50 @@ const THRESHOLDS = [
     widthPercent: 20,
   },
   {
-    range: '20 \u2013 44',
+    range: '20 – 44',
     label: 'Medium Risk',
-    color: '#f59e0b',
-    bgColor: 'rgba(245,158,11,0.08)',
-    borderColor: 'rgba(245,158,11,0.25)',
+    color: 'var(--risk-med)',
+    bgColor: 'var(--risk-med-fill)',
+    borderColor: 'var(--risk-med-edge)',
     action: 'Manual Review',
     description:
       'Some anomalies detected that warrant human verification. Most turn out benign but should be documented.',
     commonReasons: [
       'Salary above ABS benchmarks for stated occupation',
       'Minor metadata quirks (e.g., mismatched creation/modification dates)',
-      'Super rate slightly outside 10\u201314% tolerance',
+      'Super rate slightly outside 10–14% tolerance',
     ],
     widthPercent: 25,
   },
   {
-    range: '45 \u2013 69',
+    range: '45 – 69',
     label: 'High Risk',
-    color: '#f97316',
-    bgColor: 'rgba(249,115,22,0.08)',
-    borderColor: 'rgba(249,115,22,0.25)',
+    color: 'var(--risk-high)',
+    bgColor: 'var(--risk-high-fill)',
+    borderColor: 'var(--risk-high-edge)',
     action: 'Manual Review (Priority)',
     description:
       'Significant issues detected. Multiple flags across categories suggest the document may not be genuine.',
     commonReasons: [
       'Employer ABN registered to a different entity name',
-      'Mathematical inconsistencies (gross \u2212 tax \u2260 net)',
+      'Mathematical inconsistencies (gross − tax ≠ net)',
       'Suspicious PDF metadata (browser-created, excessive fonts)',
       'UK/US terminology in an Australian payslip',
     ],
     widthPercent: 25,
   },
   {
-    range: '70 \u2013 100',
+    range: '70 – 100',
     label: 'Critical Risk',
-    color: '#ef4444',
-    bgColor: 'rgba(239,68,68,0.08)',
-    borderColor: 'rgba(239,68,68,0.25)',
+    color: 'var(--risk-crit)',
+    bgColor: 'var(--risk-crit-fill)',
+    borderColor: 'var(--risk-crit-edge)',
     action: 'Reject',
     description:
       'Strong indicators of fraud or fabrication. Multiple critical flags across categories. Recommend escalation to fraud investigation.',
     commonReasons: [
       'AI-generated content detected with high confidence',
-      'Gross \u2212 tax \u2260 net (mathematical impossibility)',
+      'Gross − tax ≠ net (mathematical impossibility)',
       'ABN does not exist or is cancelled',
       'PDF created in browser, not payroll software',
       'Network clustering with known fraudulent broker submissions',
@@ -81,8 +84,8 @@ const CATEGORIES = [
     number: 1,
     name: 'PDF Forensics',
     maxPoints: 25,
-    color: 'text-violet-400',
-    borderColor: 'border-violet-400/20',
+    color: 'var(--ink-60)',
+    borderColor: 'var(--rule)',
     checks: [
       'PDF producer/creator metadata (e.g., "Chrome" vs "Xero Payroll")',
       'Creation and modification timestamps (future dates, identical timestamps)',
@@ -95,7 +98,7 @@ const CATEGORIES = [
         desc: 'PDF not created by known payroll software (Xero, MYOB, KeyPay, Employment Hero, Sage)',
       },
       { code: 'FUTURE_TIMESTAMP', desc: 'Creation or modification date is in the future' },
-      { code: 'EXCESSIVE_FONTS', desc: 'More than 3 font families detected \u2014 common in manually assembled documents' },
+      { code: 'EXCESSIVE_FONTS', desc: 'More than 3 font families detected — common in manually assembled documents' },
       { code: 'TEXT_AS_IMAGE', desc: 'Text rendered as raster image to prevent content extraction' },
     ],
     knownClean: 'Xero, MYOB, KeyPay, Employment Hero, Sage, ADP, Definitiv',
@@ -104,8 +107,8 @@ const CATEGORIES = [
     number: 2,
     name: 'AI Content Detection',
     maxPoints: 35,
-    color: 'text-teal-400',
-    borderColor: 'border-teal-400/20',
+    color: 'var(--ink-60)',
+    borderColor: 'var(--rule)',
     checks: [
       'Semantic analysis for AI-generation patterns and phrasing',
       'Terminology anomalies (UK/US terms in Australian documents)',
@@ -137,23 +140,23 @@ const CATEGORIES = [
     number: 3,
     name: 'Math & Date Consistency',
     maxPoints: 30,
-    color: 'text-emerald-400',
-    borderColor: 'border-emerald-400/20',
+    color: 'var(--ink-60)',
+    borderColor: 'var(--rule)',
     checks: [
-      'Payslip: Gross \u2212 Tax = Net (within \u00b1$1 rounding tolerance)',
-      'Super = ~11.5% of ordinary earnings (SGC rate, \u00b12% tolerance \u2192 10\u201314%)',
+      'Payslip: Gross − Tax = Net (within ±$1 rounding tolerance)',
+      'Super = ~11.5% of ordinary earnings (SGC rate, ±2% tolerance → 10–14%)',
       'YTD figures consistent with pay periods elapsed since 1 July',
-      'Bank statement: Opening balance + Credits \u2212 Debits = Closing balance',
+      'Bank statement: Opening balance + Credits − Debits = Closing balance',
       'Date sequencing (no impossible or future dates)',
     ],
     commonFlags: [
       {
         code: 'PAYSLIP_MATH_ERROR',
-        desc: 'Gross minus tax does not equal net pay (outside \u00b1$1 tolerance)',
+        desc: 'Gross minus tax does not equal net pay (outside ±$1 tolerance)',
       },
       {
         code: 'SUPER_RATE_WRONG',
-        desc: 'Superannuation rate falls outside 10\u201314% of ordinary earnings',
+        desc: 'Superannuation rate falls outside 10–14% of ordinary earnings',
       },
       {
         code: 'YTD_INCONSISTENT',
@@ -161,18 +164,18 @@ const CATEGORIES = [
       },
       {
         code: 'BALANCE_MISMATCH',
-        desc: 'Bank statement opening + credits \u2212 debits \u2260 closing balance',
+        desc: 'Bank statement opening + credits − debits ≠ closing balance',
       },
     ],
     tolerance:
-      'Super rate: \u00b12% (10\u201314% acceptable). Net pay: \u00b1$1 rounding. YTD: \u00b15% cumulative tolerance.',
+      'Super rate: ±2% (10–14% acceptable). Net pay: ±$1 rounding. YTD: ±5% cumulative tolerance.',
   },
   {
     number: 4,
     name: 'Cross-Reference Verification',
     maxPoints: 20,
-    color: 'text-amber-400',
-    borderColor: 'border-amber-400/20',
+    color: 'var(--ink-60)',
+    borderColor: 'var(--rule)',
     checks: [
       'ABN exists and is active via ABN Lookup API',
       'Employer name fuzzy-matches the registered ABN entity name',
@@ -199,8 +202,8 @@ const CATEGORIES = [
     number: 5,
     name: 'Broker Risk Profiling',
     maxPoints: 15,
-    color: 'text-red-400',
-    borderColor: 'border-red-400/20',
+    color: 'var(--ink-60)',
+    borderColor: 'var(--rule)',
     checks: [
       'Submission velocity (>5 applications in 7 days)',
       'Fraud flag rate (>20% of submissions flagged high/critical)',
@@ -213,7 +216,7 @@ const CATEGORIES = [
       },
       {
         code: 'HIGH_FRAUD_RATE',
-        desc: 'More than 20% of this broker\u0027s submissions have been flagged high or critical risk',
+        desc: 'More than 20% of this broker\'s submissions have been flagged high or critical risk',
       },
       {
         code: 'NETWORK_CLUSTER_DETECTED',
@@ -228,33 +231,33 @@ const SEVERITIES = [
   {
     level: 'Critical',
     multiplier: '1.0',
-    color: 'text-red-400',
-    bg: 'rgba(239,68,68,0.08)',
-    border: 'border-red-400/20',
+    color: 'var(--risk-crit)',
+    bg: 'var(--risk-crit-fill)',
+    borderColor: 'var(--risk-crit-edge)',
     description: 'Strong fraud indicator. Requires immediate attention and investigation.',
   },
   {
     level: 'High',
     multiplier: '0.7',
-    color: 'text-orange-400',
-    bg: 'rgba(249,115,22,0.08)',
-    border: 'border-orange-400/20',
+    color: 'var(--risk-high)',
+    bg: 'var(--risk-high-fill)',
+    borderColor: 'var(--risk-high-edge)',
     description: 'Significant anomaly. Likely requires investigation before proceeding.',
   },
   {
     level: 'Medium',
     multiplier: '0.4',
-    color: 'text-amber-400',
-    bg: 'rgba(245,158,11,0.08)',
-    border: 'border-amber-400/20',
+    color: 'var(--risk-med)',
+    bg: 'var(--risk-med-fill)',
+    borderColor: 'var(--risk-med-edge)',
     description: 'Noteworthy finding. May be benign but is documented for review.',
   },
   {
     level: 'Low',
     multiplier: '0.15',
-    color: 'text-emerald-400',
-    bg: 'rgba(34,197,94,0.08)',
-    border: 'border-emerald-400/20',
+    color: 'var(--risk-low)',
+    bg: 'var(--risk-low-fill)',
+    borderColor: 'var(--risk-low-edge)',
     description: 'Informational only. Unlikely to indicate fraud on its own.',
   },
 ]
@@ -268,33 +271,30 @@ export default function RiskScoresGuide() {
 
         {/* ── Risk Score Overview ── */}
         <section className="mb-14">
-          <h2 className="text-2xl font-bold mb-4">Risk Score Overview</h2>
-          <div
-            className="rounded-xl border border-white/10 p-5 sm:p-6"
-            style={{ background: 'rgba(255,255,255,0.04)' }}
-          >
-            <ul className="space-y-3 text-white/60 text-sm leading-relaxed">
+          <h2 style={{ marginBottom: 12 }}>Risk Score Overview</h2>
+          <div className="rounded-xl p-5 sm:p-6" style={CARD}>
+            <ul className="space-y-3 text-sm leading-relaxed" style={{ color: 'var(--ink-60)' }}>
               <li className="flex items-start gap-3">
-                <span className="text-teal-400 font-bold mt-0.5">&bull;</span>
-                Scores range from <strong className="text-white">0 to 100</strong>,
+                <span style={DOT} className="shrink-0 w-1.5 h-1.5 rounded-full mt-1.5" />
+                Scores range from <strong style={{ color: 'var(--ink-100)' }}>0 to 100</strong>,
                 where 0 is lowest risk and 100 is highest risk.
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-teal-400 font-bold mt-0.5">&bull;</span>
+                <span style={DOT} className="shrink-0 w-1.5 h-1.5 rounded-full mt-1.5" />
                 The composite score is derived from{' '}
-                <strong className="text-white">5 detection categories</strong>,
+                <strong style={{ color: 'var(--ink-100)' }}>5 detection categories</strong>,
                 each with its own maximum point cap.
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-teal-400 font-bold mt-0.5">&bull;</span>
-                Each flag has a <strong className="text-white">severity</strong>{' '}
-                and <strong className="text-white">weight</strong> that
+                <span style={DOT} className="shrink-0 w-1.5 h-1.5 rounded-full mt-1.5" />
+                Each flag has a <strong style={{ color: 'var(--ink-100)' }}>severity</strong>{' '}
+                and <strong style={{ color: 'var(--ink-100)' }}>weight</strong> that
                 contribute to the category total.
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-teal-400 font-bold mt-0.5">&bull;</span>
+                <span style={DOT} className="shrink-0 w-1.5 h-1.5 rounded-full mt-1.5" />
                 Scores are{' '}
-                <strong className="text-white">deterministic</strong> &mdash;
+                <strong style={{ color: 'var(--ink-100)' }}>deterministic</strong> &mdash;
                 the same inputs always produce the same score.
               </li>
             </ul>
@@ -303,7 +303,7 @@ export default function RiskScoresGuide() {
 
         {/* ── Score Thresholds ── */}
         <section className="mb-14">
-          <h2 className="text-2xl font-bold mb-6">Score Thresholds</h2>
+          <h2 style={{ marginBottom: 24 }}>Score Thresholds</h2>
 
           {/* Visual gradient bar */}
           <div className="mb-8">
@@ -315,7 +315,7 @@ export default function RiskScoresGuide() {
                   style={{
                     width: `${t.widthPercent}%`,
                     backgroundColor: t.color,
-                    color: t.label === 'Low Risk' ? '#052e16' : '#fff',
+                    color: 'var(--paper-0)',
                   }}
                 >
                   {t.range}
@@ -355,7 +355,7 @@ export default function RiskScoresGuide() {
                       className="inline-block w-3 h-3 rounded-full shrink-0"
                       style={{ backgroundColor: t.color }}
                     />
-                    <span className="text-lg font-bold text-white">
+                    <span className="text-lg font-bold" style={{ color: 'var(--ink-100)' }}>
                       {t.range}
                     </span>
                     <span
@@ -376,20 +376,21 @@ export default function RiskScoresGuide() {
                     Action: {t.action}
                   </span>
                 </div>
-                <p className="text-white/60 text-sm leading-relaxed mb-3">
+                <p className="text-sm leading-relaxed mb-3" style={{ color: 'var(--ink-60)' }}>
                   {t.description}
                 </p>
                 <div>
-                  <div className="text-white/30 text-xs uppercase tracking-wider mb-1.5">
+                  <div className="text-xs uppercase tracking-wider mb-1.5" style={{ color: 'var(--ink-40)' }}>
                     Common reasons
                   </div>
                   <ul className="space-y-1">
                     {t.commonReasons.map((r) => (
                       <li
                         key={r}
-                        className="text-white/40 text-sm flex items-start gap-2"
+                        className="text-sm flex items-start gap-2"
+                        style={{ color: 'var(--ink-40)' }}
                       >
-                        <span className="text-white/20 mt-0.5">&ndash;</span>
+                        <span className="mt-0.5" style={{ color: 'var(--ink-25)' }}>&ndash;</span>
                         {r}
                       </li>
                     ))}
@@ -402,8 +403,8 @@ export default function RiskScoresGuide() {
 
         {/* ── Flag Categories ── */}
         <section className="mb-14">
-          <h2 className="text-2xl font-bold mb-6">Flag Categories</h2>
-          <p className="text-white/50 text-sm mb-8">
+          <h2 style={{ marginBottom: 24 }}>Flag Categories</h2>
+          <p className="text-sm mb-8" style={{ color: 'var(--ink-60)' }}>
             Each flag category has a maximum point cap. Flags within a category
             are summed (weighted by severity) up to the cap. The total risk
             score is the sum of all category scores, capped at 100.
@@ -413,35 +414,40 @@ export default function RiskScoresGuide() {
             {CATEGORIES.map((cat) => (
               <div
                 key={cat.name}
-                className={`rounded-xl border ${cat.borderColor} p-5 sm:p-7`}
-                style={{ background: 'rgba(255,255,255,0.04)' }}
+                className="rounded-xl border p-5 sm:p-7"
+                style={{ ...CARD, borderColor: cat.borderColor }}
               >
                 {/* Category header */}
                 <div className="flex items-center gap-3 mb-4">
                   <span
-                    className={`flex items-center justify-center w-8 h-8 rounded-full border ${cat.borderColor} text-sm font-bold ${cat.color}`}
-                    style={{ background: 'rgba(255,255,255,0.04)' }}
+                    className="flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold"
+                    style={{
+                      background: 'var(--bg-print-white)',
+                      border: `1px solid ${cat.borderColor}`,
+                      color: cat.color,
+                    }}
                   >
                     {cat.number}
                   </span>
-                  <h3 className="text-lg font-bold text-white">{cat.name}</h3>
-                  <span className="text-white/30 text-sm font-mono ml-auto">
+                  <h3 className="text-lg font-bold" style={{ color: 'var(--ink-100)' }}>{cat.name}</h3>
+                  <span className="font-mono text-sm ml-auto" style={{ color: 'var(--ink-40)' }}>
                     max {cat.maxPoints} pts
                   </span>
                 </div>
 
                 {/* What it checks */}
                 <div className="mb-4">
-                  <div className="text-white/40 text-xs uppercase tracking-wider mb-2">
+                  <div className="text-xs uppercase tracking-wider mb-2" style={{ color: 'var(--ink-40)' }}>
                     What it checks
                   </div>
                   <ul className="space-y-1.5">
                     {cat.checks.map((c) => (
                       <li
                         key={c}
-                        className="text-white/60 text-sm flex items-start gap-2"
+                        className="text-sm flex items-start gap-2"
+                        style={{ color: 'var(--ink-60)' }}
                       >
-                        <span className={`${cat.color} mt-0.5`}>&bull;</span>
+                        <span style={{ color: cat.color }} className="mt-0.5">&bull;</span>
                         {c}
                       </li>
                     ))}
@@ -450,16 +456,16 @@ export default function RiskScoresGuide() {
 
                 {/* Common flags */}
                 <div className="mb-4">
-                  <div className="text-white/40 text-xs uppercase tracking-wider mb-2">
+                  <div className="text-xs uppercase tracking-wider mb-2" style={{ color: 'var(--ink-40)' }}>
                     Common flags
                   </div>
                   <div className="space-y-2">
                     {cat.commonFlags.map((f) => (
                       <div key={f.code} className="flex items-start gap-3">
-                        <code className={`text-xs font-mono ${cat.color} shrink-0 mt-0.5`}>
+                        <code className="text-xs font-mono shrink-0 mt-0.5" style={{ color: cat.color }}>
                           {f.code}
                         </code>
-                        <span className="text-white/40 text-sm">{f.desc}</span>
+                        <span className="text-sm" style={{ color: 'var(--ink-40)' }}>{f.desc}</span>
                       </div>
                     ))}
                   </div>
@@ -467,32 +473,32 @@ export default function RiskScoresGuide() {
 
                 {/* Extra info */}
                 {'knownClean' in cat && (
-                  <div className="text-white/30 text-xs">
-                    <span className="text-white/50">Known clean producers:</span>{' '}
+                  <div className="text-xs" style={{ color: 'var(--ink-40)' }}>
+                    <span style={{ color: 'var(--ink-60)' }}>Known clean producers:</span>{' '}
                     {cat.knownClean}
                   </div>
                 )}
                 {'howItWorks' in cat && (
-                  <div className="text-white/30 text-xs">
-                    <span className="text-white/50">How it works:</span>{' '}
+                  <div className="text-xs" style={{ color: 'var(--ink-40)' }}>
+                    <span style={{ color: 'var(--ink-60)' }}>How it works:</span>{' '}
                     {cat.howItWorks}
                   </div>
                 )}
                 {'tolerance' in cat && (
-                  <div className="text-white/30 text-xs">
-                    <span className="text-white/50">Tolerance:</span>{' '}
+                  <div className="text-xs" style={{ color: 'var(--ink-40)' }}>
+                    <span style={{ color: 'var(--ink-60)' }}>Tolerance:</span>{' '}
                     {cat.tolerance}
                   </div>
                 )}
                 {'dataSources' in cat && (
-                  <div className="text-white/30 text-xs">
-                    <span className="text-white/50">Data sources:</span>{' '}
+                  <div className="text-xs" style={{ color: 'var(--ink-40)' }}>
+                    <span style={{ color: 'var(--ink-60)' }}>Data sources:</span>{' '}
                     {cat.dataSources}
                   </div>
                 )}
                 {'note' in cat && (
-                  <div className="text-white/30 text-xs">
-                    <span className="text-white/50">Note:</span> {cat.note}
+                  <div className="text-xs" style={{ color: 'var(--ink-40)' }}>
+                    <span style={{ color: 'var(--ink-60)' }}>Note:</span> {cat.note}
                   </div>
                 )}
               </div>
@@ -502,8 +508,8 @@ export default function RiskScoresGuide() {
 
         {/* ── Severity Levels ── */}
         <section className="mb-14">
-          <h2 className="text-2xl font-bold mb-6">Severity Levels</h2>
-          <p className="text-white/50 text-sm mb-6">
+          <h2 style={{ marginBottom: 24 }}>Severity Levels</h2>
+          <p className="text-sm mb-6" style={{ color: 'var(--ink-60)' }}>
             Each flag is assigned a severity level that determines its weight in
             the score calculation. Higher severity flags contribute more points.
           </p>
@@ -512,16 +518,16 @@ export default function RiskScoresGuide() {
             {SEVERITIES.map((s) => (
               <div
                 key={s.level}
-                className={`rounded-xl border ${s.border} p-5`}
-                style={{ background: s.bg }}
+                className="rounded-xl border p-5"
+                style={{ background: s.bg, borderColor: s.borderColor }}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className={`font-bold ${s.color}`}>{s.level}</span>
-                  <span className="text-white/30 font-mono text-sm">
+                  <span className="font-bold" style={{ color: s.color }}>{s.level}</span>
+                  <span className="font-mono text-sm" style={{ color: 'var(--ink-40)' }}>
                     &times;{s.multiplier}
                   </span>
                 </div>
-                <p className="text-white/50 text-sm">{s.description}</p>
+                <p className="text-sm" style={{ color: 'var(--ink-60)' }}>{s.description}</p>
               </div>
             ))}
           </div>
@@ -529,50 +535,54 @@ export default function RiskScoresGuide() {
 
         {/* ── Score Calculation Formula ── */}
         <section className="mb-14">
-          <h2 className="text-2xl font-bold mb-4">Score Calculation Formula</h2>
-          <div
-            className="rounded-xl border border-white/10 p-5 sm:p-6"
-            style={{ background: 'rgba(255,255,255,0.04)' }}
-          >
+          <h2 style={{ marginBottom: 12 }}>Score Calculation Formula</h2>
+          <div className="rounded-xl p-5 sm:p-6" style={CARD}>
             <div className="space-y-4">
               <div>
-                <div className="text-white/40 text-xs uppercase tracking-wider mb-2">
+                <div className="text-xs uppercase tracking-wider mb-2" style={{ color: 'var(--ink-40)' }}>
                   Category score
                 </div>
-                <code className="text-teal-400 text-sm font-mono bg-teal-400/5 px-3 py-2 rounded-lg block">
+                <code
+                  className="text-sm font-mono px-3 py-2 rounded-lg block"
+                  style={{ background: 'var(--paper-2)', border: '1px solid var(--rule)', color: 'var(--ink-100)' }}
+                >
                   category_score = min(category_cap, sum(flag_weight &times;
                   severity_multiplier))
                 </code>
               </div>
               <div>
-                <div className="text-white/40 text-xs uppercase tracking-wider mb-2">
+                <div className="text-xs uppercase tracking-wider mb-2" style={{ color: 'var(--ink-40)' }}>
                   Total score
                 </div>
-                <code className="text-teal-400 text-sm font-mono bg-teal-400/5 px-3 py-2 rounded-lg block">
+                <code
+                  className="text-sm font-mono px-3 py-2 rounded-lg block"
+                  style={{ background: 'var(--paper-2)', border: '1px solid var(--rule)', color: 'var(--ink-100)' }}
+                >
                   total_score = min(100, sum(all_category_scores))
                 </code>
               </div>
             </div>
 
-            <div className="mt-5 pt-4 border-t border-white/5">
-              <div className="text-white/40 text-xs uppercase tracking-wider mb-2">
+            <div className="mt-5 pt-4" style={{ borderTop: '1px solid var(--rule-soft)' }}>
+              <div className="text-xs uppercase tracking-wider mb-2" style={{ color: 'var(--ink-40)' }}>
                 Category caps
               </div>
               <div className="flex flex-wrap gap-3">
                 {CATEGORIES.map((c) => (
                   <span
                     key={c.name}
-                    className="text-xs font-mono text-white/50 bg-white/5 px-2.5 py-1 rounded"
+                    className="text-xs font-mono px-2.5 py-1 rounded"
+                    style={{ color: 'var(--ink-60)', background: 'var(--paper-1)' }}
                   >
                     {c.name}:{' '}
-                    <span className={c.color}>{c.maxPoints}</span>
+                    <span style={{ color: c.color }}>{c.maxPoints}</span>
                   </span>
                 ))}
               </div>
-              <div className="text-white/30 text-xs mt-3">
+              <div className="text-xs mt-3" style={{ color: 'var(--ink-40)' }}>
                 Total possible: 25 + 35 + 30 + 20 + 15 ={' '}
-                <span className="text-white/50">125</span>, capped at{' '}
-                <span className="text-white/50">100</span>
+                <span style={{ color: 'var(--ink-60)' }}>125</span>, capped at{' '}
+                <span style={{ color: 'var(--ink-60)' }}>100</span>
               </div>
             </div>
           </div>
@@ -580,38 +590,35 @@ export default function RiskScoresGuide() {
 
         {/* ── Reading the Report Narrative ── */}
         <section className="mb-14">
-          <h2 className="text-2xl font-bold mb-4">
+          <h2 style={{ marginBottom: 12 }}>
             Reading the Report Narrative
           </h2>
-          <div
-            className="rounded-xl border border-white/10 p-5 sm:p-6"
-            style={{ background: 'rgba(255,255,255,0.04)' }}
-          >
-            <ul className="space-y-3 text-white/60 text-sm leading-relaxed">
+          <div className="rounded-xl p-5 sm:p-6" style={CARD}>
+            <ul className="space-y-3 text-sm leading-relaxed" style={{ color: 'var(--ink-60)' }}>
               <li className="flex items-start gap-3">
-                <span className="text-teal-400 font-bold mt-0.5">&bull;</span>
+                <span style={DOT} className="shrink-0 w-1.5 h-1.5 rounded-full mt-1.5" />
                 Every analysis includes a{' '}
-                <strong className="text-white">plain-English summary</strong>{' '}
+                <strong style={{ color: 'var(--ink-100)' }}>plain-English summary</strong>{' '}
                 written for bank credit officers and compliance teams.
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-teal-400 font-bold mt-0.5">&bull;</span>
+                <span style={DOT} className="shrink-0 w-1.5 h-1.5 rounded-full mt-1.5" />
                 The narrative references{' '}
-                <strong className="text-white">specific evidence</strong> from
+                <strong style={{ color: 'var(--ink-100)' }}>specific evidence</strong> from
                 the documents (e.g., &ldquo;ABN 12345678901 is registered to
                 &lsquo;Smith Holdings Pty Ltd&rsquo;, not &lsquo;Acme
                 Corp&rsquo; as stated on the payslip&rdquo;).
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-teal-400 font-bold mt-0.5">&bull;</span>
+                <span style={DOT} className="shrink-0 w-1.5 h-1.5 rounded-full mt-1.5" />
                 Reports are suitable for inclusion in{' '}
-                <strong className="text-white">
+                <strong style={{ color: 'var(--ink-100)' }}>
                   APRA/ASIC documentation
                 </strong>{' '}
                 and audit trails.
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-teal-400 font-bold mt-0.5">&bull;</span>
+                <span style={DOT} className="shrink-0 w-1.5 h-1.5 rounded-full mt-1.5" />
                 Each flag in the report is expandable, showing the raw field
                 values, expected values, and the confidence level of the
                 detection.
@@ -622,27 +629,27 @@ export default function RiskScoresGuide() {
 
         {/* ── Example: Low Risk ── */}
         <section className="mb-14">
-          <h2 className="text-2xl font-bold mb-4">
+          <h2 style={{ marginBottom: 12 }}>
             Example: Low Risk (Score 12)
           </h2>
           <div
             className="rounded-xl border p-5 sm:p-6"
             style={{
-              background: 'rgba(34,197,94,0.05)',
-              borderColor: 'rgba(34,197,94,0.2)',
+              background: 'var(--risk-low-fill)',
+              borderColor: 'var(--risk-low-edge)',
             }}
           >
             {/* Score header */}
             <div className="flex items-center gap-4 mb-4">
               <div
                 className="flex items-center justify-center w-14 h-14 rounded-full border-2 font-bold text-xl"
-                style={{ borderColor: '#22c55e', color: '#22c55e' }}
+                style={{ borderColor: 'var(--risk-low)', color: 'var(--risk-low)' }}
               >
                 12
               </div>
               <div>
-                <div className="font-semibold text-white">Low Risk</div>
-                <div className="text-emerald-400 text-sm font-mono">
+                <div className="font-semibold" style={{ color: 'var(--ink-100)' }}>Low Risk</div>
+                <div className="text-sm font-mono" style={{ color: 'var(--risk-low)' }}>
                   Recommended: Approve
                 </div>
               </div>
@@ -650,11 +657,14 @@ export default function RiskScoresGuide() {
 
             {/* Narrative */}
             <div className="mb-4">
-              <div className="text-white/40 text-xs uppercase tracking-wider mb-2">
+              <div className="text-xs uppercase tracking-wider mb-2" style={{ color: 'var(--ink-40)' }}>
                 Summary narrative
               </div>
-              <div className="text-white/60 text-sm leading-relaxed bg-black/20 rounded-lg p-4 font-mono">
-                The application from <strong className="text-white">Sarah
+              <div
+                className="text-sm leading-relaxed rounded-lg p-4 font-mono"
+                style={{ background: 'var(--paper-2)', border: '1px solid var(--rule)', color: 'var(--ink-60)' }}
+              >
+                The application from <strong style={{ color: 'var(--ink-100)' }}>Sarah
                 Mitchell</strong> (Loan: $620,000) includes 2 payslips from
                 &ldquo;Melbourne Consulting Group Pty Ltd&rdquo; and 3 months of
                 bank statements from ANZ. All documents appear genuine.
@@ -674,18 +684,24 @@ export default function RiskScoresGuide() {
 
             {/* Flags */}
             <div>
-              <div className="text-white/40 text-xs uppercase tracking-wider mb-2">
+              <div className="text-xs uppercase tracking-wider mb-2" style={{ color: 'var(--ink-40)' }}>
                 Flags (1)
               </div>
-              <div className="bg-black/20 rounded-lg p-3">
+              <div
+                className="rounded-lg p-3"
+                style={{ background: 'var(--paper-2)', border: '1px solid var(--rule)' }}
+              >
                 <div className="flex items-center gap-3">
-                  <span className="text-xs font-mono text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded">
+                  <span
+                    className="text-xs font-mono px-2 py-0.5 rounded"
+                    style={{ color: 'var(--risk-low)', background: 'var(--risk-low-fill)', border: '1px solid var(--risk-low-edge)' }}
+                  >
                     LOW
                   </span>
-                  <span className="text-xs font-mono text-amber-400">
+                  <span className="text-xs font-mono" style={{ color: 'var(--risk-med)' }}>
                     SALARY_ABOVE_75TH_PERCENTILE
                   </span>
-                  <span className="text-white/30 text-xs ml-auto">
+                  <span className="text-xs ml-auto" style={{ color: 'var(--ink-40)' }}>
                     Cross-Reference &middot; +2 pts
                   </span>
                 </div>
@@ -696,27 +712,27 @@ export default function RiskScoresGuide() {
 
         {/* ── Example: Critical Risk ── */}
         <section className="mb-14">
-          <h2 className="text-2xl font-bold mb-4">
+          <h2 style={{ marginBottom: 12 }}>
             Example: Critical Risk (Score 82)
           </h2>
           <div
             className="rounded-xl border p-5 sm:p-6"
             style={{
-              background: 'rgba(239,68,68,0.05)',
-              borderColor: 'rgba(239,68,68,0.2)',
+              background: 'var(--risk-crit-fill)',
+              borderColor: 'var(--risk-crit-edge)',
             }}
           >
             {/* Score header */}
             <div className="flex items-center gap-4 mb-4">
               <div
                 className="flex items-center justify-center w-14 h-14 rounded-full border-2 font-bold text-xl"
-                style={{ borderColor: '#ef4444', color: '#ef4444' }}
+                style={{ borderColor: 'var(--risk-crit)', color: 'var(--risk-crit)' }}
               >
                 82
               </div>
               <div>
-                <div className="font-semibold text-white">Critical Risk</div>
-                <div className="text-red-400 text-sm font-mono">
+                <div className="font-semibold" style={{ color: 'var(--ink-100)' }}>Critical Risk</div>
+                <div className="text-sm font-mono" style={{ color: 'var(--risk-crit)' }}>
                   Recommended: Reject
                 </div>
               </div>
@@ -724,33 +740,36 @@ export default function RiskScoresGuide() {
 
             {/* Narrative */}
             <div className="mb-4">
-              <div className="text-white/40 text-xs uppercase tracking-wider mb-2">
+              <div className="text-xs uppercase tracking-wider mb-2" style={{ color: 'var(--ink-40)' }}>
                 Summary narrative
               </div>
-              <div className="text-white/60 text-sm leading-relaxed bg-black/20 rounded-lg p-4 font-mono">
-                The application from <strong className="text-white">James
+              <div
+                className="text-sm leading-relaxed rounded-lg p-4 font-mono"
+                style={{ background: 'var(--paper-2)', border: '1px solid var(--rule)', color: 'var(--ink-60)' }}
+              >
+                The application from <strong style={{ color: 'var(--ink-100)' }}>James
                 Parker</strong> (Loan: $1,200,000) contains 2 payslips from
                 &ldquo;Acme Corp&rdquo; and 3 months of bank statements. Multiple
                 critical issues detected across 4 of 5 categories.
                 <br /><br />
-                <strong className="text-red-400">PDF Forensics:</strong> Both
+                <strong style={{ color: 'var(--risk-crit)' }}>PDF Forensics:</strong> Both
                 payslips were created in &ldquo;Google Chrome&rdquo; (not payroll
                 software). 5 different font families detected. Creation timestamp
                 is identical to modification timestamp (no editing history).
                 <br /><br />
-                <strong className="text-red-400">AI Content Detection:</strong>{' '}
+                <strong style={{ color: 'var(--risk-crit)' }}>AI Content Detection:</strong>{' '}
                 Claude confidence 94% that payslip text is AI-generated. Uses
                 &ldquo;Basic Salary&rdquo; (UK terminology) instead of
                 &ldquo;Ordinary Earnings&rdquo;. Super fund listed as
                 &ldquo;Australian Super Fund&rdquo; (generic, not an
                 APRA-registered entity name).
                 <br /><br />
-                <strong className="text-red-400">Math Errors:</strong> Payslip
+                <strong style={{ color: 'var(--risk-crit)' }}>Math Errors:</strong> Payslip
                 shows Gross $12,500, Tax $3,125, Net $9,575 &mdash; actual net
                 should be $9,375 (discrepancy of $200). Super at $1,000
                 represents 8.0% of gross (below SGC minimum of 11.5%).
                 <br /><br />
-                <strong className="text-red-400">Cross-Reference:</strong> ABN
+                <strong style={{ color: 'var(--risk-crit)' }}>Cross-Reference:</strong> ABN
                 98 765 432 100 is registered to &ldquo;Acme Trading Holdings Pty
                 Ltd&rdquo;, not &ldquo;Acme Corp&rdquo; as stated. Salary of
                 $325,000 p.a. exceeds the 99th percentile for the stated
@@ -760,95 +779,109 @@ export default function RiskScoresGuide() {
 
             {/* Flags */}
             <div>
-              <div className="text-white/40 text-xs uppercase tracking-wider mb-2">
+              <div className="text-xs uppercase tracking-wider mb-2" style={{ color: 'var(--ink-40)' }}>
                 Flags (9)
               </div>
               <div className="space-y-2">
                 {[
                   {
                     severity: 'CRITICAL',
-                    sevColor: 'text-red-400',
-                    sevBg: 'bg-red-400/10',
+                    sevColor: 'var(--risk-crit)',
+                    sevFill: 'var(--risk-crit-fill)',
+                    sevEdge: 'var(--risk-crit-edge)',
                     code: 'AI_GENERATED_HIGH',
                     cat: 'AI Detection',
                     pts: 35,
                   },
                   {
                     severity: 'CRITICAL',
-                    sevColor: 'text-red-400',
-                    sevBg: 'bg-red-400/10',
+                    sevColor: 'var(--risk-crit)',
+                    sevFill: 'var(--risk-crit-fill)',
+                    sevEdge: 'var(--risk-crit-edge)',
                     code: 'PAYSLIP_MATH_ERROR',
                     cat: 'Math & Dates',
                     pts: 12,
                   },
                   {
                     severity: 'HIGH',
-                    sevColor: 'text-orange-400',
-                    sevBg: 'bg-orange-400/10',
+                    sevColor: 'var(--risk-high)',
+                    sevFill: 'var(--risk-high-fill)',
+                    sevEdge: 'var(--risk-high-edge)',
                     code: 'SUSPICIOUS_PRODUCER',
                     cat: 'PDF Forensics',
                     pts: 8,
                   },
                   {
                     severity: 'HIGH',
-                    sevColor: 'text-orange-400',
-                    sevBg: 'bg-orange-400/10',
+                    sevColor: 'var(--risk-high)',
+                    sevFill: 'var(--risk-high-fill)',
+                    sevEdge: 'var(--risk-high-edge)',
                     code: 'SUPER_RATE_WRONG',
                     cat: 'Math & Dates',
                     pts: 7,
                   },
                   {
                     severity: 'HIGH',
-                    sevColor: 'text-orange-400',
-                    sevBg: 'bg-orange-400/10',
+                    sevColor: 'var(--risk-high)',
+                    sevFill: 'var(--risk-high-fill)',
+                    sevEdge: 'var(--risk-high-edge)',
                     code: 'ABN_NAME_MISMATCH',
                     cat: 'Cross-Reference',
                     pts: 7,
                   },
                   {
                     severity: 'MEDIUM',
-                    sevColor: 'text-amber-400',
-                    sevBg: 'bg-amber-400/10',
+                    sevColor: 'var(--risk-med)',
+                    sevFill: 'var(--risk-med-fill)',
+                    sevEdge: 'var(--risk-med-edge)',
                     code: 'EXCESSIVE_FONTS',
                     cat: 'PDF Forensics',
                     pts: 4,
                   },
                   {
                     severity: 'MEDIUM',
-                    sevColor: 'text-amber-400',
-                    sevBg: 'bg-amber-400/10',
+                    sevColor: 'var(--risk-med)',
+                    sevFill: 'var(--risk-med-fill)',
+                    sevEdge: 'var(--risk-med-edge)',
                     code: 'UK_TERMINOLOGY',
                     cat: 'AI Detection',
                     pts: 4,
                   },
                   {
                     severity: 'MEDIUM',
-                    sevColor: 'text-amber-400',
-                    sevBg: 'bg-amber-400/10',
+                    sevColor: 'var(--risk-med)',
+                    sevFill: 'var(--risk-med-fill)',
+                    sevEdge: 'var(--risk-med-edge)',
                     code: 'SALARY_ABOVE_90TH_PERCENTILE',
                     cat: 'Cross-Reference',
                     pts: 3,
                   },
                   {
                     severity: 'LOW',
-                    sevColor: 'text-emerald-400',
-                    sevBg: 'bg-emerald-400/10',
+                    sevColor: 'var(--risk-low)',
+                    sevFill: 'var(--risk-low-fill)',
+                    sevEdge: 'var(--risk-low-edge)',
                     code: 'GENERIC_SUPER_FUND',
                     cat: 'AI Detection',
                     pts: 2,
                   },
                 ].map((f) => (
-                  <div key={f.code} className="bg-black/20 rounded-lg p-3">
+                  <div
+                    key={f.code}
+                    className="rounded-lg p-3"
+                    style={{ background: 'var(--paper-2)', border: '1px solid var(--rule)' }}
+                  >
                     <div className="flex items-center gap-3 flex-wrap">
                       <span
-                        className={`text-xs font-mono ${f.sevColor} ${f.sevBg} px-2 py-0.5 rounded`}
+                        className="text-xs font-mono px-2 py-0.5 rounded"
+                        style={{ color: f.sevColor, background: f.sevFill, border: `1px solid ${f.sevEdge}` }}
                       >
                         {f.severity}
                       </span>
-                      <span className="text-xs font-mono text-white/70">
+                      <span className="text-xs font-mono" style={{ color: 'var(--ink-80)' }}>
                         {f.code}
                       </span>
-                      <span className="text-white/20 text-xs ml-auto">
+                      <span className="text-xs ml-auto" style={{ color: 'var(--ink-25)' }}>
                         {f.cat} &middot; +{f.pts} pts
                       </span>
                     </div>
@@ -859,7 +892,7 @@ export default function RiskScoresGuide() {
           </div>
         </section>
 
-        <div className="text-center text-white/20 text-xs mt-8 mb-4">
+        <div className="text-center text-xs mt-8 mb-4" style={{ color: 'var(--ink-25)' }}>
           This page is print-friendly. Use Ctrl+P (or Cmd+P) to save as PDF.
         </div>
 
