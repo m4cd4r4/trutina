@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { Logo } from '@/components/Logo'
 
 interface SiteHeaderProps {
-  active?: 'index' | 'methods' | 'demo' | 'integration' | 'docs' | 'engagements' | null
+  active?: 'index' | 'methods' | 'demo' | 'api' | 'docs' | 'engagements' | null
   /** Retained for type-compat with existing call sites; no longer rendered. */
   onSignIn?: () => void
 }
@@ -13,7 +13,7 @@ interface SiteHeaderProps {
 const NAV: { key: NonNullable<SiteHeaderProps['active']>; label: string; href: string }[] = [
   { key: 'methods',     label: 'Methods',     href: '/#methods' },
   { key: 'demo',        label: 'Specimens',   href: '/demo' },
-  { key: 'integration', label: 'Integration', href: '/#integration' },
+  { key: 'api',         label: 'API',         href: '/docs/integration' },
   { key: 'docs',        label: 'Docs',        href: '/docs' },
   { key: 'engagements', label: 'Engagement',  href: '/#engagements' },
 ]

@@ -17,7 +17,7 @@ export default function SiteFooter() {
             <ul>
               <li><Link href="/#methods">Methods</Link></li>
               <li><Link href="/demo">Specimens</Link></li>
-              <li><Link href="/#integration">Integration shape</Link></li>
+              <li><Link href="/docs/integration">API</Link></li>
               <li><Link href="/docs">Documentation</Link></li>
             </ul>
           </div>
