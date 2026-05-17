@@ -60,7 +60,7 @@
 
   /* ---------- 2. Semantic roles ---------- */
 
-  --bg:                var(--paper-0);
+  --bg:                #FCFCFB;
   --bg-panel:          var(--paper-1);
   --bg-recess:         var(--paper-2);
   --bg-print-white:    #FBFAF6;
@@ -632,7 +632,7 @@ hr { border: 0; border-top: var(--rule-width) solid var(--rule); margin: var(--s
  *  Ported from ui_kits/marketing/marketing.css.
  * ===================================================================== */
 
-.site-header { position: sticky; top: 0; z-index: 10; background: rgba(240, 241, 237, 0.92); backdrop-filter: blur(2px); border-bottom: 1px solid var(--rule); }
+.site-header { position: sticky; top: 0; z-index: 10; background: rgba(252, 252, 251, 0.92); backdrop-filter: blur(2px); border-bottom: 1px solid var(--rule); }
 .site-header .inner { max-width: 1280px; margin: 0 auto; padding: 14px 32px 14px 132px; display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
 @media (max-width: 1024px) {
   .site-header .inner { padding: 14px 24px; gap: 16px; }
@@ -762,7 +762,7 @@ hr { border: 0; border-top: var(--rule-width) solid var(--rule); margin: var(--s
 .tier-card ul li::before { content: "+"; color: var(--ink-40); font-family: var(--font-mono); }
 .tier-card .cta { margin-top: 22px; }
 
-.site-footer { padding: 56px 0 40px; border-top: 1px solid var(--ink-80); background: var(--paper-1); }
+.site-footer { padding: 56px 0 40px; border-top: 1px solid var(--ink-80); background: var(--bg); }
 .site-footer .row1 { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 28px; }
 .site-footer h5 { font-family: var(--font-sans); font-weight: 600; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-60); margin: 0 0 10px; }
 .site-footer ul { list-style: none; padding: 0; margin: 0; font-size: 13px; line-height: 1.8; }
