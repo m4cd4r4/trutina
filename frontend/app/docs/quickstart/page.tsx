@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   alternates: { canonical: '/docs/quickstart' },
 }
 
+const CARD = { background: 'var(--bg-print-white)', border: '1px solid var(--rule-soft)' } as const
+const DOT = { background: 'var(--accent)' } as const
+
 const STEPS = [
   {
     number: 1,
@@ -15,7 +18,7 @@ const STEPS = [
     content: [
       'Go to your Trutina dashboard URL (provided during onboarding).',
       'Enter your email and password.',
-      'You\u0027ll see the main dashboard with summary stats, recent cases, and risk trend charts.',
+      'You\'ll see the main dashboard with summary stats, recent cases, and risk trend charts.',
     ],
     tip: null,
   },
@@ -42,7 +45,7 @@ const STEPS = [
       'Drag and drop or browse for PDF files.',
     ],
     documentTypes: [
-      { type: 'Payslips', detail: 'Most recent 2\u20133 months' },
+      { type: 'Payslips', detail: 'Most recent 2–3 months' },
       { type: 'Bank statements', detail: 'Most recent 3 months' },
       { type: 'Employment letters', detail: 'Letter of offer or employment confirmation' },
       { type: 'Tax returns', detail: 'Most recent financial year' },
@@ -59,11 +62,11 @@ const STEPS = [
       'Analysis typically completes in approximately 60 seconds.',
     ],
     statuses: [
-      { status: 'Pending', desc: 'Case created, awaiting analysis', color: 'text-white/50' },
-      { status: 'Processing', desc: 'Documents being analysed by 5 detection modules', color: 'text-teal-400' },
-      { status: 'Complete', desc: 'Risk score and report ready for review', color: 'text-emerald-400' },
+      { status: 'Pending', desc: 'Case created, awaiting analysis', color: 'var(--ink-60)' },
+      { status: 'Processing', desc: 'Documents being analysed by 5 detection modules', color: 'var(--accent)' },
+      { status: 'Complete', desc: 'Risk score and report ready for review', color: 'var(--accent)' },
     ],
-    closing: 'You\u0027ll see the risk score gauge and flags when analysis is complete.',
+    closing: 'You\'ll see the risk score gauge and flags when analysis is complete.',
     tip: null,
   },
   {
@@ -73,11 +76,11 @@ const STEPS = [
     reportSections: [
       {
         name: 'Score gauge',
-        desc: '0\u2013100 with color coding: green (0\u201319), amber (20\u201344), orange (45\u201369), red (70\u2013100).',
+        desc: '0–100 with color coding: green (0–19), amber (20–44), orange (45–69), red (70–100).',
       },
       {
         name: 'Recommended action',
-        desc: 'Approve, Manual Review, or Reject \u2014 based on the score threshold.',
+        desc: 'Approve, Manual Review, or Reject — based on the score threshold.',
       },
       {
         name: 'Summary narrative',
@@ -101,21 +104,27 @@ const STEPS = [
     content: ['Based on the recommended action:'],
     actions: [
       {
-        range: '0 \u2013 19',
+        range: '0 – 19',
         label: 'Approve',
-        color: '#22c55e',
+        ink: 'var(--risk-low)',
+        fill: 'var(--risk-low-fill)',
+        edge: 'var(--risk-low-edge)',
         desc: 'Proceed with normal processing. Documents appear genuine.',
       },
       {
-        range: '20 \u2013 69',
+        range: '20 – 69',
         label: 'Manual Review',
-        color: '#f59e0b',
+        ink: 'var(--risk-med)',
+        fill: 'var(--risk-med-fill)',
+        edge: 'var(--risk-med-edge)',
         desc: 'Route to a senior credit analyst for verification of flagged items.',
       },
       {
-        range: '70 \u2013 100',
+        range: '70 – 100',
         label: 'Reject',
-        color: '#ef4444',
+        ink: 'var(--risk-crit)',
+        fill: 'var(--risk-crit-fill)',
+        edge: 'var(--risk-crit-edge)',
         desc: 'Flag for fraud investigation team. Do not proceed with the application.',
       },
     ],
@@ -142,17 +151,20 @@ export default function QuickStartGuide() {
             <div key={step.number} className="flex gap-4 sm:gap-6">
               {/* Step number circle */}
               <div className="shrink-0">
-                <div className="flex items-center justify-center w-10 h-10 rounded-full border-2 border-teal-400/40 bg-teal-400/10 text-teal-400 font-bold text-sm">
+                <div
+                  className="flex items-center justify-center w-10 h-10 rounded-full font-bold text-sm"
+                  style={{ background: 'var(--accent)', color: 'var(--paper-0)', border: 'none' }}
+                >
                   {step.number}
                 </div>
                 {step.number < STEPS.length && (
-                  <div className="w-px h-full bg-white/5 mx-auto mt-2" />
+                  <div className="w-px h-full mx-auto mt-2" style={{ background: 'var(--rule-soft)' }} />
                 )}
               </div>
 
               {/* Step content */}
               <div className="pb-2 flex-1 min-w-0">
-                <h2 className="text-xl font-bold text-white mb-3">
+                <h2 style={{ marginBottom: 12 }}>
                   {step.title}
                 </h2>
 
@@ -162,9 +174,10 @@ export default function QuickStartGuide() {
                     {step.content.map((line) => (
                       <li
                         key={line}
-                        className="text-white/60 text-sm leading-relaxed flex items-start gap-2"
+                        className="text-sm leading-relaxed flex items-start gap-2"
+                        style={{ color: 'var(--ink-60)' }}
                       >
-                        <span className="text-teal-400 mt-0.5">&bull;</span>
+                        <span className="mt-0.5" style={{ color: 'var(--accent)' }}>&bull;</span>
                         {line}
                       </li>
                     ))}
@@ -174,19 +187,19 @@ export default function QuickStartGuide() {
                 {/* Fields table (Step 2) */}
                 {'fields' in step && step.fields && (
                   <div
-                    className="rounded-xl border border-white/10 overflow-hidden mb-4"
-                    style={{ background: 'rgba(255,255,255,0.04)' }}
+                    className="rounded-xl overflow-hidden mb-4"
+                    style={CARD}
                   >
                     <table className="w-full text-sm">
                       <thead>
-                        <tr className="border-b border-white/5">
-                          <th className="text-left text-white/40 text-xs uppercase tracking-wider px-4 py-2.5">
+                        <tr style={{ borderBottom: '1px solid var(--rule-soft)' }}>
+                          <th className="text-left text-xs uppercase tracking-wider px-4 py-2.5" style={{ color: 'var(--ink-40)' }}>
                             Field
                           </th>
-                          <th className="text-left text-white/40 text-xs uppercase tracking-wider px-4 py-2.5">
+                          <th className="text-left text-xs uppercase tracking-wider px-4 py-2.5" style={{ color: 'var(--ink-40)' }}>
                             Required
                           </th>
-                          <th className="text-left text-white/40 text-xs uppercase tracking-wider px-4 py-2.5 hidden sm:table-cell">
+                          <th className="text-left text-xs uppercase tracking-wider px-4 py-2.5 hidden sm:table-cell" style={{ color: 'var(--ink-40)' }}>
                             Example
                           </th>
                         </tr>
@@ -195,23 +208,24 @@ export default function QuickStartGuide() {
                         {step.fields.map((f) => (
                           <tr
                             key={f.name}
-                            className="border-b border-white/5 last:border-0"
+                            style={{ borderBottom: '1px solid var(--rule-soft)' }}
+                            className="last:border-0"
                           >
-                            <td className="text-white/70 px-4 py-2.5">
+                            <td className="px-4 py-2.5" style={{ color: 'var(--ink-80)' }}>
                               {f.name}
                             </td>
                             <td className="px-4 py-2.5">
                               {f.required ? (
-                                <span className="text-emerald-400 text-xs font-mono">
+                                <span className="text-xs font-mono" style={{ color: 'var(--accent)' }}>
                                   Yes
                                 </span>
                               ) : (
-                                <span className="text-white/30 text-xs font-mono">
+                                <span className="text-xs font-mono" style={{ color: 'var(--ink-40)' }}>
                                   Optional
                                 </span>
                               )}
                             </td>
-                            <td className="text-white/40 px-4 py-2.5 font-mono text-xs hidden sm:table-cell">
+                            <td className="px-4 py-2.5 font-mono text-xs hidden sm:table-cell" style={{ color: 'var(--ink-40)' }}>
                               {f.example}
                             </td>
                           </tr>
@@ -227,13 +241,13 @@ export default function QuickStartGuide() {
                     {step.documentTypes.map((d) => (
                       <div
                         key={d.type}
-                        className="flex items-center gap-3 text-sm rounded-lg border border-white/5 px-4 py-2.5"
-                        style={{ background: 'rgba(255,255,255,0.02)' }}
+                        className="flex items-center gap-3 text-sm rounded-lg px-4 py-2.5"
+                        style={CARD}
                       >
-                        <span className="text-white/70 font-medium min-w-[140px]">
+                        <span className="font-medium min-w-[140px]" style={{ color: 'var(--ink-80)' }}>
                           {d.type}
                         </span>
-                        <span className="text-white/30">{d.detail}</span>
+                        <span style={{ color: 'var(--ink-40)' }}>{d.detail}</span>
                       </div>
                     ))}
                   </div>
@@ -245,20 +259,20 @@ export default function QuickStartGuide() {
                     {step.statuses.map((s, i) => (
                       <div
                         key={s.status}
-                        className="flex-1 rounded-lg border border-white/5 px-4 py-3"
-                        style={{ background: 'rgba(255,255,255,0.02)' }}
+                        className="flex-1 rounded-lg px-4 py-3"
+                        style={CARD}
                       >
                         <div className="flex items-center gap-2 mb-1">
-                          <span className={`font-mono text-sm font-bold ${s.color}`}>
+                          <span className="font-mono text-sm font-bold" style={{ color: s.color }}>
                             {s.status}
                           </span>
                           {i < step.statuses.length - 1 && (
-                            <span className="text-white/10 hidden sm:inline">
+                            <span className="hidden sm:inline" style={{ color: 'var(--ink-15)' }}>
                               &rarr;
                             </span>
                           )}
                         </div>
-                        <div className="text-white/30 text-xs">{s.desc}</div>
+                        <div className="text-xs" style={{ color: 'var(--ink-40)' }}>{s.desc}</div>
                       </div>
                     ))}
                   </div>
@@ -270,13 +284,13 @@ export default function QuickStartGuide() {
                     {step.reportSections.map((r) => (
                       <div
                         key={r.name}
-                        className="rounded-lg border border-white/5 px-4 py-3"
-                        style={{ background: 'rgba(255,255,255,0.02)' }}
+                        className="rounded-lg px-4 py-3"
+                        style={CARD}
                       >
-                        <div className="text-white/80 font-medium text-sm mb-1">
+                        <div className="font-medium text-sm mb-1" style={{ color: 'var(--ink-80)' }}>
                           {r.name}
                         </div>
-                        <div className="text-white/40 text-sm leading-relaxed">
+                        <div className="text-sm leading-relaxed" style={{ color: 'var(--ink-40)' }}>
                           {r.desc}
                         </div>
                       </div>
@@ -290,29 +304,29 @@ export default function QuickStartGuide() {
                     {step.actions.map((a) => (
                       <div
                         key={a.label}
-                        className="rounded-lg border px-4 py-3 flex items-start gap-3"
+                        className="rounded-lg px-4 py-3 flex items-start gap-3"
                         style={{
-                          background: `${a.color}08`,
-                          borderColor: `${a.color}30`,
+                          background: a.fill,
+                          border: `1px solid ${a.edge}`,
                         }}
                       >
                         <span
                           className="inline-block w-2.5 h-2.5 rounded-full shrink-0 mt-1"
-                          style={{ backgroundColor: a.color }}
+                          style={{ background: a.ink }}
                         />
                         <div>
                           <div className="flex items-center gap-2 mb-0.5">
                             <span
                               className="font-bold text-sm"
-                              style={{ color: a.color }}
+                              style={{ color: a.ink }}
                             >
                               {a.label}
                             </span>
-                            <span className="text-white/20 text-xs font-mono">
+                            <span className="text-xs font-mono" style={{ color: 'var(--ink-25)' }}>
                               {a.range}
                             </span>
                           </div>
-                          <div className="text-white/50 text-sm">
+                          <div className="text-sm" style={{ color: 'var(--ink-60)' }}>
                             {a.desc}
                           </div>
                         </div>
@@ -323,26 +337,27 @@ export default function QuickStartGuide() {
 
                 {/* Closing text */}
                 {'closing' in step && step.closing && (
-                  <p className="text-white/50 text-sm">{step.closing}</p>
+                  <p className="text-sm" style={{ color: 'var(--ink-60)' }}>{step.closing}</p>
                 )}
 
                 {/* Tip box */}
                 {step.tip && (
                   <div
-                    className="rounded-lg border border-teal-400/20 px-4 py-3 mt-3"
-                    style={{ background: 'rgba(96,165,250,0.05)' }}
+                    className="rounded-lg px-4 py-3 mt-3"
+                    style={{ background: 'var(--accent-fill)', border: '1px solid var(--accent-edge)' }}
                   >
-                    <div className="text-teal-400 text-xs font-semibold uppercase tracking-wider mb-1">
+                    <div className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: 'var(--accent)' }}>
                       Tip
                     </div>
-                    <div className="text-white/50 text-sm">
+                    <div className="text-sm" style={{ color: 'var(--ink-60)' }}>
                       {step.tip}
                       {'tipLink' in step && step.tipLink && (
                         <>
                           {' '}
                           <Link
                             href={step.tipLink}
-                            className="text-teal-400 hover:text-teal-300 underline transition"
+                            className="underline transition"
+                            style={{ color: 'var(--accent)' }}
                           >
                             View guide &rarr;
                           </Link>
@@ -358,33 +373,34 @@ export default function QuickStartGuide() {
 
         {/* ── API Quick-Start ── */}
         <section className="mt-14 mb-10">
-          <h2 className="text-2xl font-bold mb-4">API Quick-Start</h2>
+          <h2 style={{ marginBottom: 16 }}>API Quick-Start</h2>
           <div
-            className="rounded-xl border border-white/10 p-5 sm:p-6"
-            style={{ background: 'rgba(255,255,255,0.04)' }}
+            className="rounded-xl p-5 sm:p-6"
+            style={CARD}
           >
-            <p className="text-white/60 text-sm leading-relaxed mb-4">
+            <p className="text-sm leading-relaxed mb-4" style={{ color: 'var(--ink-60)' }}>
               For programmatic access, use the one-shot ingest endpoint. Send
               base64-encoded documents and receive an instant risk score.
             </p>
-            <div className="bg-black/30 rounded-lg p-4 font-mono text-sm overflow-x-auto">
-              <div className="text-white/30 mb-1"># One-shot analysis</div>
+            <div className="rounded-lg p-4 font-mono text-sm overflow-x-auto" style={{ background: 'var(--paper-2)', border: '1px solid var(--rule)' }}>
+              <div className="mb-1" style={{ color: 'var(--ink-40)' }}># One-shot analysis</div>
               <div>
-                <span className="text-emerald-400">POST</span>{' '}
-                <span className="text-white/70">
+                <span style={{ color: 'var(--accent)' }}>POST</span>{' '}
+                <span style={{ color: 'var(--ink-80)' }}>
                   /api/v1/webhooks/ingest
                 </span>
               </div>
-              <div className="text-white/30 mt-2 mb-1"># Returns</div>
-              <div className="text-white/50">
+              <div className="mt-2 mb-1" style={{ color: 'var(--ink-40)' }}># Returns</div>
+              <div style={{ color: 'var(--ink-60)' }}>
                 {'{'} &quot;risk_score&quot;: 42, &quot;risk_level&quot;: &quot;medium&quot;, &quot;recommended_action&quot;: &quot;manual_review&quot; {'}'}
               </div>
             </div>
-            <p className="text-white/40 text-sm mt-3">
+            <p className="text-sm mt-3" style={{ color: 'var(--ink-40)' }}>
               See the{' '}
               <Link
                 href="/docs/integration"
-                className="text-teal-400 hover:text-teal-300 underline transition"
+                className="underline transition"
+                style={{ color: 'var(--accent)' }}
               >
                 Integration Guide
               </Link>{' '}
@@ -395,33 +411,34 @@ export default function QuickStartGuide() {
 
         {/* ── Next Steps ── */}
         <section className="mb-10">
-          <h2 className="text-2xl font-bold mb-4">Next Steps</h2>
+          <h2 style={{ marginBottom: 16 }}>Next Steps</h2>
           <div className="space-y-3">
             {NEXT_STEPS.map((ns) => (
               <Link
                 key={ns.href}
                 href={ns.href}
-                className="flex items-center gap-3 rounded-lg border border-white/10 px-4 py-3 hover:border-white/20 transition group"
-                style={{ background: 'rgba(255,255,255,0.04)' }}
+                className="flex items-center gap-3 rounded-lg px-4 py-3 transition group"
+                style={CARD}
               >
-                <span className="text-teal-400 group-hover:text-teal-300 transition">
+                <span style={{ color: 'var(--accent)' }}>
                   &rarr;
                 </span>
-                <span className="text-white/60 text-sm group-hover:text-white/80 transition">
+                <span className="text-sm" style={{ color: 'var(--ink-60)' }}>
                   {ns.label}
                 </span>
               </Link>
             ))}
             <div
-              className="flex items-center gap-3 rounded-lg border border-white/10 px-4 py-3"
-              style={{ background: 'rgba(255,255,255,0.04)' }}
+              className="flex items-center gap-3 rounded-lg px-4 py-3"
+              style={CARD}
             >
-              <span className="text-teal-400">&rarr;</span>
-              <span className="text-white/60 text-sm">
+              <span style={{ color: 'var(--accent)' }}>&rarr;</span>
+              <span className="text-sm" style={{ color: 'var(--ink-60)' }}>
                 Contact{' '}
                 <a
                   href="mailto:hello@trutina.com.au"
-                  className="text-teal-400 hover:text-teal-300 underline transition"
+                  className="underline transition"
+                  style={{ color: 'var(--accent)' }}
                 >
                   hello@trutina.com.au
                 </a>{' '}
@@ -431,7 +448,7 @@ export default function QuickStartGuide() {
           </div>
         </section>
 
-        <div className="text-center text-white/20 text-xs mt-8 mb-4">
+        <div className="text-center text-xs mt-8 mb-4" style={{ color: 'var(--ink-25)' }}>
           This page is print-friendly. Use Ctrl+P (or Cmd+P) to save as PDF.
         </div>
 

@@ -44,3 +44,5 @@ frontend/public/logo/*.bak
 
 # Local-only snapshot helpers (kept out of PR)
 frontend/scripts/design-review-snapshot.mjs
+docs/screenshots/shot.mjs
+docs/screenshots/docs-off-shim/

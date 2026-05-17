@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Microscope, Bot, Link2, Calculator, Users, ClipboardList, Check } from 'lucide-react'
+import { Microscope, Bot, Link2, Calculator, Users, ClipboardList } from 'lucide-react'
 import { Logo } from '@/components/Logo'
 import DocShell from '@/components/DocShell'
 
@@ -9,34 +9,38 @@ export const metadata: Metadata = {
   alternates: { canonical: '/docs/one-pager' },
 }
 
+const CARD = { background: 'var(--bg-print-white)', border: '1px solid var(--rule-soft)' } as const
+const DOT = { background: 'var(--accent)' } as const
+const ICON_STYLE = { color: 'var(--accent)' } as const
+
 const MODULES = [
   {
-    icon: <Microscope className="w-5 h-5 text-teal-400" />,
+    icon: <Microscope className="w-5 h-5" style={ICON_STYLE} />,
     title: 'PDF Forensics',
     desc: 'Metadata, font fingerprints, timestamp anomalies',
   },
   {
-    icon: <Bot className="w-5 h-5 text-teal-400" />,
+    icon: <Bot className="w-5 h-5" style={ICON_STYLE} />,
     title: 'AI Content Detection',
     desc: 'Claude Sonnet semantic analysis for AI-generation patterns',
   },
   {
-    icon: <Link2 className="w-5 h-5 text-teal-400" />,
+    icon: <Link2 className="w-5 h-5" style={ICON_STYLE} />,
     title: 'Cross-Reference Verification',
     desc: 'Live ABN Lookup, BSB directory, ABS wage benchmarks',
   },
   {
-    icon: <Calculator className="w-5 h-5 text-teal-400" />,
+    icon: <Calculator className="w-5 h-5" style={ICON_STYLE} />,
     title: 'Math & Date Consistency',
-    desc: 'Gross\u2212tax=net, 11.5% SGC super, YTD validation',
+    desc: 'Gross−tax=net, 11.5% SGC super, YTD validation',
   },
   {
-    icon: <Users className="w-5 h-5 text-teal-400" />,
+    icon: <Users className="w-5 h-5" style={ICON_STYLE} />,
     title: 'Broker Risk Profiling',
     desc: 'Velocity, fraud rates, network clustering',
   },
   {
-    icon: <ClipboardList className="w-5 h-5 text-teal-400" />,
+    icon: <ClipboardList className="w-5 h-5" style={ICON_STYLE} />,
     title: 'APRA-Ready Explainability',
     desc: 'Plain-English narrative + evidence for every score',
   },
@@ -64,26 +68,26 @@ export default function OnePager() {
     >
           <div className="text-center mb-8 sm:mb-10 no-print">
             <Logo variant="wordmark" href="" className="text-2xl sm:text-3xl" />
-            <div className="w-16 h-0.5 bg-teal-500 mx-auto mt-2" />
+            <div className="w-16 h-0.5 mx-auto mt-2" style={DOT} />
           </div>
 
           {/* Problem */}
-          <div className="rounded-xl border border-red-500/20 p-5 sm:p-6 mb-6 print-alert"
-            style={{ background: 'rgba(239,68,68,0.05)' }}>
-            <h2 className="font-bold text-red-300 mb-2 text-sm uppercase tracking-wider">The Problem</h2>
-            <p className="text-white/70 print-muted text-sm leading-relaxed mb-3">
-              CBA self-reported <strong className="text-white">~A$1 billion</strong> in AI-document mortgage fraud (Feb 2026).
+          <div className="rounded-xl p-5 sm:p-6 mb-6"
+            style={{ background: 'var(--risk-crit-fill)', border: '1px solid var(--risk-crit-edge)' }}>
+            <h2 className="font-bold mb-2 text-sm uppercase tracking-wider" style={{ color: 'var(--risk-crit)' }}>The Problem</h2>
+            <p className="text-sm leading-relaxed mb-3" style={{ color: 'var(--ink-80)' }}>
+              CBA self-reported <strong style={{ color: 'var(--ink-100)' }}>~A$1 billion</strong> in AI-document mortgage fraud (Feb 2026).
               Westpac and ANZ have flagged similar issues. AI tools now generate payslips, bank statements, and
               employment letters convincing enough to bypass manual review. The problem is industry-wide and unsolved.
             </p>
             <div className="flex flex-wrap gap-3 text-xs">
-              <span className="bg-white/5 print-card rounded-lg px-3 py-1.5">
+              <span className="rounded-lg px-3 py-1.5" style={{ background: 'var(--paper-2)' }}>
                 <strong>CBA</strong> ~$1B
               </span>
-              <span className="bg-white/5 print-card rounded-lg px-3 py-1.5">
+              <span className="rounded-lg px-3 py-1.5" style={{ background: 'var(--paper-2)' }}>
                 <strong>NAB</strong> ~$105M (&ldquo;Penthouse Syndicate&rdquo;)
               </span>
-              <span className="bg-white/5 print-card rounded-lg px-3 py-1.5">
+              <span className="rounded-lg px-3 py-1.5" style={{ background: 'var(--paper-2)' }}>
                 <strong>Westpac / ANZ</strong> Undisclosed
               </span>
             </div>
@@ -91,10 +95,8 @@ export default function OnePager() {
 
           {/* What Trutina does */}
           <div className="mb-6">
-            <h2 className="font-bold text-sm uppercase tracking-wider text-teal-400 print-blue mb-3">
-              What Trutina Does
-            </h2>
-            <p className="text-white/60 print-muted text-sm leading-relaxed">
+            <h2 style={{ marginBottom: 12 }}>What Trutina Does</h2>
+            <p className="text-sm leading-relaxed" style={{ color: 'var(--ink-60)' }}>
               Upload loan application documents. Trutina runs a 6-layer AI analysis and returns an
               explainable risk score in approximately 60 seconds. It catches what humans cannot &mdash;
               AI-generated patterns, metadata anomalies, invalid references, and mathematical inconsistencies.
@@ -103,17 +105,16 @@ export default function OnePager() {
 
           {/* How it works - 3 steps */}
           <div className="mb-6">
-            <h2 className="font-bold text-sm uppercase tracking-wider text-teal-400 print-blue mb-3">
-              How It Works
-            </h2>
+            <h2 style={{ marginBottom: 12 }}>How It Works</h2>
             <div className="grid grid-cols-3 gap-3">
               {STEPS.map(s => (
                 <div key={s.num} className="text-center">
-                  <div className="w-8 h-8 rounded-full bg-teal-600 print-step-num flex items-center justify-center text-white text-sm font-bold mx-auto mb-2">
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold mx-auto mb-2"
+                    style={{ background: 'var(--accent)', color: 'var(--paper-0)' }}>
                     {s.num}
                   </div>
-                  <div className="text-white text-sm font-semibold mb-0.5">{s.title}</div>
-                  <div className="text-white/40 print-light text-xs leading-snug">{s.desc}</div>
+                  <div className="text-sm font-semibold mb-0.5" style={{ color: 'var(--ink-100)' }}>{s.title}</div>
+                  <div className="text-xs leading-snug" style={{ color: 'var(--ink-40)' }}>{s.desc}</div>
                 </div>
               ))}
             </div>
@@ -121,19 +122,17 @@ export default function OnePager() {
 
           {/* 6 Detection Modules */}
           <div className="mb-6">
-            <h2 className="font-bold text-sm uppercase tracking-wider text-teal-400 print-blue mb-3">
-              Six Detection Modules
-            </h2>
+            <h2 style={{ marginBottom: 12 }}>Six Detection Modules</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {MODULES.map(m => (
                 <div key={m.title}
-                  className="rounded-lg border border-white/10 p-3 print-card"
-                  style={{ background: 'rgba(255,255,255,0.04)' }}>
+                  className="rounded-lg p-3"
+                  style={CARD}>
                   <div className="flex items-center gap-2 mb-1.5">
                     <span className="no-print">{m.icon}</span>
-                    <h3 className="font-semibold text-white text-xs">{m.title}</h3>
+                    <h3 className="font-semibold text-xs" style={{ color: 'var(--ink-100)' }}>{m.title}</h3>
                   </div>
-                  <p className="text-white/40 print-light text-xs leading-snug">{m.desc}</p>
+                  <p className="text-xs leading-snug" style={{ color: 'var(--ink-40)' }}>{m.desc}</p>
                 </div>
               ))}
             </div>
@@ -141,30 +140,32 @@ export default function OnePager() {
 
           {/* Pricing */}
           <div className="mb-6">
-            <h2 className="font-bold text-sm uppercase tracking-wider text-teal-400 print-blue mb-3">
-              Pricing
-            </h2>
-            <div className="rounded-xl border border-white/10 overflow-hidden print-card">
+            <h2 style={{ marginBottom: 12 }}>Pricing</h2>
+            <div className="rounded-xl overflow-hidden" style={CARD}>
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-white/10">
-                    <th className="text-left text-white/50 print-muted font-medium px-4 py-2.5 text-xs">Plan</th>
-                    <th className="text-left text-white/50 print-muted font-medium px-4 py-2.5 text-xs">Price</th>
-                    <th className="text-left text-white/50 print-muted font-medium px-4 py-2.5 text-xs">Volume</th>
+                  <tr style={{ background: 'var(--paper-1)', borderBottom: '1px solid var(--rule)' }}>
+                    <th className="text-left font-medium px-4 py-2.5 text-xs" style={{ color: 'var(--ink-60)' }}>Plan</th>
+                    <th className="text-left font-medium px-4 py-2.5 text-xs" style={{ color: 'var(--ink-60)' }}>Price</th>
+                    <th className="text-left font-medium px-4 py-2.5 text-xs" style={{ color: 'var(--ink-60)' }}>Volume</th>
                   </tr>
                 </thead>
                 <tbody>
                   {PRICING.map(p => (
                     <tr key={p.name}
-                      className={`border-b border-white/5 last:border-b-0 ${p.highlight ? 'bg-teal-500/5 print-highlight' : ''}`}>
-                      <td className="px-4 py-2.5 text-white font-medium text-sm">
+                      className="last:border-b-0"
+                      style={{
+                        borderBottom: '1px solid var(--rule-soft)',
+                        ...(p.highlight ? { background: 'var(--accent-fill)' } : {}),
+                      }}>
+                      <td className="px-4 py-2.5 font-medium text-sm" style={{ color: 'var(--ink-100)' }}>
                         {p.name}
                         {p.highlight && (
-                          <span className="ml-2 text-xs text-teal-400 print-blue font-normal">Most popular</span>
+                          <span className="ml-2 text-xs font-normal" style={{ color: 'var(--accent)' }}>Most popular</span>
                         )}
                       </td>
-                      <td className="px-4 py-2.5 text-white font-semibold text-sm">{p.price}</td>
-                      <td className="px-4 py-2.5 text-white/50 print-muted text-sm">{p.volume}</td>
+                      <td className="px-4 py-2.5 font-semibold text-sm" style={{ color: 'var(--ink-100)' }}>{p.price}</td>
+                      <td className="px-4 py-2.5 text-sm" style={{ color: 'var(--ink-60)' }}>{p.volume}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -173,22 +174,21 @@ export default function OnePager() {
           </div>
 
           {/* Contact */}
-          <div className="rounded-xl border border-white/10 p-5 text-center print-card"
-            style={{ background: 'rgba(255,255,255,0.04)' }}>
-            <h2 className="font-bold text-white mb-1 text-sm">Ready to protect your loan book?</h2>
-            <p className="text-white/40 print-light text-xs mb-3">
+          <div className="rounded-xl p-5 text-center" style={CARD}>
+            <h2 className="font-bold mb-1 text-sm" style={{ color: 'var(--ink-100)' }}>Ready to protect your loan book?</h2>
+            <p className="text-xs mb-3" style={{ color: 'var(--ink-40)' }}>
               Start with a free trial &mdash; 5 documents, no credit card required.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-1 text-sm">
-              <a href="mailto:hello@trutina.com.au" className="text-teal-400 print-blue hover:text-teal-300 transition font-medium">
+              <a href="mailto:hello@trutina.com.au" className="underline underline-offset-2 font-medium" style={{ color: 'var(--accent)' }}>
                 hello@trutina.com.au
               </a>
-              <span className="text-white/20 hidden sm:inline">|</span>
-              <a href="https://trutina.com.au" className="text-teal-400 print-blue hover:text-teal-300 transition font-medium">
+              <span className="hidden sm:inline" style={{ color: 'var(--ink-25)' }}>|</span>
+              <a href="https://trutina.com.au" className="underline underline-offset-2 font-medium" style={{ color: 'var(--accent)' }}>
                 trutina.com.au
               </a>
             </div>
-            <div className="mt-3 text-white/20 print-light text-xs">
+            <div className="mt-3 text-xs" style={{ color: 'var(--ink-25)' }}>
               trutina.com.au &middot; hello@trutina.com.au
             </div>
           </div>
