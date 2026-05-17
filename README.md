@@ -1,8 +1,10 @@
 # Trutina
 
-AI-powered mortgage fraud detection for Australian lenders. Analyses loan application documents and returns explainable risk scores, catching AI-generated payslips and bank statements before they cost billions.
+Forensic mortgage fraud detection for Australian lenders. Analyses loan application documents and returns explainable, cited risk scores, catching AI-generated payslips and bank statements before they cost billions.
 
-**Live:** [trutina.com.au](https://trutina.com.au)
+![Trutina landing page](docs/screenshots/landing.png)
+
+**Live:** [trutina.com.au](https://trutina.com.au) · independent portfolio project, source available on request
 
 ## Why
 
