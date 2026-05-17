@@ -24,10 +24,10 @@ export default function HeroSpecimenPreview() {
 
       {/* Document chrome */}
       <div style={HEAD}>
-        <div className="mono" style={{ fontSize: 10.5, color: 'var(--ink-40)', letterSpacing: '0.04em' }}>
+        <div className="mono" style={{ fontSize: 11, color: 'var(--ink-60)', letterSpacing: '0.04em' }}>
           Case . TRU-2026-04812
         </div>
-        <div className="mono" style={{ fontSize: 10.5, color: 'var(--ink-40)' }}>
+        <div className="mono" style={{ fontSize: 11, color: 'var(--ink-60)' }}>
           submitted 09:14 AEST
         </div>
       </div>
@@ -45,10 +45,10 @@ export default function HeroSpecimenPreview() {
         <div style={{ textAlign: 'right', flexShrink: 0 }}>
           <RiskBadge tier="crit" stark score={82} />
           <div style={{ marginTop: 2 }}>
-            <span style={{ fontFamily: 'var(--font-serif)', fontWeight: 500, fontSize: 44, lineHeight: 0.95, color: 'var(--risk-crit)', fontVariantNumeric: 'tabular-nums', letterSpacing: '-0.02em' }}>
+            <span style={{ fontFamily: 'var(--font-serif)', fontWeight: 500, fontSize: 44, lineHeight: 0.95, color: 'var(--accent)', fontVariantNumeric: 'tabular-nums', letterSpacing: '-0.02em' }}>
               82
             </span>
-            <span style={{ fontFamily: 'var(--font-serif)', fontSize: 12, color: 'var(--ink-40)', marginLeft: 2 }}>/100</span>
+            <span style={{ fontFamily: 'var(--font-serif)', fontSize: 12, color: 'var(--ink-60)', marginLeft: 2 }}>/100</span>
           </div>
         </div>
       </div>
@@ -63,21 +63,21 @@ export default function HeroSpecimenPreview() {
 
       {/* Foot — citation hook */}
       <div style={FOOT}>
-        <span className="mono" style={{ fontSize: 10, color: 'var(--ink-40)' }}>
+        <span className="mono" style={{ fontSize: 11, color: 'var(--ink-60)' }}>
           ledger TRU-2026-04812 . retained 7y per APRA CPG 234
         </span>
-        <span className="mono" style={{ fontSize: 10, color: 'var(--ink-40)' }}>
+        <span className="mono" style={{ fontSize: 11, color: 'var(--ink-60)' }}>
           4 flags
         </span>
       </div>
 
       {/* REJECT stamp annotation */}
       <div style={{
-        position: 'absolute', right: -14, top: 22,
+        position: 'absolute', right: 14, top: 14,
         opacity: stampVisible ? 1 : 0,
-        transform: stampVisible ? 'rotate(-6deg) scale(0.62)' : 'rotate(-6deg) scale(0.55)',
+        transform: `scale(0.62)`,
         transformOrigin: 'top right',
-        transition: 'opacity 320ms var(--ease), transform 320ms var(--ease)',
+        transition: 'opacity 240ms var(--ease)',
         pointerEvents: 'none',
       }}>
         <RejectStamp tier="crit" sub="TRU-2026-04812">REJECT</RejectStamp>
@@ -89,7 +89,7 @@ export default function HeroSpecimenPreview() {
 function Flag({ tier, code, title, detail }: { tier: 'crit' | 'high'; code: string; title: string; detail?: string }) {
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '50px 1fr auto', gap: 10, padding: '7px 0', borderBottom: '1px solid var(--rule-soft)', alignItems: 'baseline' }}>
-      <span className="mono" style={{ fontSize: 10.5, color: 'var(--ink-60)', fontWeight: 600 }}>{code}</span>
+      <span className="mono" style={{ fontSize: 11, color: 'var(--ink-60)', fontWeight: 600 }}>{code}</span>
       <span style={{ fontSize: 12, color: 'var(--ink-100)', lineHeight: 1.4 }}>
         {title}{detail ? <> . <span className="mono" style={{ color: tier === 'crit' ? 'var(--risk-crit)' : 'var(--risk-high)', fontWeight: 600 }}>{detail}</span></> : null}
       </span>
@@ -109,7 +109,7 @@ const WRAPPER: React.CSSProperties = {
 
 const MARGIN_BAR: React.CSSProperties = {
   position: 'absolute', left: 0, top: 0, bottom: 0, width: 6,
-  background: 'var(--risk-crit)',
+  background: 'var(--accent)',
 }
 
 const HEAD: React.CSSProperties = {

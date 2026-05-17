@@ -48,10 +48,10 @@
   --risk-crit-edge:    #B5524D;
 
   /* Single action accent. Oxblood - warm, distinct from the risk reds. */
-  --accent:            #6E2A38;
-  --accent-press:      #531F2A;
-  --accent-fill:       #E9D6DB;
-  --accent-edge:       #A87D88;
+  --accent:            #243B53;
+  --accent-press:      #172A3D;
+  --accent-fill:       #DCE2E8;
+  --accent-edge:       #8A9AAB;
 
   /* Provenance markers. */
   --measured:          var(--ink-100);
@@ -893,8 +893,8 @@ hr { border: 0; border-top: var(--rule-width) solid var(--rule); margin: var(--s
   --font-saas: var(--font-geist), 'Inter', -apple-system, 'Segoe UI', system-ui, sans-serif;
 
   /* Palette override: white background, sharper near-black ink. */
-  --saas-bg:       #FFFFFF;
-  --saas-bg-soft:  #FAFAFA;
+  --saas-bg:       #FCFCFB;
+  --saas-bg-soft:  #F6F6F4;
   --saas-ink-100:  #0A0A0A;
   --saas-ink-80:   #1F1F1F;
   --saas-ink-60:   #525252;
@@ -902,8 +902,8 @@ hr { border: 0; border-top: var(--rule-width) solid var(--rule); margin: var(--s
   --saas-ink-20:   #C2C2C2;
   --saas-ink-10:   #E5E5E5;
   --saas-ink-05:   #F2F2F2;
-  --saas-accent:   #6E2A38;
-  --saas-accent-hover: #531F2A;
+  --saas-accent:   #243B53;
+  --saas-accent-hover: #172A3D;
 
   background: var(--saas-bg);
   color: var(--saas-ink-100);
@@ -915,14 +915,14 @@ hr { border: 0; border-top: var(--rule-width) solid var(--rule); margin: var(--s
 /* When the landing renders, extend white to the whole document so the
  * editorial cool-paper doesn't bleed around the header and footer. */
 html:has(.landing-saas) {
-  background: #FFFFFF;
+  background: #FCFCFB;
 }
 html:has(.landing-saas) body {
-  background: #FFFFFF;
+  background: #FCFCFB;
 }
 html:has(.landing-saas) .site-header,
 html:has(.landing-saas) .site-footer {
-  background: #FFFFFF;
+  background: #FCFCFB;
 }
 
 /* Finish the SaaS port for the shared chrome at DESKTOP (mobile is

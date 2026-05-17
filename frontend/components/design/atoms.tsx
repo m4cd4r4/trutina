@@ -133,16 +133,14 @@ export function RejectStamp({
     <div
       style={{
         display: 'inline-block',
-        border: `2.5px solid var(--risk-${tier})`,
+        border: `1.5px solid var(--risk-${tier})`,
         color: `var(--risk-${tier})`,
-        padding: '8px 16px',
-        transform: 'rotate(-3.5deg)',
+        padding: '7px 14px',
         fontFamily: 'var(--font-sans)',
         fontWeight: 700,
-        fontSize: 20,
-        letterSpacing: '0.28em',
+        fontSize: 18,
+        letterSpacing: '0.2em',
         background: 'var(--bg-print-white)',
-        boxShadow: `0 0 0 1px var(--bg-print-white), 0 0 0 4px var(--risk-${tier}-fill)`,
       }}
     >
       {children}
