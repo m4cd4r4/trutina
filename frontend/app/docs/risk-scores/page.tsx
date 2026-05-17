@@ -1,7 +1,5 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
-import SiteHeader from '@/components/design/SiteHeader'
-import SiteFooter from '@/components/design/SiteFooter'
+import DocShell from '@/components/DocShell'
 
 export const metadata: Metadata = {
   title: 'Risk Score Guide',
@@ -263,28 +261,10 @@ const SEVERITIES = [
 
 export default function RiskScoresGuide() {
   return (
-    <div className="min-h-screen docs-page">
-      {/* Nav */}
-      <SiteHeader active="docs" />
-
-      <div className="max-w-4xl mx-auto px-4 sm:px-8 py-12 sm:py-16">
-        {/* Header */}
-        <div className="mb-12">
-          <Link
-            href="/docs"
-            className="text-white/30 hover:text-white/50 text-sm transition mb-4 inline-block"
-          >
-            &larr; Back to Docs
-          </Link>
-          <h1 className="text-3xl sm:text-4xl font-bold mb-3">
-            Understanding Risk Scores
-          </h1>
-          <p className="text-white/50 max-w-2xl">
-            A comprehensive guide to interpreting Trutina risk scores, flag
-            categories, severity levels, and recommended actions. Written for
-            credit analysts and compliance officers.
-          </p>
-        </div>
+    <DocShell
+      title="Understanding Risk Scores"
+      intro="A comprehensive guide to interpreting Trutina risk scores, flag categories, severity levels, and recommended actions. Written for credit analysts and compliance officers."
+    >
 
         {/* ── Risk Score Overview ── */}
         <section className="mb-14">
@@ -879,17 +859,10 @@ export default function RiskScoresGuide() {
           </div>
         </section>
 
-        {/* ── Print note ── */}
         <div className="text-center text-white/20 text-xs mt-8 mb-4">
           This page is print-friendly. Use Ctrl+P (or Cmd+P) to save as PDF.
         </div>
 
-        {/* Footer */}
-        <footer className="border-t border-white/5 pt-6 text-center text-white/20 text-xs">
-          Trutina &middot; hello@trutina.com.au
-        </footer>
-      </div>
-      <SiteFooter />
-    </div>
+    </DocShell>
   )
 }

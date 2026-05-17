@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
+import DocShell from '@/components/DocShell'
 import Link from 'next/link'
-import SiteHeader from '@/components/design/SiteHeader'
-import SiteFooter from '@/components/design/SiteFooter'
 
 export const metadata: Metadata = {
   title: 'Quick-Start Guide',
@@ -132,26 +131,10 @@ const NEXT_STEPS = [
 
 export default function QuickStartGuide() {
   return (
-    <div className="min-h-screen docs-page">
-      {/* Nav */}
-      <SiteHeader active="docs" />
-
-      <div className="max-w-3xl mx-auto px-4 sm:px-8 py-12 sm:py-16">
-        {/* Header */}
-        <div className="mb-12">
-          <Link
-            href="/docs"
-            className="text-white/30 hover:text-white/50 text-sm transition mb-4 inline-block"
-          >
-            &larr; Back to Docs
-          </Link>
-          <h1 className="text-3xl sm:text-4xl font-bold mb-3">
-            Quick-Start Guide
-          </h1>
-          <p className="text-white/50 max-w-xl">
-            Get from zero to your first risk report in under 5 minutes.
-          </p>
-        </div>
+    <DocShell
+      title="Quick-Start Guide"
+      intro="Get from zero to your first risk report in under 5 minutes."
+    >
 
         {/* Steps */}
         <div className="space-y-8">
@@ -448,17 +431,10 @@ export default function QuickStartGuide() {
           </div>
         </section>
 
-        {/* Print note */}
         <div className="text-center text-white/20 text-xs mt-8 mb-4">
           This page is print-friendly. Use Ctrl+P (or Cmd+P) to save as PDF.
         </div>
 
-        {/* Footer */}
-        <footer className="border-t border-white/5 pt-6 text-center text-white/20 text-xs">
-          Trutina &middot; hello@trutina.com.au
-        </footer>
-      </div>
-      <SiteFooter />
-    </div>
+    </DocShell>
   )
 }

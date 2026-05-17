@@ -6,6 +6,7 @@ import SiteHeader from '@/components/design/SiteHeader'
 import SiteFooter from '@/components/design/SiteFooter'
 import { RiskBadge } from '@/components/design/atoms'
 import { tierToken } from '@/lib/case-modules'
+import { EngagementCTA } from '@/components/EngagementCTA'
 
 export default function DemoLandingPage() {
   const router = useRouter()
@@ -80,16 +81,7 @@ export default function DemoLandingPage() {
           </table>
         </div>
 
-        <div style={{ marginTop: 48, padding: 32, background: 'var(--paper-1)', border: '1px solid var(--rule)', textAlign: 'center' }}>
-          <h2 style={{ fontSize: 22, marginBottom: 8 }}>Assess against your portfolio</h2>
-          <p style={{ color: 'var(--ink-60)', maxWidth: 480, margin: '0 auto 16px' }}>
-            For Australian lenders, aggregators, and credit-risk teams. Source and methods paper available on request.
-          </p>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap' }}>
-            <a href="mailto:hello@trutina.com.au?subject=Trutina%20engagement%20enquiry" className="btn btn-primary">Email about an engagement</a>
-            <a href="/methods-paper.pdf" target="_blank" rel="noopener" className="btn-text">Methods paper (PDF)</a>
-          </div>
-        </div>
+        <EngagementCTA variant="editorial" />
       </main>
 
       <SiteFooter />

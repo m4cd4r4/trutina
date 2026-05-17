@@ -50,20 +50,20 @@ export default function StyleguideAudit() {
           <div className="hr-rule" style={{ margin: '24px 0', borderTop: '1px solid var(--ink-25)' }} />
 
           <div className="t-section">Module aggregates</div>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12.5, marginTop: 12 }}>
-            <thead><tr style={{ borderBottom: '1px solid var(--ink-80)' }}>
-              <th style={{ textAlign: 'left', padding: '6px 8px', fontSize: 10, letterSpacing: '0.10em', textTransform: 'uppercase', color: 'var(--ink-60)' }}>Module</th>
-              <th style={{ textAlign: 'right', padding: '6px 8px', fontSize: 10, letterSpacing: '0.10em', textTransform: 'uppercase', color: 'var(--ink-60)' }}>Score</th>
-              <th style={{ textAlign: 'right', padding: '6px 8px', fontSize: 10, letterSpacing: '0.10em', textTransform: 'uppercase', color: 'var(--ink-60)' }}>Flags</th>
-              <th style={{ textAlign: 'left', padding: '6px 8px', fontSize: 10, letterSpacing: '0.10em', textTransform: 'uppercase', color: 'var(--ink-60)' }}>Severity</th>
+          <table className="q-table" style={{ marginTop: 12 }}>
+            <thead><tr>
+              <th>Module</th>
+              <th className="right">Score</th>
+              <th className="right">Flags</th>
+              <th>Severity</th>
             </tr></thead>
             <tbody>
               {modules.map(m => (
                 <tr key={m.id}>
-                  <td style={{ padding: '6px 8px', borderBottom: '1px solid var(--rule-soft)' }}>{m.name}</td>
-                  <td className="mono" style={{ padding: '6px 8px', borderBottom: '1px solid var(--rule-soft)', textAlign: 'right' }}>{m.score}</td>
-                  <td className="mono" style={{ padding: '6px 8px', borderBottom: '1px solid var(--rule-soft)', textAlign: 'right' }}>{m.flagCount}</td>
-                  <td style={{ padding: '6px 8px', borderBottom: '1px solid var(--rule-soft)', color: `var(--risk-${m.severity})`, fontWeight: m.severity === 'crit' ? 600 : 400 }}>{m.severity.toUpperCase()}</td>
+                  <td>{m.name}</td>
+                  <td className="mono right">{m.score}</td>
+                  <td className="mono right">{m.flagCount}</td>
+                  <td className={`tier-ink-${m.severity}`}>{m.severity.toUpperCase()}</td>
                 </tr>
               ))}
             </tbody>

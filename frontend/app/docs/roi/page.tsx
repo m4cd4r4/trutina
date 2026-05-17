@@ -2,8 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
-import SiteHeader from '@/components/design/SiteHeader'
-import SiteFooter from '@/components/design/SiteFooter'
+import DocShell from '@/components/DocShell'
 
 function formatAUD(value: number): string {
   if (value >= 1_000_000_000) {
@@ -85,14 +84,11 @@ export default function ROICalculator() {
   }, [volume, fraudRate, avgLoan, lossPercent])
 
   return (
-    <>
+    <DocShell
+      title="ROI Calculator"
+      intro="Estimate how much fraud exposure Trutina eliminates based on your lending volume. Adjust the inputs below and see your projected annual savings in real time."
+    >
       <style>{`
-        @media print {
-          body { background: white !important; color: black !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-          .no-print { display: none !important; }
-          .print-break { page-break-before: always; }
-          input[type="range"] { display: none; }
-        }
         input[type="range"]::-webkit-slider-thumb {
           -webkit-appearance: none;
           width: 16px;
@@ -111,26 +107,6 @@ export default function ROICalculator() {
           cursor: pointer;
         }
       `}</style>
-
-      <div
-        className="min-h-screen docs-page"
-        style={{  }}
-      >
-        {/* Nav */}
-        <SiteHeader active="docs" />
-
-        <div className="max-w-5xl mx-auto px-4 sm:px-8 py-10 sm:py-14">
-          {/* Header */}
-          <div className="mb-10">
-            <Link href="/docs" className="text-white/30 hover:text-white/50 text-xs uppercase tracking-wider transition no-print">
-              Documentation
-            </Link>
-            <h1 className="text-3xl sm:text-4xl font-bold mt-2 mb-3">ROI Calculator</h1>
-            <p className="text-white/50 max-w-2xl">
-              Estimate how much fraud exposure Trutina eliminates based on your lending volume.
-              Adjust the inputs below and see your projected annual savings in real time.
-            </p>
-          </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-8">
             {/* Inputs */}
@@ -325,16 +301,6 @@ export default function ROICalculator() {
             </Link>
           </div>
 
-          {/* Footer */}
-          <div className="mt-12 pt-6 border-t border-white/5 text-center text-white/20 text-xs">
-            <p>&copy; {new Date().getFullYear()} Trutina &mdash; AI Lending Fraud Detection</p>
-            <p className="mt-1">
-              Questions? <a href="mailto:hello@trutina.com.au" className="text-teal-400 hover:text-teal-300">hello@trutina.com.au</a>
-            </p>
-          </div>
-        </div>
-      <SiteFooter />
-      </div>
-    </>
+    </DocShell>
   )
 }

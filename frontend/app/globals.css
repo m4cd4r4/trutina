@@ -47,11 +47,11 @@
   --risk-crit-fill:    #E8C9C6;
   --risk-crit-edge:    #B5524D;
 
-  /* Single action accent. Notary blue. */
-  --accent:            #1F4FA3;
-  --accent-press:      #163C7D;
-  --accent-fill:       #D4DEF0;
-  --accent-edge:       #6E8EC4;
+  /* Single action accent. Oxblood - warm, distinct from the risk reds. */
+  --accent:            #6E2A38;
+  --accent-press:      #531F2A;
+  --accent-fill:       #E9D6DB;
+  --accent-edge:       #A87D88;
 
   /* Provenance markers. */
   --measured:          var(--ink-100);
@@ -87,6 +87,13 @@
   --rule-width:        1px;
   --rule-width-thick:  2px;
   --rule-width-stamp:  6px;
+
+  /* Forensic lab-notebook margin offsets. Single source for the
+   * editorial page rule + line-number gutter so the motif stays one
+   * system. The print packet is a smaller-scale artefact and keeps
+   * its own proportional offsets (.print-page .margin-rule). */
+  --forensic-rule-x:   110px;
+  --forensic-tick-x:   36px;
 
   --s-0:   0px;
   --s-1:   4px;
@@ -269,27 +276,37 @@ hr { border: 0; border-top: var(--rule-width) solid var(--rule); margin: var(--s
 .risk-high     { --r-ink: var(--risk-high); --r-fill: var(--risk-high-fill); --r-edge: var(--risk-high-edge); }
 .risk-crit     { --r-ink: var(--risk-crit); --r-fill: var(--risk-crit-fill); --r-edge: var(--risk-crit-edge); }
 
+/* Tier ink utilities - replace inline ternary colour patterns on score cells. */
+.tier-ink-crit { color: var(--risk-crit); font-weight: 600; }
+.tier-ink-high { color: var(--risk-high); }
+.tier-ink-med  { color: var(--risk-med); }
+.tier-ink-low,
+.tier-ink-base { color: var(--ink-100); }
+
 /* =====================================================================
  *  Shared atoms (badges, buttons, tables)
  *  Ported from ui_kits/app/app.css.
  * ===================================================================== */
 
+/* Base pill — shared by stamp-badge, stamp-stark, mk-stamp, ProvenanceTag. */
+.pill {
+  display: inline-flex; align-items: center;
+  font-family: var(--font-sans); font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  border-radius: var(--radius-1); border: 1px solid transparent;
+}
+
 .stamp-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 3px 8px;
-  font-family: var(--font-sans); font-weight: 700; font-size: 10px;
-  letter-spacing: 0.16em; text-transform: uppercase;
-  border-radius: var(--radius-1); color: var(--r-ink, var(--ink-100));
+  gap: 6px; padding: 3px 8px; font-size: 10px; letter-spacing: 0.16em;
+  color: var(--r-ink, var(--ink-100));
   background: var(--r-fill, var(--paper-2));
-  border: 1px solid var(--r-edge, var(--rule));
+  border-color: var(--r-edge, var(--rule));
 }
 .stamp-badge .pip { width: 5px; height: 5px; background: var(--r-ink, var(--ink-100)); border-radius: 50%; }
 
 .stamp-stark {
-  display: inline-flex; padding: 5px 11px;
+  padding: 5px 11px; font-size: 11px; letter-spacing: 0.18em;
   background: var(--r-ink, var(--ink-100)); color: var(--paper-0);
-  font-family: var(--font-sans); font-weight: 700; font-size: 11px; letter-spacing: 0.18em;
-  border-radius: var(--radius-1);
 }
 
 .btn {
@@ -594,7 +611,9 @@ hr { border: 0; border-top: var(--rule-width) solid var(--rule); margin: var(--s
 .gauge .band:last-child .l-r { position: absolute; top: -16px; right: 0; font-family: var(--font-mono); font-size: 10px; color: var(--ink-40); }
 .gauge .needle { position: absolute; top: -6px; bottom: -6px; width: 2px; background: var(--ink-100); }
 .gauge .needle::before { content: ""; position: absolute; left: -4px; top: -2px; width: 10px; height: 10px; background: var(--ink-100); transform: rotate(45deg); }
-.gauge .needle .v { position: absolute; left: 8px; bottom: 0; font-family: var(--font-serif); font-size: 13px; font-weight: 500; color: var(--ink-100); font-variant-numeric: tabular-nums; }
+/* Chip background so the needle value stays legible when it lands on a
+ * band edge next to the band's own numeric label (was colliding in crit). */
+.gauge .needle .v { position: absolute; left: 6px; bottom: -2px; font-family: var(--font-serif); font-size: 13px; font-weight: 600; color: var(--ink-100); font-variant-numeric: tabular-nums; background: var(--bg-print-white); padding: 0 4px; border-radius: var(--radius-1); box-shadow: 0 0 0 1px var(--rule); z-index: 2; }
 
 .row { display: flex; gap: 14px; }
 .col { display: flex; flex-direction: column; gap: 14px; }
@@ -634,8 +653,8 @@ hr { border: 0; border-top: var(--rule-width) solid var(--rule); margin: var(--s
 .site-header .filed { font-family: var(--font-mono); font-size: 10.5px; color: var(--ink-40); letter-spacing: 0.04em; }
 
 .page { position: relative; max-width: 1280px; margin: 0 auto; padding: 0 32px 0 132px; }
-.page::before { content: ""; position: absolute; left: 110px; top: 0; bottom: 0; width: 1px; background: var(--ink-15); }
-.line-numbers { position: absolute; left: 36px; top: 0; bottom: 0; width: 64px; font-family: var(--font-mono); font-size: 9.5px; color: var(--ink-25); letter-spacing: 0.04em; text-align: right; pointer-events: none; overflow: hidden; }
+.page::before { content: ""; position: absolute; left: var(--forensic-rule-x); top: 0; bottom: 0; width: 1px; background: var(--ink-15); }
+.line-numbers { position: absolute; left: var(--forensic-tick-x); top: 0; bottom: 0; width: 64px; font-family: var(--font-mono); font-size: 9.5px; color: var(--ink-25); letter-spacing: 0.04em; text-align: right; pointer-events: none; overflow: hidden; }
 @media (max-width: 1024px) {
   .page { padding: 0 24px; }
   .page::before, .line-numbers { display: none; }
@@ -759,7 +778,7 @@ hr { border: 0; border-top: var(--rule-width) solid var(--rule); margin: var(--s
 .cite-link { font-family: var(--font-sans); font-weight: 600; font-size: 0.66em; color: var(--accent); text-decoration: none; padding: 0 1px; vertical-align: super; line-height: 0; }
 .cite-link:hover { text-decoration: underline; }
 
-.mk-stamp { display: inline-block; padding: 1px 6px; font-family: var(--font-sans); font-weight: 700; font-size: 0.78em; letter-spacing: 0.14em; text-transform: uppercase; background: var(--r-fill); color: var(--r-ink); border: 1px solid var(--r-edge); border-radius: var(--radius-1); vertical-align: 2px; font-variation-settings: normal; }
+.mk-stamp { padding: 1px 6px; font-size: 0.78em; background: var(--r-fill); color: var(--r-ink); border-color: var(--r-edge); vertical-align: 2px; font-variation-settings: normal; }
 
 .mk-section[id] { scroll-margin-top: 84px; }
 
@@ -853,15 +872,17 @@ hr { border: 0; border-top: var(--rule-width) solid var(--rule); margin: var(--s
 .docs-page .bg-white\/20       { background: var(--paper-2) !important; }
 .docs-page .bg-white\/40       { background: var(--paper-2) !important; }
 .docs-page .placeholder-white\/20::placeholder { color: var(--ink-25) !important; }
-/* Teal accent -> notary blue */
+/* Teal accent -> oxblood (--accent is oxblood #6E2A38) */
 .docs-page [class*="text-teal"] { color: var(--accent) !important; }
 .docs-page [class*="bg-teal"]   { background: var(--accent) !important; color: var(--paper-0) !important; }
 .docs-page [class*="border-teal"] { border-color: var(--accent-edge) !important; }
 .docs-page [class*="hover\:bg-teal"]:hover { background: var(--accent-press) !important; }
-/* Emerald -> ledger moss */
-.docs-page [class*="text-emerald"]   { color: var(--risk-low) !important; }
-.docs-page [class*="bg-emerald"]     { background: var(--risk-low) !important; color: var(--paper-0) !important; }
-.docs-page [class*="border-emerald"] { border-color: var(--risk-low-edge) !important; }
+/* Emerald -> accent. These mark affirmative/"guarantee/savings" callouts,
+ * not risk tiers - map to the brand accent so risk-low (a severity token)
+ * is not overloaded as a decorative success colour. */
+.docs-page [class*="text-emerald"]   { color: var(--accent) !important; }
+.docs-page [class*="bg-emerald"]     { background: var(--accent-fill) !important; color: var(--accent-press) !important; }
+.docs-page [class*="border-emerald"] { border-color: var(--accent-edge) !important; }
 /* Amber / orange -> aged brass + rust */
 .docs-page [class*="text-amber"]   { color: var(--risk-med) !important; }
 .docs-page [class*="bg-amber"]     { background: var(--risk-med) !important; color: var(--paper-0) !important; }
@@ -880,6 +901,57 @@ hr { border: 0; border-top: var(--rule-width) solid var(--rule); margin: var(--s
 .docs-page [style*="#0a1210"],
 .docs-page [style*="#0d9488"] {
   background: var(--bg) !important;
+}
+
+/* =====================================================================
+ *  /docs/* shared print styles
+ *  Consolidated from the per-page <style dangerouslySetInnerHTML> blocks.
+ *  Scoped under .docs-page so only doc pages pick it up.
+ *  NOTE: .print-blue uses oxblood (#6E2A38) to match --accent which drives
+ *  all teal headings on screen; the old inline blocks used #1F4FA3 (blue) -
+ *  that was incorrect and is fixed here.
+ * ===================================================================== */
+@media print {
+  @page {
+    margin: 1.5cm;
+    size: A4;
+  }
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .docs-page .no-print { display: none !important; }
+  .docs-page .print-page {
+    background: white !important;
+    color: #111 !important;
+    padding: 0 !important;
+    min-height: auto !important;
+  }
+  .docs-page .print-page * {
+    color: #111 !important;
+    border-color: #ddd !important;
+  }
+  .docs-page .print-blue { color: #6E2A38 !important; }
+  .docs-page .print-muted { color: #555 !important; }
+  .docs-page .print-light { color: #888 !important; }
+  .docs-page .print-card {
+    background: #f8f9fa !important;
+    border: 1px solid #e5e7eb !important;
+  }
+  .docs-page .print-highlight {
+    background: #eff6ff !important;
+    border: 2px solid #6E2A38 !important;
+  }
+  .docs-page .print-alert {
+    background: #fef2f2 !important;
+    border: 1px solid #fca5a5 !important;
+  }
+  .docs-page .print-alert * { color: #991b1b !important; }
+  .docs-page .print-step-num {
+    background: #6E2A38 !important;
+    color: white !important;
+  }
+  .docs-page a { text-decoration: none !important; }
 }
 
 /* =====================================================================
@@ -923,8 +995,8 @@ hr { border: 0; border-top: var(--rule-width) solid var(--rule); margin: var(--s
   --saas-ink-20:   #C2C2C2;
   --saas-ink-10:   #E5E5E5;
   --saas-ink-05:   #F2F2F2;
-  --saas-accent:   #1F4FA3;
-  --saas-accent-hover: #1A4490;
+  --saas-accent:   #6E2A38;
+  --saas-accent-hover: #531F2A;
 
   background: var(--saas-bg);
   color: var(--saas-ink-100);
@@ -946,6 +1018,33 @@ html:has(.landing-saas) .site-footer {
   background: #FFFFFF;
 }
 
+/* Finish the SaaS port for the shared chrome at DESKTOP (mobile is
+ * handled in the <=768px block). Without this the header keeps its
+ * 132px editorial lab-margin (logo off the hero axis) and the footer
+ * renders in the editorial IBM-Plex/mono system under Geist content.
+ * --saas-* / --font-saas are scoped to .landing-saas and unavailable
+ * on these sibling elements, so use the global --font-geist + literals. */
+html:has(.landing-saas) .site-header .inner {
+  max-width: 1200px;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+html:has(.landing-saas) .site-footer .page {
+  max-width: 1200px;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+html:has(.landing-saas) .site-footer { border-top-color: #E5E5E5; }
+html:has(.landing-saas) .site-header .nav-desktop a,
+html:has(.landing-saas) .site-header .filed,
+html:has(.landing-saas) .site-footer,
+html:has(.landing-saas) .site-footer h5,
+html:has(.landing-saas) .site-footer ul,
+html:has(.landing-saas) .site-footer .legal {
+  font-family: var(--font-geist), 'Inter', -apple-system, 'Segoe UI', system-ui, sans-serif;
+}
+html:has(.landing-saas) .site-footer .legal { letter-spacing: -0.002em; }
+
 /* Kill the editorial page padding on the landing so mobile doesn't
  * push horizontal overflow from the 132px lab-notebook margin. */
 .landing-saas {
@@ -963,6 +1062,7 @@ html:has(.landing-saas) .site-footer {
 
 /* Hard reset for editorial chrome under .landing-saas */
 .landing-saas .line-numbers { display: none; }
+.landing-saas .page::before { display: none; }
 .landing-saas .disclosure { all: unset; }
 .landing-saas .mk-section { padding: 0; }
 .landing-saas .sec-label { all: unset; }
@@ -1213,6 +1313,66 @@ html:has(.landing-saas) .site-footer {
   letter-spacing: -0.003em;
 }
 
+/* How-it-works pipeline — numbered, scannable. Same card language as
+ * .modules-grid: hairline-joined cells, oxblood ordinal, sharp type. */
+.landing-saas .saas-flow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--saas-ink-10);
+  border: 1px solid var(--saas-ink-10);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.landing-saas .flow-step {
+  background: var(--saas-bg);
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.landing-saas .flow-step .n {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--saas-accent);
+}
+.landing-saas .flow-step .n::before {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--saas-accent);
+  margin-bottom: 16px;
+}
+.landing-saas .flow-step .t {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--saas-ink-100);
+  letter-spacing: -0.014em;
+}
+.landing-saas .flow-step .d {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--saas-ink-60);
+  letter-spacing: -0.003em;
+}
+.landing-saas .flow-step .meta {
+  margin-top: auto;
+  padding-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--saas-ink-40);
+  line-height: 1.45;
+}
+@media (max-width: 1024px) {
+  .landing-saas .saas-flow { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  .landing-saas .saas-flow { grid-template-columns: 1fr; }
+}
+
 /* Integration / engagements / refs */
 .landing-saas .saas-card {
   background: var(--saas-bg-soft);
@@ -1263,7 +1423,7 @@ html:has(.landing-saas) .site-footer {
 .landing-saas .engagement-cta:hover {
   background: var(--saas-accent-hover);
   transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(31,79,163,0.18);
+  box-shadow: 0 4px 16px rgba(110,42,56,0.20);
 }
 .landing-saas .engagement-sub {
   margin-top: 14px;
@@ -1863,10 +2023,12 @@ html:has(.landing-saas) .site-footer {
  */
 @media (max-width: 768px) {
   .q-table-wrap {
-    overflow-x: auto;
+    overflow-x: scroll;
     -webkit-overflow-scrolling: touch;
     margin: 0 -16px;
-    padding: 0 16px;
+    padding: 0 16px 6px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--ink-25) transparent;
   }
   .q-table {
     min-width: 720px;
@@ -1979,6 +2141,18 @@ html:has(.landing-saas) .site-footer {
     overflow-x: auto;
     font-size: 11.5px;
   }
+  /* The docs roots reuse .print-page (an 820px paper-document mock with a
+   * 110px lab-notebook left margin). That padding is absolute, so on a
+   * 393px phone it left ~165px of content and ran pages 6800px+ tall.
+   * Collapse the paper chrome on mobile; @media print still overrides. */
+  .docs-page.print-page {
+    max-width: 100%;
+    padding: 24px 18px 56px;
+    min-height: 0;
+    margin: 0;
+    border: 0;
+    box-shadow: none;
+  }
 }
 
 /* ---------- Measure-grid / module-table responsive ---------- */
@@ -2023,14 +2197,17 @@ html:has(.landing-saas) .site-footer {
     -webkit-overflow-scrolling: touch;
     padding-bottom: 24px;
   }
-  .print-page {
+  /* Scale-to-fit applies ONLY to the real audit packet (a fixed-width
+   * letter artefact). The /docs roots also carry .print-page but are
+   * reflowable web documents - excluded so they don't shrink to 42%. */
+  .print-page:not(.docs-page) {
     transform: scale(0.55);
     transform-origin: top left;
     margin-bottom: -45%;
   }
 }
 @media (max-width: 480px) {
-  .print-page { transform: scale(0.42); margin-bottom: -58%; }
+  .print-page:not(.docs-page) { transform: scale(0.42); margin-bottom: -58%; }
 }
 
 /* =====================================================================

@@ -71,7 +71,7 @@ export default function StyleguideQueue() {
                 <td className="mono right">${Math.round((c.loan_amount ?? 0) / 1000)}k</td>
                 <td>
                   <div className="score-cell">
-                    <span className="mono" style={{ minWidth: 22, textAlign: 'right', fontWeight: t === 'crit' ? 600 : 400, color: t === 'crit' ? 'var(--risk-crit)' : t === 'high' ? 'var(--risk-high)' : 'var(--ink-100)' }}>{c.risk_score}</span>
+                    <span className={`mono tier-ink-${t}`} style={{ minWidth: 22, textAlign: 'right' }}>{c.risk_score}</span>
                     <span className={`score-bar tier-${t}`} aria-hidden="true">
                       <i style={{ width: `${c.risk_score}%` }} />
                     </span>

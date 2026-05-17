@@ -42,7 +42,7 @@ export default function StyleguideBroker() {
                 <td className="mono derived">{v.abn}</td>
                 <td className="mono right">{v.submissionCount}</td>
                 <td className="mono right">{v.fraudFlagCount}</td>
-                <td className="mono right" style={{ color: v.fraudRateTier === 'crit' ? 'var(--risk-crit)' : v.fraudRateTier === 'high' ? 'var(--risk-high)' : 'var(--ink-100)', fontWeight: v.fraudRateTier === 'crit' ? 600 : 400 }}>
+                <td className={`mono right tier-ink-${v.fraudRateTier}`}>
                   {v.fraudRate != null ? `${(v.fraudRate * 100).toFixed(1)}%` : 'n/a'}
                 </td>
                 <td className="mono right">{v.riskScore}</td>

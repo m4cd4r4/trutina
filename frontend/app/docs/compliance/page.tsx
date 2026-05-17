@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import SiteHeader from '@/components/design/SiteHeader'
-import SiteFooter from '@/components/design/SiteFooter'
+import DocShell from '@/components/DocShell'
 
 export const metadata: Metadata = {
   title: 'APRA/ASIC Compliance Brief',
@@ -11,61 +10,11 @@ export const metadata: Metadata = {
 
 export default function ComplianceBrief() {
   return (
-    <>
-      <style dangerouslySetInnerHTML={{ __html: `
-        @media print {
-          @page {
-            margin: 1.5cm;
-            size: A4;
-          }
-          body {
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
-          }
-          .no-print { display: none !important; }
-          .print-page {
-            background: white !important;
-            color: #111 !important;
-            padding: 0 !important;
-            min-height: auto !important;
-          }
-          .print-page * {
-            color: #111 !important;
-            border-color: #ddd !important;
-          }
-          .print-page .print-blue { color: #1F4FA3 !important; }
-          .print-page .print-muted { color: #555 !important; }
-          .print-page .print-light { color: #888 !important; }
-          .print-page .print-card {
-            background: #f8f9fa !important;
-            border: 1px solid #e5e7eb !important;
-          }
-          .print-page .print-highlight {
-            background: #eff6ff !important;
-            border: 2px solid #1F4FA3 !important;
-          }
-          .print-page a { text-decoration: none !important; }
-        }
-      `}} />
-
-      <div className="min-h-screen docs-page print-page"
-        style={{  }}>
-
-        {/* Nav */}
-        <SiteHeader active="docs" />
-
-        <div className="max-w-4xl mx-auto px-4 sm:px-8 py-8 sm:py-12">
-
-          {/* Header */}
-          <div className="mb-10">
-            <Link href="/docs" className="text-white/30 hover:text-white/50 text-xs uppercase tracking-wider transition no-print">
-              Documentation
-            </Link>
-            <h1 className="text-3xl sm:text-4xl font-bold mt-2 mb-3">APRA/ASIC Compliance Brief</h1>
-            <p className="text-white/50 max-w-2xl">
-              How Trutina&apos;s AI-powered fraud detection aligns with key APRA and ASIC prudential standards for Australian lenders.
-            </p>
-          </div>
+    <DocShell
+      title="APRA/ASIC Compliance Brief"
+      intro="How Trutina's AI-powered fraud detection aligns with key APRA and ASIC prudential standards for Australian lenders."
+      updated="March 2026"
+    >
 
           {/* Purpose */}
           <section className="mb-8">
@@ -408,19 +357,11 @@ export default function ComplianceBrief() {
             </div>
           </section>
 
-          {/* Footer */}
-          <div className="mt-12 pt-6 border-t border-white/5 text-center space-y-2">
-            <p className="text-white/30 text-xs leading-relaxed max-w-2xl mx-auto">
-              This brief is for informational purposes. It does not constitute legal advice.
-              Organisations should consult their own legal and compliance teams.
-            </p>
-            <p className="text-white/20 text-xs">Last updated: March 2026</p>
-            <p className="text-white/20 text-xs">&copy; Trutina &mdash; AI Lending Fraud Detection</p>
+          <div className="mt-4 text-white/30 text-xs leading-relaxed max-w-2xl mx-auto text-center">
+            This brief is for informational purposes. It does not constitute legal advice.
+            Organisations should consult their own legal and compliance teams.
           </div>
 
-        </div>
-      <SiteFooter />
-      </div>
-    </>
+    </DocShell>
   )
 }

@@ -23,13 +23,13 @@ export function RiskBadge({
   const text = (label ?? FULL_LABEL[tier]).toUpperCase()
   if (stark) {
     return (
-      <span className={`stamp-stark risk-${tier}`} style={{ background: `var(--risk-${tier})` }}>
+      <span className={`pill stamp-stark risk-${tier}`} style={{ background: `var(--risk-${tier})` }}>
         {text}{score != null ? ` . ${score}` : ''}
       </span>
     )
   }
   return (
-    <span className={`stamp-badge risk-${tier}`}>
+    <span className={`pill stamp-badge risk-${tier}`}>
       <span className="pip" />{text}
     </span>
   )
@@ -184,12 +184,9 @@ export function ProvenanceTag({ kind, children }: { kind: 'measured' | 'derived'
   } as const
   const s = MAP[kind]
   return (
-    <span style={{
-      display: 'inline-block', padding: '2px 6px',
-      fontFamily: 'var(--font-sans)', fontWeight: 600, fontSize: 9.5,
-      letterSpacing: '0.16em', textTransform: 'uppercase',
-      color: s.fg, background: s.bg, border: `1px solid ${s.border}`,
-      borderRadius: 'var(--radius-1)',
+    <span className="pill" style={{
+      padding: '2px 6px', fontSize: 9.5, letterSpacing: '0.16em',
+      color: s.fg, background: s.bg, borderColor: s.border,
       marginRight: 8,
     }}>{children ?? s.text}</span>
   )
