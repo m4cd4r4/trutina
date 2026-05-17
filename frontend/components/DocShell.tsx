@@ -12,13 +12,14 @@ interface DocShellProps {
   title: string
   intro?: string
   updated?: string
+  active?: 'docs' | 'api'
   children: ReactNode
 }
 
-export default function DocShell({ title, intro, updated, children }: DocShellProps) {
+export default function DocShell({ title, intro, updated, active = 'docs', children }: DocShellProps) {
   return (
     <div className="min-h-screen docs-page">
-      <SiteHeader active="docs" />
+      <SiteHeader active={active} />
 
       <main className="page" style={{ paddingTop: 56, paddingBottom: 80 }}>
         <header style={{ borderBottom: '1px solid var(--rule)', paddingBottom: 28, marginBottom: 40 }}>

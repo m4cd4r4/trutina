@@ -182,6 +182,7 @@ export default function IntegrationGuide() {
     <DocShell
       title="API Integration Guide"
       intro="Technical reference for integrating Trutina's document analysis API into your loan origination system. One endpoint, base64 documents in, risk score out."
+      active="api"
     >
 
           {/* Table of Contents */}
@@ -200,7 +201,7 @@ export default function IntegrationGuide() {
                 ['errors', 'Error Codes'],
                 ['rate-limits', 'Rate Limits'],
                 ['webhooks', 'Webhooks'],
-                ['support', 'Support'],
+                ['support', 'Contact'],
               ].map(([id, label]) => (
                 <a key={id} href={`#${id}`} style={{ color: 'var(--accent)' }} className="transition">
                   {label}
@@ -598,17 +599,17 @@ Content-Type: application/json`}
             </div>
           </div>
 
-          {/* Support */}
-          <SectionHeading id="support">Support</SectionHeading>
+          {/* Contact */}
+          <SectionHeading id="support">Contact</SectionHeading>
           <div className="text-sm leading-relaxed space-y-3" style={{ color: 'var(--ink-60)' }}>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div
                 className="rounded-xl p-5"
                 style={CARD}
               >
-                <h3 className="font-semibold mb-2" style={{ color: 'var(--ink-80)' }}>Email Support</h3>
+                <h3 className="font-semibold mb-2" style={{ color: 'var(--ink-80)' }}>Email</h3>
                 <a
-                  href="mailto:hello@trutina.com.au"
+                  href="mailto:hello@trutina.com.au?subject=Trutina%20engagement%20enquiry"
                   className="transition"
                   style={{ color: 'var(--accent)' }}
                   onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = 'var(--accent-press)' }}
@@ -616,21 +617,21 @@ Content-Type: application/json`}
                 >
                   hello@trutina.com.au
                 </a>
-                <div className="mt-3 text-xs space-y-1" style={{ color: 'var(--ink-40)' }}>
-                  <p>Starter: response within 24 hours</p>
-                  <p>Professional: response within 4 hours</p>
-                  <p>Enterprise: response within 1 hour</p>
-                </div>
+                <p className="mt-3 text-xs leading-relaxed" style={{ color: 'var(--ink-60)' }}>
+                  Trutina is an independent portfolio project, not a subscription product.
+                  No plans, no SLAs. Email for the methods paper, a walkthrough of the
+                  worked specimens, or the source on request.
+                </p>
               </div>
               <div
                 className="rounded-xl p-5"
                 style={CARD}
               >
-                <h3 className="font-semibold mb-2" style={{ color: 'var(--ink-80)' }}>Integration Help</h3>
+                <h3 className="font-semibold mb-2" style={{ color: 'var(--ink-80)' }}>Engagement</h3>
                 <p className="text-xs leading-relaxed" style={{ color: 'var(--ink-60)' }}>
-                  Professional and Enterprise plans include dedicated integration support.
-                  We can join your Slack, provide sandbox environments, and assist with
-                  UAT testing against your loan origination system.
+                  The integration shape documented here mirrors a real loan-origination
+                  integration. To discuss applying the detection engine to your environment
+                  (a review, a pilot, or a build), reach out and describe the use case.
                 </p>
               </div>
             </div>
