@@ -1,6 +1,6 @@
 # Claude Design System -> Trutina backend schema mapping
 
-Status: proposal. Awaiting Macdara's sign-off before any UI code lands.
+Status: proposal.
 Branch: `design/claude-design-system`.
 Authoritative design system: [i:/Scratch/trutina/design/Trutina Design System (2)/](file:///i:/Scratch/trutina/design/Trutina%20Design%20System%20(2)/).
 Authoritative type definitions: [i:/Scratch/trutina-design-system-migration/frontend/lib/types.ts](file:///i:/Scratch/trutina-design-system-migration/frontend/lib/types.ts).
@@ -216,7 +216,7 @@ The synthetic dataset is a port of `ui_kits/app/data.js` into `lib/styleguide-fi
 
 ## 8. Open questions for sign-off
 
-Three things I want Macdara to redirect on before code lands:
+Three things to settle before code lands:
 
 1. **Module-score formula** (sum vs max of flag weights). Default: sum, clamped at 100.
 2. **AFR -> CBA headline swap and cutting the four trust-strip numbers**. This deviates from the kit; the kit was wrong to assert them in the first place.
